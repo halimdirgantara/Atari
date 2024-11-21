@@ -2,44 +2,58 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
+    use HasRoles;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Nama tabel yang berhubungan dengan model ini.
+     * Laravel biasanya otomatis menebak nama tabel,
+     * tapi ini bisa diubah secara eksplisit jika diperlukan.
+     */
+    protected $table = 'users';
+
+    /**
+     * Kolom-kolom yang dapat diisi secara massal.
+     * Kolom ini mencegah Laravel dari 'Mass Assignment Vulnerability'.
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'nip',
+        'nik',
+        'phone',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Relasi Many-to-Many dengan model Organization melalui tabel pivot 'structures'.
+     * Setiap pengguna dapat terhubung ke banyak organisasi.
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class, 'structures', 'user_id', 'organization_id');
+    }
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Relasi One-to-Many dengan model GuestBook.
+     * Misalnya, user ini sebagai 'host' di buku tamu.
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    public function guestBooks(): HasMany
+    {
+        return $this->hasMany(GuestBook::class, 'host_id');
+    }
+
+    /**
+     * Relasi tambahan atau metode lain jika diperlukan
+     */
+    // Tambahkan metode atau relasi tambahan jika diperlukan
 }
