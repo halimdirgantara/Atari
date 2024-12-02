@@ -103,6 +103,62 @@
                             <input type="file" id="identity_file" name="identity_file" accept=".jpg,.jpeg,.png,.pdf" class="w-full ml-2 border-none focus:ring-0" required>
                         </div>
                     </div>
+
+                    {{-- chek in dan check out --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-1.5">
+                        <!-- Tanggal Check-in -->
+                        <div>
+                            <label class="text-gray-700 font-semibold mb-2 flex items-center" for="check_in">
+                                <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">calendar_today</span>
+                                TanggaL Check-in
+                            </label>
+                            <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
+                                <input type="datetime-local" id="check_in" name="check_in" class="w-full ml-2 border-none focus:ring-0" required>
+                            </div>
+                        </div>
+
+                        <!-- Tanggal Check-out -->
+                        <div>
+                            <label class="text-gray-700 font-semibold mb-2 flex items-center" for="check_out">
+                                <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">calendar_today</span>
+                                Tanggal Check-out
+                            </label>
+                            <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
+                                <input type="datetime-local" id="check_out" name="check_out" class="w-full ml-2 border-none focus:ring-0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                {{-- bertemu dengan --}}
+                <div class="mt-6">
+                    <label class="text-gray-700 font-semibold mb-2 flex items-center" for="host_id">
+                        <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">people</span>
+                        Bertemu Dengan
+                    </label>
+                    <div class="relative">
+                        <select
+                            id="host_id"
+                            name="host_id"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                            required
+                        >
+                            <option value="">Pilih Pihak Yang Dituju</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Keperluan -->
@@ -114,7 +170,7 @@
                     <textarea id="needs" name="needs" rows="4" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Keperluan" required></textarea>
                 </div>
 
-                <!-- Tombol Submit -->
+                <!-- Tombol kirim -->
                 <div class="mt-8 text-center">
                     <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
                         Kirim

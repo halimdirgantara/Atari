@@ -53,6 +53,26 @@
             <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
         </div>
     </header>
+    <!-- Alert Success - Tambahkan di sini -->
+    <div id="successAlert" class="fixed top-4 right-4 bg-white rounded-lg p-4 shadow-lg transform transition-transform duration-500 translate-x-full">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">
+                    Permintaan anda sudah terkirim
+                </p>
+            </div>
+            <div class="ml-4">
+                <button onclick="hideAlert()" class="rounded-md bg-green-500 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-600">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="container mx-auto mt-8 px-5">
@@ -107,38 +127,51 @@
             <h3 class="text-lg font-semibold mb-4">Daftar Tamu</h3>
             <ul class="space-y-4">
                 @foreach($visits as $visit)
-                <li class="flex justify-between items-center border border-gray-200 rounded-lg p-4">
-                    <div>
-                        <p class="font-semibold">{{ $visit->guests->name }}</p>
-                        <p class="text-sm text-gray-500">{{ $visit->guests->organization }}</p>
-                    </div>
-                    <p class="text-gray-500">{{ \Carbon\Carbon::parse($visit->check_in)->format('H:i') }} | {{ $visit->created_at->format('d M Y') }}</p>
-                </li>
+                    @foreach($visit->guests as $guest)
+                        <li class="flex justify-between items-center border border-gray-200 rounded-lg p-4">
+                            <div>
+                                <p class="font-semibold">{{ $guest->name }}</p>
+                                <p class="text-sm text-gray-500">{{ $guest->organization }}</p>
+                            </div>
+                            <p class="text-gray-500">
+                                {{ \Carbon\Carbon::parse($visit->check_in)->format('H:i') }} |
+                                {{ $visit->created_at->format('d M Y') }}
+                            </p>
+                        </li>
+                    @endforeach
                 @endforeach
             </ul>
         </div>
     </section>
 
+
+
     <!-- Status Kunjungan Section -->
     <section class="container mx-auto mt-8 px-4 mb-8">
         <div class="bg-white rounded-lg shadow-lg p-6">
             <h3 class="text-lg font-semibold mb-4">Status Kunjungan</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div class="text-center border border-gray-200 rounded-lg p-4">
-                    <p class="text-xl font-semibold">{{ $statusCounts['confirmed'] }}</p>
+                    <p class="text-xl font-semibold">{{ $statusCounts['approve'] }}</p>
                     <p class="text-gray-500">Terkonfirmasi</p>
                 </div>
                 <div class="text-center border border-gray-200 rounded-lg p-4">
                     <p class="text-xl font-semibold">{{ $statusCounts['pending'] }}</p>
+                    <p class="text-gray-500">Tertunda</p>
+                </div>
+                <div class="text-center border border-gray-200 rounded-lg p-4">
+                    <p class="text-xl font-semibold">{{ $statusCounts['process'] }}</p>
                     <p class="text-gray-500">Menunggu</p>
                 </div>
                 <div class="text-center border border-gray-200 rounded-lg p-4">
-                    <p class="text-xl font-semibold">{{ $statusCounts['cancelled'] }}</p>
-                    <p class="text-gray-500">Batal</p>
+                    <p class="text-xl font-semibold">{{ $statusCounts['reject'] }}</p>
+                    <p class="text-gray-500">Ditolak</p>
                 </div>
             </div>
         </div>
     </section>
+
+
 
     <!-- Slideshow Script -->
     <script>
@@ -206,6 +239,22 @@
                 setupSlideshow();
             });
         });
+    </script>
+    <!-- Script alert - Tambahkan sebelum </body> -->
+    <script>
+        function showAlert() {
+            const alert = document.getElementById('successAlert');
+            alert.classList.remove('translate-x-full');
+        }
+
+        function hideAlert() {
+            const alert = document.getElementById('successAlert');
+            alert.classList.add('translate-x-full');
+        }
+
+        @if(session('success'))
+            showAlert();
+        @endif
     </script>
 </body>
 </html>

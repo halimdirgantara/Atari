@@ -1,4 +1,4 @@
-<?php
+<?php   // ini adalah file model/user.php
 
 namespace App\Models;
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guest;
 use App\Models\GuestBook;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; // Pastikan untuk menambahkan ini
 
@@ -11,20 +12,29 @@ class GuestBookController extends Controller
 {
     public function index()
     {
+        // Mengambil data visits dengan relasi guests
         $visits = GuestBook::with('guests')->get();
+
+        // Menghitung jumlah status berdasarkan status
         $statusCounts = [
-            'confirmed' => $visits->where('status', 'confirmed')->count(),
-            'pending' => $visits->where('status', 'pending')->count(),
-            'cancelled' => $visits->where('status', 'cancelled')->count(),
+            'approve' => GuestBook::where('status', 'Approve')->count(),
+            'pending' => GuestBook::where('status', 'Pending')->count(),
+            'process' => GuestBook::where('status', 'Process')->count(),
+            'reject' => GuestBook::where('status', 'Reject')->count(),
         ];
 
+        // Mengirim data ke view
         return view('landing', compact('visits', 'statusCounts'));
     }
 
+
     public function create()
     {
-        return view('form');
+        $users = User::all(['id', 'name', 'nip', 'nik']); // Mengambil data users
+        return view('form', compact('users')); // Mengirim data users ke view 'form'
     }
+
+
 
     public function store(Request $request)
     {
@@ -37,13 +47,20 @@ class GuestBookController extends Controller
             'organization' => 'required',
             'identity_id' => 'required',
             'identity_file' => 'required|mimes:jpg,jpeg,png,pdf|max:2048',
+
+
         ]);
+
+        // dd($request->all());
+
 
         // Upload file
         $filePath = $request->file('identity_file')->store('uploads/ktp', 'public');
 
         // Menghasilkan token acak
         $guestToken = Str::random(10);
+
+        // dd(User::find( $request->host_id )->organizations->first()->id);
 
         // Menyimpan data tamu
         $guest = Guest::create([
@@ -54,24 +71,56 @@ class GuestBookController extends Controller
             'organization' => $request->organization,
             'identity_id' => $request->identity_id,
             'identity_file' => $filePath,
-            'guest_token' => $guestToken, // Menyimpan guest_token
+            'needs' => $request->needs,
+            'guest_token' => $guestToken,
+
         ]);
 
-        // Menyimpan data buku tamu
-        GuestBook::create([
-            'guest_id' => $guest->id,
-            'organization_id' => $request->organization_id ?? null,
+
+
+       // create guest book
+        $guestBook = GuestBook::create([
+            'host_id' => $request->host_id ?? auth()->id(),
+            'organization_id' => User::find( $request->host_id )->organizations->first()->id,
+            'needs' => $request->needs,
             'check_in' => now(),
-            'status' => 'pending',
+            'check_out' => $request->check_out,
+            'status' => 'process',
+            'guest_id' => $guest->id,
         ]);
 
-        return redirect()->route('landing')->with('success', 'Appointment created successfully.');
+
+        //Sync relasi
+        $guestBook->guests()->attach($guest->id);
+
+        return redirect()->route('landing')->with('success', 'Permintaan berhasil dikirim');
+
+
+
     }
 
     public function check(Request $request)
     {
-        $status = GuestBook::where('guest_id', $request->guest_id)->pluck('status')->first();
+        $status = null;
+        $appointments = collect();  // Inisialisasi koleksi kosong
 
-        return view('check', compact('status'));
+        if ($request->has('guest_id')) {
+            $guestId = $request->input('guest_id');
+
+            // Cari janji temu berdasarkan guest_id (nama atau organisasi)
+            $appointments = GuestBook::with('guests')
+                ->whereHas('guests', function($query) use ($guestId) {
+                    $query->where('name', 'like', '%'.$guestId.'%')
+                        ->orWhere('organization', 'like', '%'.$guestId.'%');
+                })
+                ->get();
+
+            if ($appointments->isNotEmpty()) {
+                // Dapatkan status janji temu pertama (semua janji temu tamu memiliki status yang sama)
+                $status = $appointments->first()->status;
+            }
+        }
+
+        return view('check', compact('status', 'appointments'));
     }
 }

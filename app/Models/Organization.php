@@ -1,4 +1,4 @@
-<?php
+<?php   //ini adalah file models/organization.php
 
 namespace App\Models;
 

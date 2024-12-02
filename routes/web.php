@@ -15,6 +15,6 @@ use App\Http\Controllers\GuestBookController;
 */
 
 Route::get('/', [GuestBookController::class, 'index'])->name('landing');
-Route::get('/form', [GuestBookController::class, 'create'])->name('form');
-Route::post('/form', [GuestBookController::class, 'store']);
+Route::get('/form', [GuestBookController::class, 'create'])->name('form.create');
+Route::post('/form', [GuestBookController::class, 'store'])->name('form');
 Route::get('/check', [GuestBookController::class, 'check'])->name('check');

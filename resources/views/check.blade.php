@@ -21,24 +21,17 @@
     <!-- Cek Janji Section -->
     <section class="container mx-auto mt-8 px-4">
         <div class="bg-white rounded-lg shadow-lg p-8">
-            <h2 class="text-2xl font-semibold mb-4">Cek Status Janji</h2>
-            @if(isset($status))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">Status Anda:</strong>
-                    <span class="block sm:inline">{{ $status }}</span>
+            <h2 class="text-2xl font-semibold mb-4">Cek Janji</h2>
+            <p class="text-gray-600 mb-6">Masukkan nama atau organisasi untuk melihat status janji.</p>
+            <form method="GET" action="{{ route('check') }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="flex items-center border border-gray-300 rounded-md px-3 py-2 w-full">
+                    <span class="material-icons text-gray-500 mr-3">badge</span>
+                    <input type="text" name="guest_id" class="w-full border-none focus:ring-0" placeholder="nama atau organisasi" required>
                 </div>
-            @else
-                <p class="text-gray-600 mb-6">Masukkan nama untuk melihat status janji.</p>
-                <form method="GET" action="{{ route('check') }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
-                    <div class="flex items-center border border-gray-300 rounded-md px-3 py-2 w-full">
-                        <span class="material-icons text-gray-500 mr-3">badge</span>
-                        <input type="text" name="guest_id" class="w-full border-none focus:ring-0" placeholder="ID Tamu" required>
-                    </div>
-                    <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py- rounded-md hover:bg-blue-700 flex items-center">
-                        <span class="material-icons mr-2">search</span> Cari
-                    </button>
-                </form>
-            @endif
+                <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-md hover:bg-blue-900 flex items-center">
+                    <span class="material-icons mr-2">search</span> Cari
+                </button>
+            </form>
         </div>
     </section>
 
@@ -49,11 +42,27 @@
             <div class="space-y-4">
                 @foreach($appointments as $appointment)
                     <div class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
-                        <div class="flex items-center">
-                            <span class="material-icons text-gray-500 mr-3">person</span>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <span class="material-icons text-gray-500">person</span>
+                            </div>
                             <div>
                                 <p class="font-semibold">{{ $appointment->guest->name }}</p>
                                 <p class="text-sm text-gray-500">{{ $appointment->guest->organization }}</p>
+                                @if(isset($appointment->status))
+                                    @php
+                                        $statusClass = match($appointment->status) {
+                                            'Diterima' => 'bg-green-100 text-green-800',
+                                            'Tertunda' => 'bg-yellow-100 text-yellow-800',
+                                            'Menunggu' => 'bg-blue-100 text-blue-800',
+                                            'Ditolak' => 'bg-red-100 text-red-800',
+                                            default => 'bg-gray-100 text-gray-800'
+                                        };
+                                    @endphp
+                                    <span class="inline-block px-3 py-1 rounded-full text-sm font-medium mt-2 {{ $statusClass }}">
+                                        {{ $appointment->status }}
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="text-right">
