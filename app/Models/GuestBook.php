@@ -21,9 +21,7 @@ class GuestBook extends Model
         'status',
     ];
 
-    // protected $attributes = [
-    //     'status' => 'pending'
-    // ];
+
 
     public const STATUS = [
         'process' => 'Process',
