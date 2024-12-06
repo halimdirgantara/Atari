@@ -19,8 +19,8 @@ class GuestBookSeeder extends Seeder
 
         for ($i = 0; $i < 20; $i++) {
             $guestBook = GuestBook::create([
-                'host_id' => \App\Models\Organization::inRandomOrder()->first()->id,
-                'organization_id' => \App\Models\Organization::inRandomOrder()->first()->id,
+                'host_id' => $hostId = \App\Models\User::inRandomOrder()->first()->id % 10 + 1,
+                'organization_id' => \App\Models\User::find($hostId)->organization_id,
                 'needs' => $faker->text,
                 'check_in' => $faker->dateTime,
                 'check_out' => $faker->dateTime,

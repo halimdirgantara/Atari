@@ -25,5 +25,18 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
             'organization_id' => '1',
         ]);
+
+        $faker = Faker::create();
+        for ($i = 0; $i < 10; $i++) {
+            User::create([
+                'name' => $faker->name,
+                'nip' => $faker->numerify('################'),
+                'nik' => $faker->numerify('################'),
+                'phone' => $faker->phoneNumber,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('password'),
+                'organization_id' => $faker->numberBetween(1, 10),
+            ]);
+        }
     }
 }
