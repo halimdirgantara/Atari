@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
                 transform: translateY(-20px);
                 opacity: 0;
             }
+
             100% {
                 transform: translateY(0);
                 opacity: 1;
@@ -24,28 +26,58 @@
             animation: slideDown 1s ease-out forwards;
         }
 
-        .slideshow img:nth-child(1) { animation: fade 15s infinite 0s; }
-        .slideshow img:nth-child(2) { animation: fade 15s infinite 3s; }
-        .slideshow img:nth-child(3) { animation: fade 15s infinite 6s; }
-        .slideshow img:nth-child(4) { animation: fade 15s infinite 9s; }
-        .slideshow img:nth-child(5) { animation: fade 15s infinite 12s; }
+        .slideshow img:nth-child(1) {
+            animation: fade 15s infinite 0s;
+        }
+
+        .slideshow img:nth-child(2) {
+            animation: fade 15s infinite 3s;
+        }
+
+        .slideshow img:nth-child(3) {
+            animation: fade 15s infinite 6s;
+        }
+
+        .slideshow img:nth-child(4) {
+            animation: fade 15s infinite 9s;
+        }
+
+        .slideshow img:nth-child(5) {
+            animation: fade 15s infinite 12s;
+        }
 
         @keyframes fade {
-            0% { opacity: 0; }
-            10% { opacity: 1; }
-            20% { opacity: 1; }
-            30% { opacity: 0; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            30% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         .bg-gradient-custom {
-            background-image: url('/mnt/data/image.png'), linear-gradient(to right, #3f0595, #b8b1d5); /* Update image path */
+            background-image: url('/mnt/data/image.png'), linear-gradient(to right, #3f0595, #b8b1d5);
+            /* Update image path */
             background-size: cover;
             background-position: center;
             background-blend-mode: overlay;
         }
     </style>
 </head>
+
 <body class="bg-gray-100 font-sans antialiased">
     <header class="bg-blue-900 text-white py-4">
         <div class="container mx-auto flex items-center">
@@ -54,11 +86,13 @@
         </div>
     </header>
     <!-- Alert Success - Tambahkan di sini -->
-    <div id="successAlert" class="fixed top-4 right-4  bg-white rounded-lg p-4 shadow-lg transform transition-transform duration-500 translate-x-full">
+    <div id="successAlert"
+        class="fixed top-4 right-4  bg-white rounded-lg p-4 shadow-lg transform transition-transform duration-500 translate-x-full">
         <div class="flex items-center">
             <div class="flex-shrink-0">
                 <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
             <div class="ml-3">
@@ -67,7 +101,8 @@
                 </p>
             </div>
             <div class="ml-4">
-                <button onclick="hideAlert()" class="rounded-md bg-green-500 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-600">
+                <button onclick="hideAlert()"
+                    class="rounded-md bg-green-500 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-600">
                     OK
                 </button>
             </div>
@@ -76,24 +111,35 @@
 
     <!-- Hero Section -->
     <section class="container mx-auto mt-8 px-5">
-        <div class="relative bg-gradient-custom text-white rounded-lg overflow-hidden shadow-xl transform transition duration-500 hover:scale-105 h-52">
+        <div
+            class="relative bg-gradient-custom text-white rounded-lg overflow-hidden shadow-xl transform transition duration-500 hover:scale-105 h-52">
             <div class="absolute inset-0">
                 <!-- Slideshow for Mobile -->
                 <div class="slideshow-mobile relative h-full w-full block md:hidden">
-                    <img src="{{ asset('images/gedung1.jpg') }}" alt="Gedung 1" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-100">
-                    <img src="{{ asset('images/gedung2.jpg') }}" alt="Gedung 2" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
-                    <img src="{{ asset('images/gedung3.jpg') }}" alt="Gedung 3" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
-                    <img src="{{ asset('images/gedung4.jpg') }}" alt="Gedung 4" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
-                    <img src="{{ asset('images/gedung5.jpg') }}" alt="Gedung 5" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung1.jpg') }}" alt="Gedung 1"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-100">
+                    <img src="{{ asset('images/gedung2.jpg') }}" alt="Gedung 2"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung3.jpg') }}" alt="Gedung 3"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung4.jpg') }}" alt="Gedung 4"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung5.jpg') }}" alt="Gedung 5"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
                 </div>
 
                 <!-- Slideshow for Desktop -->
                 <div class="slideshow-desktop relative h-full w-full hidden md:block">
-                    <img src="{{ asset('images/gedung6.jpg') }}" alt="Gedung 6" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-100">
-                    <img src="{{ asset('images/gedung7.jpg') }}" alt="Gedung 7" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
-                    <img src="{{ asset('images/gedung8.jpg') }}" alt="Gedung 8" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
-                    <img src="{{ asset('images/gedung9.jpg') }}" alt="Gedung 9" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
-                    <img src="{{ asset('images/gedung10.jpg') }}" alt="Gedung 10" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung6.jpg') }}" alt="Gedung 6"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-100">
+                    <img src="{{ asset('images/gedung7.jpg') }}" alt="Gedung 7"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung8.jpg') }}" alt="Gedung 8"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung9.jpg') }}" alt="Gedung 9"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="{{ asset('images/gedung10.jpg') }}" alt="Gedung 10"
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out opacity-0">
                 </div>
 
                 <!-- Overlay -->
@@ -127,20 +173,25 @@
             <h3 class="text-lg font-semibold mb-4">Daftar Tamu</h3>
             <ul class="space-y-4">
                 @foreach($visits as $visit)
-                    @foreach($visit->guests as $guest)
-                        <li class="flex justify-between items-center border border-gray-200 rounded-lg p-4">
+                <li class="flex justify-between items-center border border-gray-200 rounded-lg p-4">
+                            @foreach($visit->guests as $guest)
                             <div>
                                 <p class="font-semibold">{{ $guest->name }}</p>
                                 <p class="text-sm text-gray-500">{{ $guest->organization }}</p>
                             </div>
+                            @endforeach
                             <p class="text-gray-500">
                                 {{ \Carbon\Carbon::parse($visit->check_in)->format('H:i') }} |
                                 {{ $visit->created_at->format('d M Y') }}
                             </p>
                         </li>
-                    @endforeach
                 @endforeach
             </ul>
+
+            <!-- Pagination Links -->
+            <div class="mt-4">
+                {{ $visits->links() }}
+            </div>
         </div>
     </section>
 
@@ -175,7 +226,7 @@
 
     <!-- Slideshow Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Function to initialize slideshow
             function initializeSlideshow(slideshowSelector) {
                 let currentIndex = 0;
@@ -235,7 +286,7 @@
 
             setupSlideshow();
 
-            window.addEventListener('resize', function() {
+            window.addEventListener('resize', function () {
                 setupSlideshow();
             });
         });
@@ -257,4 +308,5 @@
         @endif
     </script>
 </body>
+
 </html>

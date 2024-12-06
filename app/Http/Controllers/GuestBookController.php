@@ -13,8 +13,8 @@ class GuestBookController extends Controller
 {
     public function index()
     {
-        // Mengambil data visits dengan relasi guests
-        $visits = GuestBook::with('guests')->get();
+        // Mengambil data visits dengan relasi guests dan paginate
+        $visits = GuestBook::with('guests')->paginate(5); // Adjust the number as needed
 
         // Menghitung jumlah status berdasarkan status
         $statusCounts = [
