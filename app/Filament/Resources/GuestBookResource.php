@@ -35,7 +35,8 @@ class GuestBookResource extends Resource
         return $form
             ->schema([
                 Select::make('guest_id')
-                    ->relationship(name: 'guest', titleAttribute: 'name')
+                    ->relationship(name: 'guests', titleAttribute: 'name')
+                    ->multiple()
                     ->createOptionForm([
                         TextInput::make('name')->required(),
                         TextInput::make('email')->email()->required(),
