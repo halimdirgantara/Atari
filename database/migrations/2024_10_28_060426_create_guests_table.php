@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('organization');
             $table->string('identity_id');
             $table->string('identity_file');
-            $table->string('guest_token');
+            $table->string('guest_token')->default(Str::random(8));
             $table->timestamps();
         });
 

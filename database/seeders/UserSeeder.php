@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
             'nip' => '1',
             'nik' => '1',
             'phone' => '6281251413425',
-            'address' => 'Sekadau',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('password'),
             'organization_id' => '1',

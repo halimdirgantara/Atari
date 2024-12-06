@@ -22,8 +22,7 @@ class Guest extends Model
     ];
     public function guestBooks()
     {
-        return $this->hasMany(GuestBook::class);
-        return $this->belongsToMany(GuestBook::class, 'guest_book_guest', 'guest_id', 'guest_book_id');
+        return $this->hasMany(GuestBook::class, 'guest_id','id');
     }
 
     

@@ -20,8 +20,6 @@ return new class extends Migration
             $table->dateTime('check_out');
             $table->string('status')->default('process');
             $table->timestamps();
-
-
         });
     }
 
