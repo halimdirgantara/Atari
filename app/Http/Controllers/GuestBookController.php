@@ -50,7 +50,9 @@ class GuestBookController extends Controller
             'identity_id' => 'required',
             'identity_file' => 'required|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
-        // dd($request->all());
+
+        $host = User::find($request->host_id);
+
         // Upload file
         $filePath = $request->file('identity_file')->store('uploads/ktp', 'public');
 
@@ -68,19 +70,18 @@ class GuestBookController extends Controller
             'identity_file' => $filePath,
             'needs' => $request->needs,
             'guest_token' => $guestToken,
-
         ]);
 
 
         $host = User::find($request->host_id);
 
-        if (!$host || $host->organizations->isEmpty()) {
+        if (!$host || is_null($host->organization)) {
             // Jika host tidak ada atau tidak memiliki organisasi, tangani error atau beri pesan
             return redirect()->back()->with('error', 'Host atau organisasi tidak ditemukan.');
         }
 
         // Ambil ID organisasi pertama yang terhubung dengan pengguna
-        $organization_id = $host->organizations->first()->id;
+        $organization_id = $host->organization->first()->id;
 
         // create guest book
         $guestBook = GuestBook::create([

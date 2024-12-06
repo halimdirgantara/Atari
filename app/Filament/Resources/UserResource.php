@@ -35,7 +35,8 @@ class UserResource extends Resource
                     ->required()
                     ->password()
                     ->revealable()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hiddenOn('edit'),
 
                 Forms\Components\TextInput::make('nip')
                     ->required()
@@ -44,11 +45,10 @@ class UserResource extends Resource
                 Forms\Components\Select::make('organization_id')
                     ->label('Organisasi')
                     ->options(
-                        Organization::all()->pluck('name') // Menampilkan nama organisasi dan id
+                        Organization::all()->pluck('name','id') // Menampilkan nama organisasi dan id
                     )
                     ->searchable()
                     ->required(),
-
 
                 Forms\Components\TextInput::make('nik')
                     ->required()
