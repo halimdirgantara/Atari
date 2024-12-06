@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guest;
 use App\Models\GuestBook;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; // Pastikan untuk menambahkan ini
@@ -44,23 +45,17 @@ class GuestBookController extends Controller
             'email' => 'required|email',
             'phone' => 'required',
             'address' => 'required',
+            'host_id' => 'required|exists:users,id',
             'organization' => 'required',
             'identity_id' => 'required',
             'identity_file' => 'required|mimes:jpg,jpeg,png,pdf|max:2048',
-
-
         ]);
-
         // dd($request->all());
-
-
         // Upload file
         $filePath = $request->file('identity_file')->store('uploads/ktp', 'public');
 
         // Menghasilkan token acak
         $guestToken = Str::random(10);
-
-        // dd(User::find( $request->host_id )->organizations->first()->id);
 
         // Menyimpan data tamu
         $guest = Guest::create([
@@ -77,11 +72,20 @@ class GuestBookController extends Controller
         ]);
 
 
+        $host = User::find($request->host_id);
 
-       // create guest book
+        if (!$host || $host->organizations->isEmpty()) {
+            // Jika host tidak ada atau tidak memiliki organisasi, tangani error atau beri pesan
+            return redirect()->back()->with('error', 'Host atau organisasi tidak ditemukan.');
+        }
+
+        // Ambil ID organisasi pertama yang terhubung dengan pengguna
+        $organization_id = $host->organizations->first()->id;
+
+        // create guest book
         $guestBook = GuestBook::create([
             'host_id' => $request->host_id ?? auth()->id(),
-            'organization_id' => User::find( $request->host_id )->organizations->first()->id,
+            'organization_id' => $organization_id,//User::find( $request->host_id )->organizations->first()->id,
             'needs' => $request->needs,
             'check_in' => now(),
             'check_out' => $request->check_out,
@@ -92,6 +96,8 @@ class GuestBookController extends Controller
 
         //Sync relasi
         $guestBook->guests()->attach($guest->id);
+
+
 
         return redirect()->route('landing')->with('success', 'Permintaan berhasil dikirim');
 

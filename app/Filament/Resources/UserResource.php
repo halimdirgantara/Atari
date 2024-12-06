@@ -5,13 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Models\Organization;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -24,23 +23,32 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required() // cannot empty
-                    ->maxLength(255), // max char 255
+                    ->required()
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('email')
-                    ->required() // cannot empty
-                    ->email() // email validation
-                    ->maxLength(255), // max char 255
+                    ->required()
+                    ->email()
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('password')
-                    ->required() // cannot empty
-                    ->password() //  password text input
-                    ->revealable() // hide show password
-                    ->maxLength(255), // max char 255
+                    ->required()
+                    ->password()
+                    ->revealable()
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('nip')
                     ->required()
                     ->maxLength(20),
+
+                Forms\Components\Select::make('organization_id')
+                    ->label('Organisasi')
+                    ->options(
+                        Organization::all()->pluck('name') // Menampilkan nama organisasi dan id
+                    )
+                    ->searchable()
+                    ->required(),
+
 
                 Forms\Components\TextInput::make('nik')
                     ->required()
@@ -61,7 +69,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('nip')->searchable(),
                 Tables\Columns\TextColumn::make('nik')->searchable(),
-                Tables\Columns\TextColumn::make('phone')->searchable()
+                Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('organizations.name'),
             ])
             ->filters([
                 //

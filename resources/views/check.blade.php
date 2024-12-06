@@ -35,7 +35,7 @@
         </div>
     </section>
 
-    <!-- Optional: Daftar Janji Temu Section (Display if multiple appointments are available) -->
+    <!-- Optional: Daftar Janji Temu -->
     @if(isset($appointments) && $appointments->count() > 0)
         <section class="container mx-auto mt-6 px-4">
             <h2 class="text-2xl font-semibold mb-4">Daftar Janji Temu Anda</h2>
@@ -52,10 +52,10 @@
                                 @if(isset($appointment->status))
                                     @php
                                         $statusClass = match($appointment->status) {
-                                            'Diterima' => 'bg-green-100 text-green-800',
-                                            'Tertunda' => 'bg-yellow-100 text-yellow-800',
-                                            'Menunggu' => 'bg-blue-100 text-blue-800',
-                                            'Ditolak' => 'bg-red-100 text-red-800',
+                                            'approve' => 'bg-green-100 text-green-800',
+                                            'pending' => 'bg-yellow-100 text-yellow-800',
+                                            'process' => 'bg-blue-100 text-blue-800',
+                                            'reject' => 'bg-red-100 text-red-800',
                                             default => 'bg-gray-100 text-gray-800'
                                         };
                                     @endphp
@@ -75,7 +75,7 @@
         </section>
     @endif
 
-    <!-- Optional: If you want to display a message when no appointments are found -->
+    <!-- Optional: jika nama atau organisasi tidak ditemukan-->
     @if(isset($status) && (!$appointments || $appointments->count() == 0))
         <section class="container mx-auto mt-6 px-4">
             <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">

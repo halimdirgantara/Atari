@@ -148,7 +148,8 @@
                         >
                             <option value="">Pilih Pihak Yang Dituju</option>
                             @foreach($users as $user)
-                                <option value="{{ $user->id }}">
+                                <option value="{{ $user->id }}"
+                                    @if(old('host_id') == $user->id) selected @endif>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
@@ -160,7 +161,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Keperluan -->
                 <div class="mt-6">
                     <label class="text-gray-700 font-semibold mb-2 flex items-center" for="needs">

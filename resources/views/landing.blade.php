@@ -54,7 +54,7 @@
         </div>
     </header>
     <!-- Alert Success - Tambahkan di sini -->
-    <div id="successAlert" class="fixed top-4 right-4 bg-white rounded-lg p-4 shadow-lg transform transition-transform duration-500 translate-x-full">
+    <div id="successAlert" class="fixed top-4 right-4  bg-white rounded-lg p-4 shadow-lg transform transition-transform duration-500 translate-x-full">
         <div class="flex items-center">
             <div class="flex-shrink-0">
                 <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -240,7 +240,7 @@
             });
         });
     </script>
-    <!-- Script alert - Tambahkan sebelum </body> -->
+    <!-- Script alert -->
     <script>
         function showAlert() {
             const alert = document.getElementById('successAlert');
