@@ -2,22 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GuestResource\Pages;
-use App\Filament\Resources\GuestResource\RelationManagers;
-use App\Models\Guest;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Guest;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
 use function Laravel\Prompts\text;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\GuestResource\Pages;
+
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\GuestResource\RelationManagers;
 
 class GuestResource extends Resource
 {
@@ -29,7 +30,6 @@ class GuestResource extends Resource
     {
         return $form
             ->schema([
-            TextInput::make('guest_id')->required(),
             TextInput::make('name')->required(),
             TextInput::make('email')->email()->required(),
             TextInput::make('phone')->required(),
@@ -37,8 +37,13 @@ class GuestResource extends Resource
             TextInput::make('organization')->required(),
             TextInput::make('identity_id')->required(),
             FileUpload::make('identity_file')->disk('public')->directory('identities'),
-            TextInput::make('guest_token')->required(),
-            ]);
+            TextInput::make('guest_token')->default(Str::random(8))->required()->maxLength(50)->readonly(),
+        ]);
+        if (!isset($data['guest_token']) || empty($data['guest_token'])) {
+            $data['guest_token'] = Str::random(8);
+        }
+        // Return data yang sudah dimodifikasi
+        return Guest::create($data)->getKey();
     }
 
     public static function table(Table $table): Table

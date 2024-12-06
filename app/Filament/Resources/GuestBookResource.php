@@ -65,7 +65,7 @@ class GuestBookResource extends Resource
                 DateTimePicker::make('check_out')->required(),
                 Select::make('status')
                 ->default('pending')
-                ->visible(fn () => Auth::check() && Auth::user()->hasRole('Super Admin'))
+                ->visible(fn () => Auth::check() && Auth::user()->hasRole('admin'))
                 ->options([
                         'pending' => 'Pending',
                         'approved' => 'Approved',
@@ -78,8 +78,13 @@ class GuestBookResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(function (Builder $query) {
+            if (Auth::user()->hasRole('super_admin') == false) {
+                $query->where('organization_id', Auth::user()->organization_id);
+            }})
             ->columns([
-                TextColumn::make('guest_id'),
+                TextColumn::make('guest.name') // Menggunakan relasi 'guest'
+                ->label('Guest Name'), // Label kolom
                 TextColumn::make('host.name')
                     ->label('Host')
                     ->sortable()
