@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         @keyframes slideDown {
             0% {
@@ -53,26 +55,6 @@
             <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
         </div>
     </header>
-    <!-- Alert Success - Tambahkan di sini -->
-    <div id="successAlert" class="fixed top-4 right-4  bg-white rounded-lg p-4 shadow-lg transform transition-transform duration-500 translate-x-full">
-        <div class="flex items-center">
-            <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-            </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium text-gray-900">
-                    Permintaan anda sudah terkirim
-                </p>
-            </div>
-            <div class="ml-4">
-                <button onclick="hideAlert()" class="rounded-md bg-green-500 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-600">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- Hero Section -->
     <section class="container mx-auto mt-8 px-5">
@@ -144,8 +126,6 @@
         </div>
     </section>
 
-
-
     <!-- Status Kunjungan Section -->
     <section class="container mx-auto mt-8 px-4 mb-8">
         <div class="bg-white rounded-lg shadow-lg p-6">
@@ -171,90 +151,21 @@
         </div>
     </section>
 
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
 
-
-    <!-- Slideshow Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to initialize slideshow
-            function initializeSlideshow(slideshowSelector) {
-                let currentIndex = 0;
-                const slideshow = document.querySelector(slideshowSelector);
-                const images = slideshow.querySelectorAll('img');
-                const totalImages = images.length;
-
-                if (totalImages === 0) return;
-
-                // Show first image
-                images[currentIndex].classList.remove('opacity-0');
-                images[currentIndex].classList.add('opacity-100');
-
-                // Function to show next image
-                function showNextImage() {
-                    images[currentIndex].classList.remove('opacity-100');
-                    images[currentIndex].classList.add('opacity-0');
-
-                    currentIndex = (currentIndex + 1) % totalImages;
-
-                    images[currentIndex].classList.remove('opacity-0');
-                    images[currentIndex].classList.add('opacity-100');
-                }
-
-                // Start slideshow interval
-                const intervalId = setInterval(showNextImage, 3000); // Change image every 3 seconds
-
-                return intervalId;
-            }
-
-            let mobileIntervalId = null;
-            let desktopIntervalId = null;
-
-            function setupSlideshow() {
-                const isMobile = window.innerWidth < 768;
-
-                if (isMobile) {
-                    if (desktopIntervalId !== null) {
-                        clearInterval(desktopIntervalId);
-                        desktopIntervalId = null;
-                    }
-
-                    if (mobileIntervalId === null) {
-                        mobileIntervalId = initializeSlideshow('.slideshow-mobile');
-                    }
-                } else {
-                    if (mobileIntervalId !== null) {
-                        clearInterval(mobileIntervalId);
-                        mobileIntervalId = null;
-                    }
-
-                    if (desktopIntervalId === null) {
-                        desktopIntervalId = initializeSlideshow('.slideshow-desktop');
-                    }
-                }
-            }
-
-            setupSlideshow();
-
-            window.addEventListener('resize', function() {
-                setupSlideshow();
-            });
-        });
-    </script>
     <!-- Script alert -->
     <script>
-        function showAlert() {
-            const alert = document.getElementById('successAlert');
-            alert.classList.remove('translate-x-full');
-        }
-
-        function hideAlert() {
-            const alert = document.getElementById('successAlert');
-            alert.classList.add('translate-x-full');
-        }
-
-        @if(session('success'))
-            showAlert();
-        @endif
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Permintaan anda sudah terkirim',
+                    showConfirmButton: false,
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        });
     </script>
 </body>
 </html>

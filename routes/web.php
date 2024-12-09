@@ -18,3 +18,6 @@ Route::get('/', [GuestBookController::class, 'index'])->name('landing');
 Route::get('/form', [GuestBookController::class, 'create'])->name('form.create');
 Route::post('/form', [GuestBookController::class, 'store'])->name('form');
 Route::get('/check', [GuestBookController::class, 'check'])->name('check');
+
+// Menambahkan route untuk detail janji temu
+Route::get('/appointment_details/{id}', [GuestBookController::class, 'show'])->name('appointment_details');
