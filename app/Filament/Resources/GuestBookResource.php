@@ -35,7 +35,8 @@ class GuestBookResource extends Resource
         return $form
             ->schema([
                 Select::make('guest_id')
-                    ->relationship(name: 'guest', titleAttribute: 'name')
+                    ->relationship(name: 'guests', titleAttribute: 'name')
+                    ->multiple()
                     ->createOptionForm([
                         TextInput::make('name')->required(),
                         TextInput::make('email')->email()->required(),
@@ -50,7 +51,7 @@ class GuestBookResource extends Resource
                     ->createOptionUsing(function (array $data) {
                         // Generate guest token
                         $data['guest_token'] = Str::random(8);
-                
+
                         // Return data yang sudah dimodifikasi
                         return Guest::create($data)->getKey();
                     }),
@@ -64,9 +65,9 @@ class GuestBookResource extends Resource
                 DateTimePicker::make('check_in')->required(),
                 DateTimePicker::make('check_out')->required(),
                 Select::make('status')
-                ->default('pending')
-                ->visible(fn () => Auth::check() && Auth::user()->hasRole('admin'))
-                ->options([
+                    ->default('pending')
+                    ->visible(fn() => Auth::check() && Auth::user()->hasRole('admin'))
+                    ->options([
                         'pending' => 'Pending',
                         'approved' => 'Approved',
                         'declined' => 'Declined',
@@ -78,13 +79,14 @@ class GuestBookResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->modifyQueryUsing(function (Builder $query) {
-            if (Auth::user()->hasRole('super_admin') == false) {
-                $query->where('organization_id', Auth::user()->organization_id);
-            }})
+            ->modifyQueryUsing(function (Builder $query) {
+                if (Auth::user()->hasRole('super_admin') == false) {
+                    $query->where('organization_id', Auth::user()->organization_id);
+                }
+            })
             ->columns([
-                TextColumn::make('guest.name') // Menggunakan relasi 'guest'
-                ->label('Guest Name'), // Label kolom
+                TextColumn::make('guests.name') // Menggunakan relasi 'guest'
+                    ->label('Guest Name'), // Label kolom
                 TextColumn::make('host.name')
                     ->label('Host')
                     ->sortable()
