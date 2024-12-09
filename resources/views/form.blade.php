@@ -104,30 +104,36 @@
                         </div>
                     </div>
 
-                    {{-- chek in dan check out --}}
+                    {{-- check in dan durasi --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-1.5">
                         <!-- Tanggal Check-in -->
                         <div>
                             <label class="text-gray-700 font-semibold mb-2 flex items-center" for="check_in">
                                 <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">calendar_today</span>
-                                TanggaL Check-in
+                                Tanggal Check-in
                             </label>
                             <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
                                 <input type="datetime-local" id="check_in" name="check_in" class="w-full ml-2 border-none focus:ring-0" required>
                             </div>
                         </div>
 
-                        <!-- Tanggal Check-out -->
+                        <!-- Durasi -->
                         <div>
-                            <label class="text-gray-700 font-semibold mb-2 flex items-center" for="check_out">
-                                <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">calendar_today</span>
-                                Tanggal Check-out
+                            <label class="text-gray-700 font-semibold mb-2 flex items-center" for="duration">
+                                <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">access_time</span>
+                                Durasi (menit)
                             </label>
                             <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
-                                <input type="datetime-local" id="check_out" name="check_out" class="w-full ml-2 border-none focus:ring-0" required>
+                                <select id="duration" name="duration" class="w-full ml-2 border-none focus:ring-0" required>
+                                    <option value="">Pilih Durasi</option>
+                                    @for ($i = 30; $i <= 120; $i += 10)
+                                        <option value="{{ $i }}">{{ $i }} menit</option>
+                                    @endfor
+                                </select>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
 
@@ -161,7 +167,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Keperluan -->
                 <div class="mt-6">
                     <label class="text-gray-700 font-semibold mb-2 flex items-center" for="needs">

@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans antialiased">
     <!-- Header -->
@@ -23,10 +25,10 @@
         <div class="bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-2xl font-semibold mb-4">Cek Janji</h2>
             <p class="text-gray-600 mb-6">Masukkan nama atau organisasi untuk melihat status janji.</p>
-            <form method="GET" action="{{ route('check') }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+            <form method="GET" action="{{ route('check') }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4" id="checkForm">
                 <div class="flex items-center border border-gray-300 rounded-md px-3 py-2 w-full">
                     <span class="material-icons text-gray-500 mr-3">badge</span>
-                    <input type="text" name="guest_id" class="w-full border-none focus:ring-0" placeholder="nama atau organisasi" required>
+                    <input type="text" name="guest_id" id="guest_id" class="w-full border-none focus:ring-0" placeholder="nama atau organisasi" required>
                 </div>
                 <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-md hover:bg-blue-900 flex items-center">
                     <span class="material-icons mr-2">search</span> Cari
@@ -75,14 +77,29 @@
         </section>
     @endif
 
-    <!-- Optional: jika nama atau organisasi tidak ditemukan-->
-    @if(isset($status) && (!$appointments || $appointments->count() == 0))
-        <section class="container mx-auto mt-6 px-4">
-            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Info:</strong>
-                <span class="block sm:inline">Tidak ada janji temu yang ditemukan untuk ID tamu tersebut.</span>
-            </div>
-        </section>
+    <!-- SweetAlert2 Script -->
+    @if(session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
     @endif
+    @if($errorMessage)
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Data Tidak Ditemukan',
+                text: '{{ $errorMessage }}',
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
+    @endif
+
 </body>
 </html>

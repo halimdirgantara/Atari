@@ -110,6 +110,7 @@ class GuestBookController extends Controller
     {
         $status = null;
         $appointments = collect();  // Inisialisasi koleksi kosong
+        $errorMessage = null; // Variabel untuk menyimpan pesan error
 
         if ($request->has('guest_id')) {
             $guestId = $request->input('guest_id');
@@ -125,9 +126,16 @@ class GuestBookController extends Controller
             if ($appointments->isNotEmpty()) {
                 // Dapatkan status janji temu pertama (semua janji temu tamu memiliki status yang sama)
                 $status = $appointments->first()->status;
+            } else {
+                // Jika tidak ada janji temu yang ditemukan, simpan pesan error
+                $errorMessage = 'Data Tidak Ditemukan';
             }
         }
 
-        return view('check', compact('status', 'appointments'));
+        // Kirim status, appointments, dan errorMessage ke view
+        return view('check', compact('status', 'appointments', 'errorMessage'));
     }
+
+
+
 }
