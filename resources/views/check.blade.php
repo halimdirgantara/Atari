@@ -43,21 +43,27 @@
             <h2 class="text-2xl font-semibold mb-4">Daftar Janji Temu Anda</h2>
             <div class="space-y-4">
                 @foreach($appointments as $appointment)
-                    <div class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+                    <a href="{{ route('appointment_details', ['id' => $appointment->id]) }}" class=" bg-white rounded-lg shadow-md p-4 flex justify-between items-center cursor-pointer hover:bg-gray-500 transition-all">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <span class="material-icons text-gray-500">person</span>
                             </div>
                             <div>
-                                <p class="font-semibold">{{ $appointment->guest->name }}</p>
-                                <p class="text-sm text-gray-500">{{ $appointment->guest->organization }}</p>
+                                <!-- Pastikan guest tidak null sebelum mengakses 'name' -->
+                                @if($appointment->guests && $appointment->guests->isNotEmpty())
+                                    <p class="font-semibold">{{ $appointment->guests->first()->name }}</p>
+                                    <p class="text-sm text-gray-500">{{ $appointment->guests->first()->organization }}</p>
+                                @else
+                                    <p class="font-semibold text-red-500">Guest not found</p>
+                                @endif
+
                                 @if(isset($appointment->status))
                                     @php
                                         $statusClass = match($appointment->status) {
-                                            'approve' => 'bg-green-100 text-green-800',
-                                            'pending' => 'bg-yellow-100 text-yellow-800',
-                                            'process' => 'bg-blue-100 text-blue-800',
-                                            'reject' => 'bg-red-100 text-red-800',
+                                            'approve' => 'bg-green-600 text-white',
+                                            'pending' => 'bg-yellow-400 text-black',
+                                            'process' => 'bg-blue-700 text-white',
+                                            'reject' => 'bg-red-600 text-white',
                                             default => 'bg-gray-100 text-gray-800'
                                         };
                                     @endphp
@@ -71,8 +77,10 @@
                             <p class="font-semibold">{{ \Carbon\Carbon::parse($appointment->check_in)->format('H:i') }} - {{ \Carbon\Carbon::parse($appointment->check_out)->format('H:i') }}</p>
                             <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($appointment->check_in)->format('d M Y') }}</p>
                         </div>
-                    </div>
+                    </a>
+
                 @endforeach
+
             </div>
         </section>
     @endif

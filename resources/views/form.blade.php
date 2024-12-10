@@ -71,14 +71,14 @@
                         </div>
                     </div>
 
-                    <!-- Organisasi -->
+                    <!-- Upload KTP -->
                     <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="organization">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">business</span>
-                            Organisasi
+                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="identity_file">
+                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">file_upload</span>
+                            Upload KTP
                         </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="text" id="organization" name="organization" class="w-full ml-2 border-none focus:ring-0" placeholder="Organisasi" required>
+                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-1.5">
+                            <input type="file" id="identity_file" name="identity_file" accept=".jpg,.jpeg,.png,.pdf" class="w-full ml-2 border-none focus:ring-0" required>
                         </div>
                     </div>
 
@@ -93,16 +93,17 @@
                         </div>
                     </div>
 
-                    <!-- Upload KTP -->
+                    <!-- Organisasi -->
                     <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="identity_file">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">file_upload</span>
-                            Upload KTP
+                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="organization">
+                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">business</span>
+                            Organisasi
                         </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="file" id="identity_file" name="identity_file" accept=".jpg,.jpeg,.png,.pdf" class="w-full ml-2 border-none focus:ring-0" required>
+                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
+                            <input type="text" id="organization" name="organization" class="w-full ml-2 border-none focus:ring-0" placeholder="Organisasi" required>
                         </div>
                     </div>
+
 
                     {{-- check in dan durasi --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-1.5">
@@ -126,9 +127,13 @@
                             <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
                                 <select id="duration" name="duration" class="w-full ml-2 border-none focus:ring-0" required>
                                     <option value="">Pilih Durasi</option>
-                                    @for ($i = 30; $i <= 120; $i += 10)
-                                        <option value="{{ $i }}">{{ $i }} menit</option>
-                                    @endfor
+                                    <option value="15">15 menit</option>
+                                    <option value="30">30 menit</option>
+                                    <option value="40">40 menit</option>
+                                    <option value="50">50 menit</option>
+                                    <option value="60">60 menit</option>
+                                    <option value="90">90 menit</option>
+                                    <option value="120">120 menit</option>
                                 </select>
                             </div>
                         </div>

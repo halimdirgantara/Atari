@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Guest;
 use App\Models\GuestBook;
+use Carbon\Carbon;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str; // Pastikan untuk menambahkan ini
+use Illuminate\Support\Str;
 
 class GuestBookController extends Controller
 {
     public function index()
     {
         // Mengambil data visits dengan relasi guests dan paginate
-        $visits = GuestBook::with('guests')->paginate(5); // Adjust the number as needed
+        $visits = GuestBook::with('guests')
+            ->orderBy('created_at', 'desc') // Mengurutkan berdasarkan waktu pembuatan, data terbaru di atas
+            ->paginate(5);
 
         // Menghitung jumlah status berdasarkan status
         $statusCounts = [
@@ -24,18 +27,20 @@ class GuestBookController extends Controller
             'reject' => GuestBook::where('status', 'Reject')->count(),
         ];
 
+        // Hapus session success jika bukan dari redirect
+        if (!session()->previousUrl() || !str_contains(session()->previousUrl(), 'form')) {
+            session()->forget('success');
+        }
+
         // Mengirim data ke view
         return view('landing', compact('visits', 'statusCounts'));
     }
-
 
     public function create()
     {
         $users = User::all(['id', 'name', 'nip', 'nik']); // Mengambil data users
         return view('form', compact('users')); // Mengirim data users ke view 'form'
     }
-
-
 
     public function store(Request $request)
     {
@@ -72,42 +77,40 @@ class GuestBookController extends Controller
             'guest_token' => $guestToken,
         ]);
 
-
-        $host = User::find($request->host_id);
-
+        // Validasi host dan organisasi
         if (!$host || is_null($host->organization)) {
-            // Jika host tidak ada atau tidak memiliki organisasi, tangani error atau beri pesan
             return redirect()->back()->with('error', 'Host atau organisasi tidak ditemukan.');
         }
 
         // Ambil ID organisasi pertama yang terhubung dengan pengguna
         $organization_id = $host->organization->first()->id;
 
-        // create guest book
+        // Hitung check_out berdasarkan check_in + durasi
+        $check_in = \Carbon\Carbon::parse($request->check_in);
+        $check_out = $check_in->copy()->addMinutes($request->duration);
+
+        // Create guest book
         $guestBook = GuestBook::create([
             'host_id' => $request->host_id ?? auth()->id(),
-            'organization_id' => $organization_id,//User::find( $request->host_id )->organizations->first()->id,
+            'organization_id' => $organization_id,
             'needs' => $request->needs,
-            'check_in' => now(),
-            'check_out' => $request->check_out,
+            'check_in' => $check_in,
+            'check_out' => $check_out,
             'status' => 'process',
-            'guest_id' => $guest->id,
         ]);
 
-
-        //Sync relasi
+        // Sync relasi
         $guestBook->guests()->attach($guest->id);
 
-
-
-        return redirect()->route('landing')->with('success', 'Permintaan berhasil dikirim');
-
-
-
+        session()->flash('success', 'Permintaan berhasil dikirim');
+        return redirect()->route('landing');
     }
 
     public function check(Request $request)
     {
+        // Hapus session success
+        session()->forget('success');
+
         $status = null;
         $appointments = collect();  // Inisialisasi koleksi kosong
         $errorMessage = null; // Variabel untuk menyimpan pesan error
@@ -124,18 +127,23 @@ class GuestBookController extends Controller
                 ->get();
 
             if ($appointments->isNotEmpty()) {
-                // Dapatkan status janji temu pertama (semua janji temu tamu memiliki status yang sama)
                 $status = $appointments->first()->status;
             } else {
-                // Jika tidak ada janji temu yang ditemukan, simpan pesan error
                 $errorMessage = 'Data Tidak Ditemukan';
             }
         }
 
-        // Kirim status, appointments, dan errorMessage ke view
         return view('check', compact('status', 'appointments', 'errorMessage'));
     }
 
+    public function show($id)
+    {
+        $appointment = GuestBook::with(['guests', 'host', 'organization'])->find($id);
 
+        if (!$appointment) {
+            return redirect()->route('landing')->with('error', 'Janji temu tidak ditemukan');
+        }
 
+        return view('appointment_details', compact('appointment'));
+    }
 }

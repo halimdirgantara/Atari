@@ -123,8 +123,15 @@
                     @endforeach
                 @endforeach
             </ul>
+
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $visits->links('pagination::tailwind') }} <!-- Pagination links with Tailwind styling -->
+            </div>
         </div>
     </section>
+
+
 
     <!-- Status Kunjungan Section -->
     <section class="container mx-auto mt-8 px-4 mb-8">
