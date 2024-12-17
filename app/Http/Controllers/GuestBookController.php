@@ -64,10 +64,11 @@ class GuestBookController extends Controller
         ]);
 
         $host = User::find($request->host_id);
+
         $guestToken = Str::random(10); // Satu token untuk semua tamu
 
         // Upload file dan buat guest utama
-        $mainFilePath = $request->file('identity_file')->store('uploads/ktp', 'public');
+        $mainFilePath = $request->file('identity_file') ? $request->file('identity_file')->store('uploads/ktp', 'public') : null;
         $mainGuest = Guest::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -82,7 +83,7 @@ class GuestBookController extends Controller
         // Buat GuestBook
         $guestBook = GuestBook::create([
             'host_id' => $request->host_id,
-            'organization_id' => $host->organization->first()->id,
+            'organization_id' => $host->organization_id,
             'needs' => $request->needs,
             'check_in' => Carbon::parse($request->check_in),
             'check_out' => Carbon::parse($request->check_in)->addMinutes($request->duration),
