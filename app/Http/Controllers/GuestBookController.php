@@ -44,7 +44,7 @@ class GuestBookController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
+        // Validasi input utama
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -53,87 +53,90 @@ class GuestBookController extends Controller
             'host_id' => 'required|exists:users,id',
             'organization' => 'required',
             'identity_id' => 'required',
-            'identity_file' => 'required|mimes:jpg,jpeg,png,pdf|max:2048',
+            'identity_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            // Validasi untuk tamu tambahan
+            'guests.*.name' => 'required_with:guests',
+            'guests.*.email' => 'required_with:guests|email',
+            'guests.*.phone' => 'required_with:guests',
+            'guests.*.address' => 'required_with:guests',
+            'guests.*.identity_id' => 'required_with:guests',
+            'guests.*.identity_file' => 'required_with:guests|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         $host = User::find($request->host_id);
+        $guestToken = Str::random(10); // Satu token untuk semua tamu
 
-        // Upload file
-        $filePath = $request->file('identity_file')->store('uploads/ktp', 'public');
-
-        // Menghasilkan token acak
-        $guestToken = Str::random(10);
-
-        // Menyimpan data tamu
-        $guest = Guest::create([
+        // Upload file dan buat guest utama
+        $mainFilePath = $request->file('identity_file')->store('uploads/ktp', 'public');
+        $mainGuest = Guest::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
             'organization' => $request->organization,
             'identity_id' => $request->identity_id,
-            'identity_file' => $filePath,
-            'needs' => $request->needs,
+            'identity_file' => $mainFilePath,
             'guest_token' => $guestToken,
         ]);
 
-        // Validasi host dan organisasi
-        if (!$host || is_null($host->organization)) {
-            return redirect()->back()->with('error', 'Host atau organisasi tidak ditemukan.');
-        }
-
-        // Ambil ID organisasi pertama yang terhubung dengan pengguna
-        $organization_id = $host->organization->first()->id;
-
-        // Hitung check_out berdasarkan check_in + durasi
-        $check_in = \Carbon\Carbon::parse($request->check_in);
-        $check_out = $check_in->copy()->addMinutes($request->duration);
-
-        // Create guest book
+        // Buat GuestBook
         $guestBook = GuestBook::create([
-            'host_id' => $request->host_id ?? auth()->id(),
-            'organization_id' => $organization_id,
+            'host_id' => $request->host_id,
+            'organization_id' => $host->organization->first()->id,
             'needs' => $request->needs,
-            'check_in' => $check_in,
-            'check_out' => $check_out,
+            'check_in' => Carbon::parse($request->check_in),
+            'check_out' => Carbon::parse($request->check_in)->addMinutes($request->duration),
             'status' => 'process',
         ]);
 
-        // Sync relasi
-        $guestBook->guests()->attach($guest->id);
+        // Attach tamu utama
+        $guestBook->guests()->attach($mainGuest->id);
 
-        session()->flash('success', 'Permintaan berhasil dikirim');
-        return redirect()->route('landing');
-    }
+        // Proses tamu tambahan jika ada
+        if ($request->has('guests')) {
+            foreach ($request->guests as $guestData) {
+                // Upload file KTP tamu tambahan
+                $filePath = $guestData['identity_file']->store('uploads/ktp', 'public');
 
-    public function check(Request $request)
-    {
-        // Hapus session success
-        session()->forget('success');
+                $additionalGuest = Guest::create([
+                    'name' => $guestData['name'],
+                    'email' => $guestData['email'],
+                    'phone' => $guestData['phone'],
+                    'address' => $guestData['address'],
+                    'organization' => $mainGuest->organization,
+                    'identity_id' => $guestData['identity_id'],
+                    'identity_file' => $filePath,
+                    'guest_token' => $guestToken, // Gunakan token yang sama
+                ]);
 
-        $status = null;
-        $appointments = collect();  // Inisialisasi koleksi kosong
-        $errorMessage = null; // Variabel untuk menyimpan pesan error
-
-        if ($request->has('guest_id')) {
-            $guestId = $request->input('guest_id');
-
-            // Cari janji temu berdasarkan guest_id (nama atau organisasi)
-            $appointments = GuestBook::with('guests')
-                ->whereHas('guests', function($query) use ($guestId) {
-                    $query->where('name', 'like', '%'.$guestId.'%')
-                        ->orWhere('organization', 'like', '%'.$guestId.'%');
-                })
-                ->get();
-
-            if ($appointments->isNotEmpty()) {
-                $status = $appointments->first()->status;
-            } else {
-                $errorMessage = 'Data Tidak Ditemukan';
+                $guestBook->guests()->attach($additionalGuest->id);
             }
         }
 
-        return view('check', compact('status', 'appointments', 'errorMessage'));
+        session()->flash('guest_token', $guestToken);
+        session()->flash('success', 'Permintaan berhasil dikirim');
+        return redirect()->route('landing');
+    }
+    public function check(Request $request)
+    {
+        $appointments = collect();
+
+        if ($request->has('guest_token')) {
+            $guestToken = $request->input('guest_token');
+
+            // Cari appointment berdasarkan guest_token
+            $appointments = GuestBook::with('guests')
+                ->whereHas('guests', function($query) use ($guestToken) {
+                    $query->where('guest_token', $guestToken);
+                })
+                ->get();
+
+            if ($appointments->isEmpty()) {
+                return redirect()->back()->with('error', 'Data tidak ditemukan');
+            }
+        }
+
+        return view('check', compact('appointments'));
     }
 
     public function show($id)

@@ -12,9 +12,9 @@
 </head>
 <body class="bg-gray-100 font-sans antialiased">
 
-    <!-- Header -->
-    <header class="bg-blue-900 text-white py-4">
-        <div class="container mx-auto flex items-center">
+    <!-- Header dengan Shadow -->
+    <header class="bg-blue-900 text-white py-4 shadow-lg">
+        <div class="container mx-auto flex items-center px-11">
             <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-10 mr-4">
             <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
         </div>
@@ -25,7 +25,7 @@
         @yield('content')  <!-- Konten dari halaman tertentu akan dimasukkan di sini -->
     </main>
 
-   
+
 
 </body>
 </html>

@@ -25,5 +25,5 @@ class Guest extends Model
         return $this->hasMany(GuestBook::class, 'guest_id','id');
     }
 
-    
+
 }
