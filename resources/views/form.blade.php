@@ -4,187 +4,278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Janji</title>
-    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans antialiased">
-    <!-- Header -->
-    <header class="bg-blue-900 text-white py-4">
-        <div class="container mx-auto flex items-center">
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Header dengan Shadow -->
+    <header class="bg-blue-900 text-white py-4 shadow-lg">
+        <div class="container mx-auto flex items-center px-11">
             <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-10 mr-4">
             <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
         </div>
     </header>
 
-    <!-- Formulir Buat Janji -->
-    <section class="container mx-auto mt-8 px-4">
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <h2 class="text-2xl font-semibold mb-2">Formulir Buku Tamu</h2>
-            <p class="text-gray-600 mb-6">Silakan isi formulir di bawah untuk membuat janji</p>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 md:p-10">
+                <!-- Form Header -->
+                <div class="mb-8 border-b pb-4">
+                    <h2 class="text-3xl font-bold text-gray-800">Formulir Buku Tamu</h2>
+                    <p class="text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji</p>
+                </div>
 
-            <form method="POST" action="{{ route('form') }}" enctype="multipart/form-data">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Nama -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="name">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">person</span>
-                            Nama
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="text" id="name" name="name" class="w-full ml-2 border-none focus:ring-0" placeholder="Nama Lengkap" required>
-                        </div>
-                    </div>
+                <form method="POST" action="{{ route('form') }}" enctype="multipart/form-data" class="space-y-8">
+                    @csrf
+                    <!-- Primary Guest Information -->
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Tamu Utama</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="name">
+                                    <span class="material-icons text-blue-600 mr-2">person</span>
+                                    Nama
+                                </label>
+                                <input type="text" id="name" name="name"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Nama Lengkap" required>
+                            </div>
 
-                    <!-- Email -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="email">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">email</span>
-                            Email
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="email" id="email" name="email" class="w-full ml-2 border-none focus:ring-0" placeholder="Email" required>
-                        </div>
-                    </div>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="email">
+                                    <span class="material-icons text-blue-600 mr-2">email</span>
+                                    Email
+                                </label>
+                                <input type="email" id="email" name="email"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Email" required>
+                            </div>
 
-                    <!-- Telepon -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="phone">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">phone</span>
-                            Telepon
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="tel" id="phone" name="phone" class="w-full ml-2 border-none focus:ring-0" placeholder="Nomor Telepon" required>
-                        </div>
-                    </div>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="phone">
+                                    <span class="material-icons text-blue-600 mr-2">phone</span>
+                                    Telepon
+                                </label>
+                                <input type="tel" id="phone" name="phone"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Nomor Telepon" required>
+                            </div>
 
-                    <!-- Alamat -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="address">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">location_on</span>
-                            Alamat
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="text" id="address" name="address" class="w-full ml-2 border-none focus:ring-0" placeholder="Alamat" required>
-                        </div>
-                    </div>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="address">
+                                    <span class="material-icons text-blue-600 mr-2">location_on</span>
+                                    Alamat
+                                </label>
+                                <input type="text" id="address" name="address"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Alamat" required>
+                            </div>
 
-                    <!-- Organisasi -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="organization">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">business</span>
-                            Organisasi
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="text" id="organization" name="organization" class="w-full ml-2 border-none focus:ring-0" placeholder="Organisasi" required>
-                        </div>
-                    </div>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="identity_file">
+                                    <span class="material-icons text-blue-600 mr-2">file_upload</span>
+                                    Upload KTP  (Jika Ada)
+                                </label>
+                                <input type="file" id="identity_file" name="identity_file" accept=".jpg,.jpeg,.png,.pdf"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required>
+                            </div>
 
-                    <!-- NIK -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="identity_id">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">badge</span>
-                            NIK
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="text" id="identity_id" name="identity_id" class="w-full ml-2 border-none focus:ring-0" placeholder="NIK" required>
-                        </div>
-                    </div>
-
-                    <!-- Upload KTP -->
-                    <div>
-                        <label class="text-gray-700 font-semibold mb-2 flex items-center" for="identity_file">
-                            <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">file_upload</span>
-                            Upload KTP
-                        </label>
-                        <div class="flex items-center border border-gray-300 rounded-md px-3 py-2">
-                            <input type="file" id="identity_file" name="identity_file" accept=".jpg,.jpeg,.png,.pdf" class="w-full ml-2 border-none focus:ring-0" required>
-                        </div>
-                    </div>
-
-                    {{-- check in dan durasi --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-1.5">
-                        <!-- Tanggal Check-in -->
-                        <div>
-                            <label class="text-gray-700 font-semibold mb-2 flex items-center" for="check_in">
-                                <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">calendar_today</span>
-                                Tanggal Check-in
-                            </label>
-                            <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
-                                <input type="datetime-local" id="check_in" name="check_in" class="w-full ml-2 border-none focus:ring-0" required>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="identity_id">
+                                    <span class="material-icons text-blue-600 mr-2">badge</span>
+                                    NIK
+                                </label>
+                                <input type="text" id="identity_id" name="identity_id"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="NIK" required>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Durasi -->
-                        <div>
-                            <label class="text-gray-700 font-semibold mb-2 flex items-center" for="duration">
-                                <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">access_time</span>
-                                Durasi (menit)
-                            </label>
-                            <div class="flex items-center border border-gray-300 rounded-md px-3 py-2.5">
-                                <select id="duration" name="duration" class="w-full ml-2 border-none focus:ring-0" required>
+                    <!-- Additional Guests Section -->
+                    <div class="-space-y-5">
+                        <div id="guest-container"></div>
+                        <div class="flex p-6 justify-end">
+                            <button type="button" id="add-guest"
+                                class="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200">
+                                <span class="material-icons mr-2">person_add</span>
+                                Tambah Tamu
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Visit Details -->
+                    <div class="bg-gray-50 p-6 rounded-lg space-y-6">
+                        <h3 class="text-xl font-semibold text-gray-800">Detail Kunjungan</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="organization">
+                                    <span class="material-icons text-blue-600 mr-2">business</span>
+                                    Organisasi
+                                </label>
+                                <input type="text" id="organization" name="organization"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Organisasi" required>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="check_in">
+                                    <span class="material-icons text-blue-600 mr-2">calendar_today</span>
+                                    Tanggal Check-in
+                                </label>
+                                <input type="datetime-local" id="check_in" name="check_in"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="duration">
+                                    <span class="material-icons text-blue-600 mr-2">access_time</span>
+                                    Durasi
+                                </label>
+                                <select id="duration" name="duration"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required>
                                     <option value="">Pilih Durasi</option>
-                                    @for ($i = 30; $i <= 120; $i += 10)
-                                        <option value="{{ $i }}">{{ $i }} menit</option>
-                                    @endfor
+                                    <option value="15">15 menit</option>
+                                    <option value="30">30 menit</option>
+                                    <option value="45">45 menit</option>
+                                    <option value="60">60 menit</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-medium flex items-center" for="host_id">
+                                    <span class="material-icons text-blue-600 mr-2">people</span>
+                                    Bertemu Dengan
+                                </label>
+                                <select id="host_id" name="host_id"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required>
+                                    <option value="">Pilih Pihak Yang Dituju</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}">{{$user->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center" for="needs">
+                                <span class="material-icons text-blue-600 mr-2">notifications</span>
+                                Keperluan
+                            </label>
+                            <textarea id="needs" name="needs" rows="4"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Keperluan" required></textarea>
+                        </div>
                     </div>
 
+                    <!-- Submit Button -->
+                    <div class="text-center pt-6">
+                        <button type="submit"
+                            class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200">
+                            Kirim
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 
-                </div>
+    <script>
+        let guestCount = 1;
 
+        document.getElementById('add-guest').addEventListener('click', function() {
+            guestCount++;
+            const guestHtml = `
+                <div class="guest-form bg-gray-50 p-6 rounded-lg" id="guest-${guestCount}">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800">Tamu ${guestCount}</h3>
+                        <button type="button" onclick="removeGuest(${guestCount})"
+                            class="text-red-500 hover:text-red-700 flex items-center transition-colors duration-200">
+                            <span class="material-icons mr-1">delete</span>
+                            Hapus
+                        </button>
+                    </div>
 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">person</span>
+                                Nama
+                            </label>
+                            <input type="text" name="guests[${guestCount}][name]"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Nama Lengkap" required>
+                        </div>
 
-                {{-- bertemu dengan --}}
-                <div class="mt-6">
-                    <label class="text-gray-700 font-semibold mb-2 flex items-center" for="host_id">
-                        <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">people</span>
-                        Bertemu Dengan
-                    </label>
-                    <div class="relative">
-                        <select
-                            id="host_id"
-                            name="host_id"
-                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
-                            required
-                        >
-                            <option value="">Pilih Pihak Yang Dituju</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}"
-                                    @if(old('host_id') == $user->id) selected @endif>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">email</span>
+                                Email
+                            </label>
+                            <input type="email" name="guests[${guestCount}][email]"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Email" required>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">phone</span>
+                                Telepon
+                            </label>
+                            <input type="tel" name="guests[${guestCount}][phone]"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Nomor Telepon" required>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">location_on</span>
+                                Alamat
+                            </label>
+                            <input type="text" name="guests[${guestCount}][address]"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Alamat" required>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">file_upload</span>
+                                Upload KTP
+                            </label>
+                            <input type="file" name="guests[${guestCount}][identity_file]" accept=".jpg,.jpeg,.png,.pdf"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                required>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-medium flex items-center">
+                                <span class="material-icons text-blue-600 mr-2">badge</span>
+                                NIK
+                            </label>
+                            <input type="text" name="guests[${guestCount}][identity_id]"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="NIK" required>
                         </div>
                     </div>
                 </div>
+            `;
 
-                <!-- Keperluan -->
-                <div class="mt-6">
-                    <label class="text-gray-700 font-semibold mb-2 flex items-center" for="needs">
-                        <span class="material-icons text-gray-500 mr-3" style="font-size: 20px">notifications</span>
-                        Keperluan
-                    </label>
-                    <textarea id="needs" name="needs" rows="4" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Keperluan" required></textarea>
-                </div>
+            document.getElementById('guest-container').insertAdjacentHTML('beforeend', guestHtml);
+        });
 
-                <!-- Tombol kirim -->
-                <div class="mt-8 text-center">
-                    <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
-                        Kirim
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
+        // Fungsi untuk menghapus form tamu
+        function removeGuest(index) {
+            const guestElement = document.getElementById(`guest-${index}`);
+            if (guestElement) {
+                guestElement.remove();
+            }
+        }
+    </script>
 </body>
-</html>
+</html
