@@ -78,19 +78,20 @@
                                     Upload KTP  (Jika Ada)
                                 </label>
                                 <input type="file" id="identity_file" name="identity_file" accept=".jpg,.jpeg,.png,.pdf"
-                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             </div>
 
+                            <!-- Bagian NIK untuk Tamu Utama -->
                             <div class="space-y-2">
                                 <label class="text-gray-700 font-medium flex items-center" for="identity_id">
                                     <span class="material-icons text-blue-600 mr-2">badge</span>
                                     NIK
                                 </label>
-                                <input type="text" id="identity_id" name="identity_id"
-                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="NIK" required>
+                                <input type="number" id="identity_id" name="identity_id"
+                                       class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="Masukkan NIK" min="0" oninput="this.value = this.value.slice(0, 16)">
                             </div>
+
                         </div>
                     </div>
 
@@ -249,8 +250,7 @@
                                 Upload KTP
                             </label>
                             <input type="file" name="guests[${guestCount}][identity_file]" accept=".jpg,.jpeg,.png,.pdf"
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                required>
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
 
                         <div class="space-y-2">
@@ -258,9 +258,9 @@
                                 <span class="material-icons text-blue-600 mr-2">badge</span>
                                 NIK
                             </label>
-                            <input type="text" name="guests[${guestCount}][identity_id]"
+                            <input type="number" name="guests[${guestCount}][identity_id]"
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="NIK" required>
+                                placeholder="NIK" min="0" oninput="this.value = this.value.slice(0, 16)">
                         </div>
                     </div>
                 </div>
