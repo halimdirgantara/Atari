@@ -18,6 +18,6 @@ Route::get('/', [GuestBookController::class, 'index'])->name('landing');
 Route::get('/form', [GuestBookController::class, 'create'])->name('form.create');
 Route::post('/form', [GuestBookController::class, 'store'])->name('form');
 Route::get('/check', [GuestBookController::class, 'check'])->name('check');
+Route::get('appointments/{guest_token}', [GuestBookController::class, 'show'])->name('appointment_details');
 
-Route::get('appointments/{id}', [GuestBookController::class, 'show'])->name('appointment_details');
 

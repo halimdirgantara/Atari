@@ -15,29 +15,29 @@
                             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
                             <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
                         </svg>
-                        <span class="font-medium">Home</span>
+                        <span class="font-medium">Beranda</span>
                     </a>
                 </div>
             </div>
 
             <!-- Status Card -->
-            <div class="mb-6 bg-gray-100 shadow-sm rounded-lg p-4 flex justify-between items-center flex-col sm:flex-row">
+            <div class="mb-6 bg-gray-100 bg shadow-sm rounded-lg p-4 flex justify-between items-center flex-col sm:flex-row">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800">Status Kunjungan</h3>
                     @php
                         $statusClass = match($appointment->status) {
-                            'approve' => 'bg-green-600 text-white',
-                            'pending' => 'bg-yellow-400 text-black',
-                            'process' => 'bg-blue-700 text-white',
-                            'reject' => 'bg-red-600 text-white',
-                            default => 'bg-gray-100 text-gray-800'
+                            'approved' => 'bg-green-600 text-white',  // Hijau lebih lembut
+                            'pending' => 'bg-yellow-500 text-white', // Kuning lebih cerah
+                            'process' => 'bg-blue-600 text-white',   // Biru lebih kuat
+                            'declined' => 'bg-red-500 text-white',     // Merah lebih cerah
+                            default => 'bg-gray-300 text-gray-800'   // Abu-abu lebih terang jika status tidak diketahui
                         };
 
                         $statusDescription = match($appointment->status) {
-                            'approve' => 'Kunjungan telah disetujui',
+                            'approved' => 'Kunjungan telah disetujui',
                             'pending' => 'Menunggu persetujuan',
                             'process' => 'Sedang dalam proses',
-                            'reject' => 'Kunjungan ditolak',
+                            'declined' => 'Kunjungan ditolak',
                             default => 'Status tidak diketahui'
                         };
                     @endphp
@@ -56,6 +56,7 @@
                     <span class="block font-medium">{{ \Carbon\Carbon::parse($appointment->updated_at)->format('d M Y H:i') }}</span>
                 </div>
             </div>
+
 
             <!-- Guest Information Section -->
             <div class="mb-8">

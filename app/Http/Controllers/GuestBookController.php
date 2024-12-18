@@ -52,23 +52,26 @@ class GuestBookController extends Controller
             'address' => 'required',
             'host_id' => 'required|exists:users,id',
             'organization' => 'required',
-            'identity_id' => 'required',
-            'identity_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'identity_id' => 'nullable', // Tidak wajib
+            'identity_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048', // Tidak wajib
             // Validasi untuk tamu tambahan
             'guests.*.name' => 'required_with:guests',
             'guests.*.email' => 'required_with:guests|email',
             'guests.*.phone' => 'required_with:guests',
             'guests.*.address' => 'required_with:guests',
-            'guests.*.identity_id' => 'required_with:guests',
-            'guests.*.identity_file' => 'required_with:guests|mimes:jpg,jpeg,png,pdf|max:2048',
+            'guests.*.identity_id' => 'nullable', // Tidak wajib
+            'guests.*.identity_file' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048', // Tidak wajib
         ]);
 
         $host = User::find($request->host_id);
 
         $guestToken = Str::random(10); // Satu token untuk semua tamu
 
-        // Upload file dan buat guest utama
-        $mainFilePath = $request->file('identity_file') ? $request->file('identity_file')->store('uploads/ktp', 'public') : null;
+        /// Upload file dan buat guest utama
+        $mainFilePath = null;
+        if ($request->hasFile('identity_file')) {
+            $mainFilePath = $request->file('identity_file')->store('uploads/ktp', 'public');
+        }
         $mainGuest = Guest::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -96,8 +99,11 @@ class GuestBookController extends Controller
         // Proses tamu tambahan jika ada
         if ($request->has('guests')) {
             foreach ($request->guests as $guestData) {
-                // Upload file KTP tamu tambahan
-                $filePath = $guestData['identity_file']->store('uploads/ktp', 'public');
+                $filePath = null;
+                // Cek apakah file diunggah oleh tamu tambahan
+                if (isset($guestData['identity_file']) && $guestData['identity_file']) {
+                    $filePath = $guestData['identity_file']->store('uploads/ktp', 'public');
+                }
 
                 $additionalGuest = Guest::create([
                     'name' => $guestData['name'],
@@ -106,7 +112,7 @@ class GuestBookController extends Controller
                     'address' => $guestData['address'],
                     'organization' => $mainGuest->organization,
                     'identity_id' => $guestData['identity_id'],
-                    'identity_file' => $filePath,
+                    'identity_file' => $filePath, // Sama, jika tidak ada file, tetap null
                     'guest_token' => $guestToken, // Gunakan token yang sama
                 ]);
 
@@ -118,6 +124,7 @@ class GuestBookController extends Controller
         session()->flash('success', 'Permintaan berhasil dikirim');
         return redirect()->route('landing');
     }
+
     public function check(Request $request)
     {
         $appointments = collect();
@@ -140,9 +147,13 @@ class GuestBookController extends Controller
         return view('check', compact('appointments'));
     }
 
-    public function show($id)
+    public function show($guest_token)
     {
-        $appointment = GuestBook::with(['guests', 'host', 'organization'])->find($id);
+        $appointment = GuestBook::with(['guests', 'host', 'organization'])
+            ->whereHas('guests', function ($query) use ($guest_token) {
+                $query->where('guest_token', $guest_token);
+            })
+            ->first();
 
         if (!$appointment) {
             return redirect()->route('landing')->with('error', 'Janji temu tidak ditemukan');
@@ -150,4 +161,5 @@ class GuestBookController extends Controller
 
         return view('appointment_details', compact('appointment'));
     }
+
 }
