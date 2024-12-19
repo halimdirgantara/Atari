@@ -122,44 +122,74 @@ class GuestBookController extends Controller
 
         session()->flash('guest_token', $guestToken);
         session()->flash('success', 'Permintaan berhasil dikirim');
-        return redirect()->route('landing');
+        return redirect()->route('landing', ['slug' => $host->organization->slug]);
     }
 
-    public function check(Request $request)
+    public function check(Request $request, $slug)
     {
+        // Ambil organisasi berdasarkan slug
+        $organization = Organization::where('slug', $slug)->firstOrFail();
+
+        // Default appointments kosong
         $appointments = collect();
 
+        // Proses jika guest_token tersedia di request
         if ($request->has('guest_token')) {
             $guestToken = $request->input('guest_token');
 
-            // Cari appointment berdasarkan guest_token
+            // Cari appointments berdasarkan guest_token dan organisasi
             $appointments = GuestBook::with('guests')
+                ->where('organization_id', $organization->id)
                 ->whereHas('guests', function($query) use ($guestToken) {
                     $query->where('guest_token', $guestToken);
                 })
                 ->get();
 
             if ($appointments->isEmpty()) {
-                return redirect()->back()->with('error', 'Data tidak ditemukan');
+                return redirect()->back()->with('error', 'Data tidak ditemukan atau tidak sesuai dengan organisasi ini.');
             }
         }
 
-        return view('check', compact('appointments'));
+        return view('check', compact('appointments', 'organization'));
     }
 
-    public function show($guest_token)
+    public function show($slug, $guest_token)
     {
+        $organization = Organization::where('slug', $slug)->firstOrFail();
+
         $appointment = GuestBook::with(['guests', 'host', 'organization'])
+            ->where('organization_id', $organization->id)
             ->whereHas('guests', function ($query) use ($guest_token) {
                 $query->where('guest_token', $guest_token);
             })
             ->first();
 
         if (!$appointment) {
-            return redirect()->route('landing')->with('error', 'Janji temu tidak ditemukan');
+            return redirect()->route('landing', ['slug' => $slug])->with('error', 'Janji temu tidak ditemukan');
         }
 
-        return view('appointment_details', compact('appointment'));
+        return view('appointment_details', compact('appointment', 'organization'));
+    }
+
+
+    public function form($slug)
+    {
+        // Ambil organisasi berdasarkan slug
+        $organization = Organization::where('slug', $slug)->firstOrFail();
+
+        // Ambil data pengguna jika diperlukan
+        $users = User::where('organization_id', $organization->id)->get(); // Mengambil data users
+
+        // Kirim data ke view 'form'
+        return view('form', compact('organization', 'users'));
+    }
+
+    public function checkBySlug($slug)
+    {
+        // Ambil organisasi berdasarkan slug
+        $organization = Organization::where('slug', $slug)->firstOrFail();
+
+        return view('check', compact('organization'));
     }
 
 }

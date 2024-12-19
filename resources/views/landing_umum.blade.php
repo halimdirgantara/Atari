@@ -144,7 +144,7 @@
 
             <div class="p-6 sm:p-11 flex items-center relative z-20 animate-slide-down hero-content">
                 <div class="flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 sm:mb-4">Selamat Datang di {{ $organization->name }}</h2>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 sm:mb-4">Selamat Datang!</h2>
                     <p class="text-sm sm:text-base opacity-90 leading-relaxed">
                         Tinggalkan pesan di buku tamu kami
                     </p>
@@ -154,66 +154,17 @@
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center mt-6 sm:mt-9 space-y-3 sm:space-y-0 sm:space-x-2 action-buttons">
-            <button onclick="window.location='{{ route('form', ['slug' => $slug]) }}'"
+            <button onclick="window.location='{{ route('form') }}'"
                 class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
                 <i class="fas fa-calendar-alt mr-2"></i>
                 <span>Buat Janji</span>
             </button>
 
-            <button onclick="window.location='{{ route('check', ['slug' => $organization->slug]) }}'"
+            <button onclick="window.location='{{ route('check') }}'"
                 class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
                 <i class="fas fa-check mr-2"></i>
                 <span>Cek Janji</span>
             </button>
-        </div>
-    </section>
-
-
-    <!-- Status Kunjungan Section -->
-    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 mb-6 sm:mb-8">
-        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
-            <div class="mb-4 sm:mb-6">
-                <h3 class="text-lg sm:text-xl font-semibold text-blue-900">Status Kunjungan</h3>
-                <p class="text-sm text-gray-500 mt-1">Ringkasan status semua kunjungan</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4">
-                <!-- Status Cards -->
-                <div class="status-card bg-green-50 rounded-lg p-4 border border-green-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-green-600"><i class="fas fa-check-circle text-xl"></i></span>
-                        <span class="text-2xl font-bold text-green-600">{{ $statusCounts['approve'] }}</span>
-                    </div>
-                    <p class="text-green-800 font-medium">Terkonfirmasi</p>
-                    <p class="text-sm text-green-600 mt-1">Kunjungan disetujui</p>
-                </div>
-
-                <div class="status-card bg-yellow-50 rounded-lg p-4 border border-yellow-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-yellow-600"><i class="fas fa-clock text-xl"></i></span>
-                        <span class="text-2xl font-bold text-yellow-600">{{ $statusCounts['pending'] }}</span>
-                    </div>
-                    <p class="text-yellow-800 font-medium">Tertunda</p>
-                    <p class="text-sm text-yellow-600 mt-1">Menunggu konfirmasi</p>
-                </div>
-
-                <div class="status-card bg-blue-50 rounded-lg p-4 border border-blue-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-blue-600"><i class="fas fa-spinner text-xl"></i></span>
-                        <span class="text-2xl font-bold text-blue-600">{{ $statusCounts['process'] }}</span>
-                    </div>
-                    <p class="text-blue-800 font-medium">Menunggu</p>
-                    <p class="text-sm text-blue-600 mt-1">Sedang diproses</p>
-                </div>
-
-                <div class="status-card bg-red-50 rounded-lg p-4 border border-red-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-red-600"><i class="fas fa-times-circle text-xl"></i></span>
-                        <span class="text-2xl font-bold text-red-600">{{ $statusCounts['reject'] }}</span>
-                    </div>
-                    <p class="text-red-800 font-medium">Ditolak</p>
-                    <p class="text-sm text-red-600 mt-1">Tidak disetujui</p>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -266,7 +217,53 @@
         </div>
     </section>
 
+    <!-- Status Kunjungan Section -->
+    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 mb-6 sm:mb-8">
+        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+            <div class="mb-4 sm:mb-6">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-900">Status Kunjungan</h3>
+                <p class="text-sm text-gray-500 mt-1">Ringkasan status semua kunjungan</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4">
+                <!-- Status Cards -->
+                <div class="status-card bg-green-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-green-600"><i class="fas fa-check-circle text-xl"></i></span>
+                        <span class="text-2xl font-bold text-green-600">{{ $statusCounts['approve'] }}</span>
+                    </div>
+                    <p class="text-green-800 font-medium">Terkonfirmasi</p>
+                    <p class="text-sm text-green-600 mt-1">Kunjungan disetujui</p>
+                </div>
 
+                <div class="status-card bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-yellow-600"><i class="fas fa-clock text-xl"></i></span>
+                        <span class="text-2xl font-bold text-yellow-600">{{ $statusCounts['pending'] }}</span>
+                    </div>
+                    <p class="text-yellow-800 font-medium">Tertunda</p>
+                    <p class="text-sm text-yellow-600 mt-1">Menunggu konfirmasi</p>
+                </div>
+
+                <div class="status-card bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-blue-600"><i class="fas fa-spinner text-xl"></i></span>
+                        <span class="text-2xl font-bold text-blue-600">{{ $statusCounts['process'] }}</span>
+                    </div>
+                    <p class="text-blue-800 font-medium">Menunggu</p>
+                    <p class="text-sm text-blue-600 mt-1">Sedang diproses</p>
+                </div>
+
+                <div class="status-card bg-red-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-red-600"><i class="fas fa-times-circle text-xl"></i></span>
+                        <span class="text-2xl font-bold text-red-600">{{ $statusCounts['reject'] }}</span>
+                    </div>
+                    <p class="text-red-800 font-medium">Ditolak</p>
+                    <p class="text-sm text-red-600 mt-1">Tidak disetujui</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
@@ -313,5 +310,3 @@
     </script>
 </body>
 </html>
-
-

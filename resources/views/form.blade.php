@@ -26,7 +26,7 @@
                     <p class="text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji</p>
                 </div>
 
-                <form method="POST" action="{{ route('form') }}" enctype="multipart/form-data" class="space-y-8">
+                <form method="POST" action="{{ route('form', ['slug' => $organization->slug]) }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
                     <!-- Primary Guest Information -->
                     <div class="bg-gray-50 p-6 rounded-lg">
@@ -157,10 +157,11 @@
                                     class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required>
                                     <option value="">Pilih Pihak Yang Dituju</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}">{{$user->name}}</option>
+                                    @foreach($users->where('organization_id', $organization->id) as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
                                 </select>
+
                             </div>
                         </div>
 

@@ -38,7 +38,7 @@
                     </p>
                 </div>
             </div>
-            <form method="GET" action="{{ route('check') }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4" id="checkForm">
+            <form method="GET" action="{{ route('check', ['slug' => $organization->slug]) }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4" id="checkForm">
                 <div class="flex items-center border-2 border-gray-300 rounded-lg px-4 py-3 w-full hover:border-blue-500 transition-colors duration-300">
                     <span class="material-icons text-gray-500 mr-3">badge</span>
                     <input type="text" name="guest_token" id="guest_token"
@@ -65,7 +65,7 @@
         </div>
         <div class="space-y-6">
             @foreach($appointments as $appointment)
-            <a href="{{ route('appointment_details', ['guest_token' => $appointment->guests->first()->guest_token]) }}"
+            <a href="{{ route('appointment_details', ['slug' => $organization->slug, 'guest_token' => $appointment->guests->first()->guest_token]) }}"
                 class="block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden
                        transform hover:scale-[1.02] border border-gray-100">
                  <div class="p-6">
