@@ -26,7 +26,7 @@
                     <p class="text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji</p>
                 </div>
 
-                <form method="POST" action="{{ route('form', ['slug' => $organization->slug]) }}" enctype="multipart/form-data" class="space-y-8">
+                <form method="POST" action="{{ route('check-in', ['slug' => $organization->slug]) }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
                     <!-- Primary Guest Information -->
                     <div class="bg-gray-50 p-6 rounded-lg">

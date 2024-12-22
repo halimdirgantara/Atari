@@ -30,7 +30,8 @@
                             'approved' => 'bg-green-600 text-white',  // Hijau lebih lembut
                             'pending' => 'bg-yellow-500 text-white', // Kuning lebih cerah
                             'process' => 'bg-blue-600 text-white',   // Biru lebih kuat
-                            'declined' => 'bg-red-500 text-white',     // Merah lebih cerah
+                            'declined' => 'bg-red-500 text-white',
+                            'done' => 'bg-green-600 text-white',     // Merah lebih cerah
                             default => 'bg-gray-300 text-gray-800'   // Abu-abu lebih terang jika status tidak diketahui
                         };
 
@@ -39,12 +40,15 @@
                             'pending' => 'Menunggu persetujuan',
                             'process' => 'Sedang dalam proses',
                             'declined' => 'Kunjungan ditolak',
+                            'done' => 'Janji Anda Telah Selesai',
                             default => 'Status tidak diketahui'
                         };
+
+
                     @endphp
                     <div class="mt-2">
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold {{ $statusClass }}">
-                            <span class="mr-2">●</span>
+                            <span class="mr-2"></span>
                             {{ ucfirst($appointment->status) }}
                         </span>
                         <p class="mt-2 text-sm text-gray-600">{{ $statusDescription }}</p>
@@ -97,13 +101,13 @@
                             <span class="text-gray-600 font-medium">Telepon</span>
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
 
-                                <span class="text-gray-800 break-words">{{ $guest->phone }}</span>
+                                <span class="text-gray-800 break-words">{{ substr($guest->phone, 0, 1) . str_repeat('*', strlen($guest->phone) - 2) . substr($guest->phone, -1) }}</span>
                             </div>
                             <!-- NIK -->
                             <span class="text-gray-600 font-medium">NIK</span>
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
 
-                                <span class="text-gray-800 break-words">{{ $guest->identity_id }}</span>
+                                <span class="text-gray-800 break-words">{{ substr($guest->identity_id, 0, 1) . str_repeat('*', strlen($guest->identity_id) - 2) . substr($guest->identity_id, -1) }}</span>
                             </div>
                         </div>
                     </div>
