@@ -2,22 +2,35 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuestBookController;
+use App\Http\Controllers\OrganizationController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-Route::get('/', [GuestBookController::class, 'index'])->name('landing');
-Route::get('/form', [GuestBookController::class, 'create'])->name('form.create');
-Route::post('/form', [GuestBookController::class, 'store'])->name('form');
-Route::get('/check', [GuestBookController::class, 'check'])->name('check');
 
-Route::get('appointments/{id}', [GuestBookController::class, 'show'])->name('appointment_details');
+
+// Route untuk menangani halaman berdasarkan slug
+Route::get('/{slug}', [OrganizationController::class, 'landing'])->name('landing');
+
+
+
+// button buat janji
+Route::get('/{slug}/check-in', [GuestBookController::class, 'checkin'])->name('check-in');
+// data janji
+Route::post('/{slug}/check-in', [GuestBookController::class, 'store']);
+
+// Cek janji
+Route::get('/{slug}/check', [GuestBookController::class, 'check'])->name('check');
+
+// tombol check-out
+Route::get('/{slug}/check-out', [GuestBookController::class, 'checkOutPage'])->name('check_out');
+// data checkout
+Route::post('/{slug}/checkout/{id}', [OrganizationController::class, 'processCheckOut'])->name('process_check_out');
+
+// Detail janji temu
+Route::get('/{slug}/appointment/{guest_token}', [GuestBookController::class, 'show'])->name('appointment_details');
+
+
+
+
+
+
 

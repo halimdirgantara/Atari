@@ -10,40 +10,45 @@
                 </div>
                 <!-- Home Icon Button -->
                 <div class="mt-4 sm:mt-0 sm:top-11 sm:right-16">
-                    <a href="{{ route('landing') }}" class="flex items-center gap-2 text-blue-800 hover:text-blue-900 transition-colors">
+                    <a href="{{ route('landing', ['slug' => $appointment->organization->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg hover:bg-blue-200 hover:shadow-md transition-all duration-300 text-blue-800 hover:text-blue-900">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
                             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
                             <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
                         </svg>
-                        <span class="font-medium">Home</span>
+                        <span class="font-medium">Beranda</span>
                     </a>
                 </div>
+
             </div>
 
             <!-- Status Card -->
-            <div class="mb-6 bg-gray-100 shadow-sm rounded-lg p-4 flex justify-between items-center flex-col sm:flex-row">
+            <div class="mb-6 bg-gray-100 bg shadow-sm rounded-lg p-4 flex justify-between items-center flex-col sm:flex-row">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800">Status Kunjungan</h3>
                     @php
                         $statusClass = match($appointment->status) {
-                            'approve' => 'bg-green-600 text-white',
-                            'pending' => 'bg-yellow-400 text-black',
-                            'process' => 'bg-blue-700 text-white',
-                            'reject' => 'bg-red-600 text-white',
-                            default => 'bg-gray-100 text-gray-800'
+                            'approved' => 'bg-green-600 text-white',  // Hijau lebih lembut
+                            'pending' => 'bg-yellow-500 text-white', // Kuning lebih cerah
+                            'process' => 'bg-blue-600 text-white',   // Biru lebih kuat
+                            'declined' => 'bg-red-500 text-white',
+                            'done' => 'bg-green-600 text-white',     // Merah lebih cerah
+                            default => 'bg-gray-300 text-gray-800'   // Abu-abu lebih terang jika status tidak diketahui
                         };
 
                         $statusDescription = match($appointment->status) {
-                            'approve' => 'Kunjungan telah disetujui',
+                            'approved' => 'Kunjungan telah disetujui',
                             'pending' => 'Menunggu persetujuan',
                             'process' => 'Sedang dalam proses',
-                            'reject' => 'Kunjungan ditolak',
+                            'declined' => 'Kunjungan ditolak',
+                            'done' => 'Janji Anda Telah Selesai',
                             default => 'Status tidak diketahui'
                         };
+
+
                     @endphp
                     <div class="mt-2">
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold {{ $statusClass }}">
-                            <span class="mr-2">●</span>
+                            <span class="mr-2"></span>
                             {{ ucfirst($appointment->status) }}
                         </span>
                         <p class="mt-2 text-sm text-gray-600">{{ $statusDescription }}</p>
@@ -56,6 +61,7 @@
                     <span class="block font-medium">{{ \Carbon\Carbon::parse($appointment->updated_at)->format('d M Y H:i') }}</span>
                 </div>
             </div>
+
 
             <!-- Guest Information Section -->
             <div class="mb-8">
@@ -82,10 +88,11 @@
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
                                 <span class="text-gray-800 break-words">{{ $guest->name }}</span>
                             </div>
-                            <!-- Email -->
                             <span class="text-gray-600 font-medium">Email</span>
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
-                                <span class="text-gray-800 break-words">{{ $guest->email }}</span>
+                                <span class="text-gray-800 break-words overflow-hidden overflow-ellipsis whitespace-nowrap w-full">
+                                    {{ $guest->email }}
+                                </span>
                             </div>
                         </div>
 
@@ -95,13 +102,13 @@
                             <span class="text-gray-600 font-medium">Telepon</span>
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
 
-                                <span class="text-gray-800 break-words">{{ $guest->phone }}</span>
+                                <span class="text-gray-800 break-words">{{ substr($guest->phone, 0, 1) . str_repeat('*', strlen($guest->phone) - 2) . substr($guest->phone, -1) }}</span>
                             </div>
                             <!-- NIK -->
                             <span class="text-gray-600 font-medium">NIK</span>
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
 
-                                <span class="text-gray-800 break-words">{{ $guest->identity_id }}</span>
+                                <span class="text-gray-800 break-words">{{ substr($guest->identity_id, 0, 1) . str_repeat('*', strlen($guest->identity_id) - 2) . substr($guest->identity_id, -1) }}</span>
                             </div>
                         </div>
                     </div>

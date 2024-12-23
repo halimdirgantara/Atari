@@ -49,6 +49,11 @@ class GuestBook extends Model
     {
         return $this->belongsToMany(Guest::class, 'guest_book_guest', 'guest_book_id', 'guest_id');
     }
+    public function scopeByOrganization($query, $organizationId)
+    {
+        return $query->where('organization_id', $organizationId);
+    }
+
 
 
 }
