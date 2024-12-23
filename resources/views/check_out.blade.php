@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
+    @livewireStyles
 </head>
 
 <body class="bg-gray-100 font-sans antialiased">
@@ -20,8 +21,22 @@
     </header>
 
     <main class="container mx-auto mt-8 px-4 sm:px-14">
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <h2 class="text-2xl font-semibold text-blue-900 mb-6">Daftar Tamu yang Disetujui Hari Ini</h2>
+        <div class="bg-white rounded-lg shadow-lg p-8 relative flex flex-col gap-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between">
+                <h2 class="text-2xl font-semibold text-blue-900">Daftar Tamu yang Disetujui Hari Ini</h2>
+
+                <!-- Home Icon Button -->
+                <div class="mt-4 md:mt-0 text-blue-800" >
+                    <a href="{{ route('landing', ['slug' => $organization->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg hover:bg-blue-200 hover:shadow-md hover:text-blue-900 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                        </svg>
+                        <span class="font-medium">Beranda</span>
+                    </a>
+                </div>
+
+            </div>
 
             @if($approvedGuests->count() > 0)
                 <div class="space-y-6">
@@ -78,7 +93,10 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Ya, Check-Out!',
-                cancelButtonText: 'Batal'
+                cancelButtonText: 'Batal',
+                customClass: {
+                    popup: 'swal-popup-custom'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(url, { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } })
@@ -87,7 +105,10 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Sukses',
-                                text: data.message
+                                text: data.message,
+                                customClass: {
+                                    popup: 'swal-popup-custom'
+                                }
                             }).then(() => {
                                 location.reload();
                             });
@@ -96,13 +117,54 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Gagal',
-                                text: 'Terjadi kesalahan saat proses check-out.'
+                                text: 'Terjadi kesalahan saat proses check-out.',
+                                customClass: {
+                                    popup: 'swal-popup-custom'
+                                }
                             });
                         });
                 }
             });
         }
     </script>
+
+    <style>
+        @media (max-width: 768px) {
+            .swal-popup-custom {
+                width: 80% !important;
+                max-width: 300px !important;
+                padding: 10px !important;
+            }
+
+            .swal2-title {
+                font-size: 16px !important;
+            }
+
+            .swal2-html-container {
+                font-size: 14px !important;
+            }
+
+            .swal2-confirm {
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+            }
+
+            .swal2-cancel {
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+            }
+        }
+    </style>
+
+    @livewireScripts
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('reloadPage', () => {
+                location.reload(); // Reload halaman
+            });
+        });
+    </script>
+
 </body>
 
 </html>

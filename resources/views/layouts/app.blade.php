@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    @livewireStyles
 </head>
 <body class="bg-gray-100 font-sans antialiased">
 
@@ -25,7 +26,14 @@
         @yield('content')  <!-- Konten dari halaman tertentu akan dimasukkan di sini -->
     </main>
 
-
+    @livewireScripts
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('reloadPage', () => {
+                location.reload(); // Reload halaman
+            });
+        });
+    </script>
 
 </body>
 </html>

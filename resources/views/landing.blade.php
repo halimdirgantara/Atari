@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    @livewireStyles
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guest Book</title>
@@ -8,13 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/banner_slideshow.css') }}">
+
 </head>
 <body class="bg-gray-100 font-sans antialiased">
-    <!-- Header -->
     <header class="bg-blue-900 text-white py-4 shadow-lg">
-        <div class="container mx-auto flex items-center px-4 sm:px-11">
-            <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
-            <h1 class="text-base sm:text-lg font-semibold">BUKU TAMU DARING</h1>
+        <div class="container mx-auto flex items-center justify-between px-4 sm:px-11">
+            <div class="flex items-center">
+                <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
+                <h1 class="text-base sm:text-lg font-semibold">BUKU TAMU DARING</h1>
+            </div>
         </div>
     </header>
 
@@ -204,11 +207,6 @@
         </div>
     </section>
 
-
-
-
-
-
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script>
@@ -221,6 +219,9 @@
                         <p>Simpan token ini untuk mengecek janji anda: <strong>{{ session("guest_token") }}</strong></p>
                         <button id="copyToken" class="swal2-confirm swal2-styled" style="background-color: #5cb85c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px;">Salin Token</button>
                     `,
+                    customClass: {
+                        popup: 'swal-popup-custom'
+                    },
                     showConfirmButton: false
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -250,6 +251,38 @@
                     }
                 });
             @endif
+        });
+    </script>
+
+    <style>
+        @media (max-width: 768px) {
+            .swal-popup-custom {
+                width: 80% !important;
+                max-width: 300px !important;
+                padding: 10px !important;
+            }
+
+            .swal2-title {
+                font-size: 16px !important;
+            }
+
+            .swal2-html-container {
+                font-size: 14px !important;
+            }
+
+            .swal2-confirm {
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+            }
+        }
+    </style>
+
+    @livewireScripts
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('reloadPage', () => {
+                location.reload(); // Reload halaman
+            });
         });
     </script>
 </body>

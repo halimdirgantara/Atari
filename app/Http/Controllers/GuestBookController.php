@@ -207,7 +207,10 @@ class GuestBookController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(5); // Batasi 5 per halaman
 
-        return view('check_out', compact('organization', 'approvedGuests'));
+        // Jika Anda ingin mengatur appointment, Anda bisa melakukannya di sini
+        $appointment = null; // Atur sesuai kebutuhan Anda
+
+        return view('check_out', compact('organization', 'approvedGuests', 'appointment'));
     }
     public function processCheckOut($slug, $id)
     {

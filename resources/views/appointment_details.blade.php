@@ -10,15 +10,15 @@
                 </div>
                 <!-- Home Icon Button -->
                 <div class="mt-4 sm:mt-0 sm:top-11 sm:right-16">
-                    <a href="{{ route('landing', ['slug' => $appointment->organization->slug]) }}" class="flex items-center gap-2 text-blue-800 hover:text-blue-900 transition-colors">
+                    <a href="{{ route('landing', ['slug' => $appointment->organization->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg hover:bg-blue-200 hover:shadow-md transition-all duration-300 text-blue-800 hover:text-blue-900">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
                             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
                             <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
                         </svg>
                         <span class="font-medium">Beranda</span>
                     </a>
-
                 </div>
+
             </div>
 
             <!-- Status Card -->
@@ -88,10 +88,11 @@
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
                                 <span class="text-gray-800 break-words">{{ $guest->name }}</span>
                             </div>
-                            <!-- Email -->
                             <span class="text-gray-600 font-medium">Email</span>
                             <div class="bg-white rounded-lg p-4 border border-gray-300 flex items-center">
-                                <span class="text-gray-800 break-words">{{ $guest->email }}</span>
+                                <span class="text-gray-800 break-words overflow-hidden overflow-ellipsis whitespace-nowrap w-full">
+                                    {{ $guest->email }}
+                                </span>
                             </div>
                         </div>
 

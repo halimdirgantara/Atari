@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
+    @livewireStyles
 </head>
 
 <body class="bg-gray-100 font-sans antialiased">
@@ -21,19 +22,26 @@
 
     <!-- Cek Janji Section yang Ditingkatkan -->
     <section class="container mx-auto mt-8 px-14">
-        <div class="bg-white rounded-lg shadow-lg p-8 border-t-4 border-blue-900 relative">
-            <!-- Icon Home -->
-            <a href="{{ route('landing', ['slug' => $organization->slug]) }}" class="absolute top-4 right-4">
-                <span class="material-icons text-blue-900 text-3xl hover:text-blue-700 transition-colors duration-300">home</span>
-            </a>
+        <div class="bg-white rounded-lg shadow-lg p-8 border-t-4 border-blue-900 relative flex flex-col gap-4">
 
-            <div class="flex items-center mb-4">
-                <span class="material-icons text-blue-900 text-3xl mr-3">schedule</span>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-2xl font-semibold text-blue-900">Cek Janji</h2>
                     <p class="text-gray-600">Pantau status janji temu Anda</p>
                 </div>
+
+                <!-- Home Icon Button -->
+                <div class="mt-4 sm:mt-0 text-blue-800">
+                    <a href="{{ route('landing', ['slug' => $organization->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg hover:bg-blue-200 hover:shadow-md hover:text-blue-900 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                        </svg>
+                        <span class="font-medium">Beranda</span>
+                    </a>
+                </div>
             </div>
+
             <div class="bg-blue-50 rounded-lg p-4 mb-6">
                 <div class="flex items-start">
                     <span class="material-icons text-blue-600 mr-3">info</span>
@@ -43,6 +51,7 @@
                     </p>
                 </div>
             </div>
+
             <form method="GET" action="{{ route('check', ['slug' => $organization->slug]) }}" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4" id="checkForm">
                 <div class="flex items-center border-2 border-gray-300 rounded-lg px-4 py-3 w-full hover:border-blue-500 transition-colors duration-300">
                     <span class="material-icons text-gray-500 mr-3">badge</span>
@@ -134,7 +143,7 @@
                                 </div>
                             </div>
 
-                        
+
                             <!-- Daftar Tamu Tambahan -->
                             @if($appointment->guests->count() > 1)
                                 <div class="bg-gray-50 rounded-lg p-4">
@@ -179,15 +188,18 @@
 
 
     <!-- Scripts -->
-    @if(session('error'))
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '{{ session('error') }}',
-            confirmButtonColor: '#3085d6',
-        });
+@if(session('error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#3085d6',
+        customClass: {
+            popup: 'swal-popup-custom'
+        }
+    });
     </script>
     @endif
 
@@ -199,9 +211,44 @@
             title: 'Guest Token',
             text: 'Simpan token ini untuk mengecek janji Anda: {{ session('guest_token') }}',
             confirmButtonColor: '#3085d6',
+            customClass: {
+                popup: 'swal-popup-custom'
+            }
         });
     </script>
     @endif
+
+    <style>
+        @media (max-width: 768px) {
+            .swal-popup-custom {
+                width: 80% !important;
+                max-width: 300px !important;
+                padding: 10px !important;
+            }
+
+            .swal2-title {
+                font-size: 16px !important;
+            }
+
+            .swal2-html-container {
+                font-size: 14px !important;
+            }
+
+            .swal2-confirm {
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+            }
+        }
+    </style>
+
+    @livewireScripts
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('reloadPage', () => {
+                location.reload(); // Reload halaman
+            });
+        });
+    </script>
 
 
 
