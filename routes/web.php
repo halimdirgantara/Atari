@@ -1,11 +1,13 @@
 <?php
 
+use App\Livewire\Home;
+use App\Livewire\CheckIn;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuestBookController;
 use App\Http\Controllers\OrganizationController;
-use App\Livewire\Home;
 
 Route::get('/', Home::class)->name('home');
+Route::get('/{slug}/check-in', CheckIn::class)->name('check-in');
 
 
 

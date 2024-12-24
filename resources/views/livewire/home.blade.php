@@ -50,17 +50,19 @@
                 <span>Buat Janji</span>
             </button>
 
-            <button onclick="window.location='{{ route('check', ['slug' => $organization->slug]) }}'"
-                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
-                <i class="fas fa-check mr-2"></i>
-                <span>Cek Janji</span>
-            </button>
-            <!-- Tombol Check-Out -->
-            <button onclick="window.location='{{ route('check_out', ['slug' => $organization->slug]) }}'"
-                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto mt-4">
-                <i class="fas fa-sign-out-alt mr-2"></i>
-                <span>Check-Out</span>
-            </button>
+            @php
+            //<button onclick="window.location='{{ route('check', ['slug' => $organization->slug]) }}'"
+            //    class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+            //    <i class="fas fa-check mr-2"></i>
+              //  <span>Cek Janji</span>
+            // </button>
+            //<!-- Tombol Check-Out -->
+            //<button onclick="window.location='{{ route('check_out', ['slug' => $organization->slug]) }}'"
+             //   class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto mt-4">
+               // <i class="fas fa-sign-out-alt mr-2"></i>
+                //<span>Check-Out</span>
+            //</button>
+            @endphp
 
         </div>
     </section>
@@ -133,7 +135,7 @@
                     <p class="text-sm text-gray-500 mt-1">Kunjungan terbaru</p>
                 </div>
                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm inline-block">
-                    Total buku tamu: {{ $visits->total() }}
+                    Total buku tamu: {{ $visits->count() }}
                 </span>
             </div>
             <ul class="space-y-4 sm:space-y-5">
@@ -189,7 +191,7 @@
             </ul>
 
             <div class="mt-4 sm:mt-6">
-                {{ $visits->links('pagination::tailwind') }}
+                <!--  $visits->links('pagination::tailwind')  -->
             </div>
         </div>
     </section>
