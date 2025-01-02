@@ -15,13 +15,17 @@
                 <!-- Form Header -->
                 <div class="mb-8 border-b pb-4">
                     <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">Formulir Buku Tamu</h2>
-                    <p class="text-sm sm:text-base text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji</p>
+                    <p class="text-sm sm:text-base text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji
+                    </p>
                     <div class="mt-4 sm:mt-0 sm:absolute sm:top-9 sm:right-10 flex items-center gap-2 text-blue-800">
-                        <a href="{{ $organizationData->slug === null || $organizationData->slug === 'default' ? route('home') : route('home', ['slug' => $organizationData->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg
+                        <a href="{{ $organizationData->slug === null || $organizationData->slug === 'default' ? route('home') : route('home', ['slug' => $organizationData->slug]) }}"
+                            class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg
                             transition duration-300 ease-in-out transform hover:bg-blue-200 hover:shadow-md hover:text-blue-900 hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
-                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
-                                <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                class="bi bi-house-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+                                <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
                             </svg>
                             <span class="text-sm sm:text-base font-medium">Beranda</span>
                         </a>
@@ -85,7 +89,8 @@
                                 </label>
                                 <input type="file" id="identity_file" wire:model="identity_file" placeholder="KTP Tamu"
                                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                @error('identity_file') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                @error('identity_file') <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
                             </div>
 
 
@@ -99,7 +104,8 @@
                             <div class="bg-gray-50 p-4 sm:p-6 rounded-lg mb-4">
                                 <div class="flex justify-between items-center mb-4">
                                     <h4 class="text-lg font-semibold">Tamu {{ $index + 2 }}</h4>
-                                    <button type="button" wire:click="removeGuest({{ $index }})" class="text-red-500 hover:text-red-700 flex items-center">
+                                    <button type="button" wire:click="removeGuest({{ $index }})"
+                                        class="text-red-500 hover:text-red-700 flex items-center">
                                         <span class="material-icons mr-1">delete</span> Hapus
                                     </button>
                                 </div>
@@ -110,7 +116,8 @@
                                         </label>
                                         <input type="text" wire:model="guests.{{ $index }}.name" placeholder="Nama Lengkap"
                                             class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        @error("guests.{$index}.name") <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                        @error("guests.{$index}.name") <span
+                                        class="text-red-600 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="space-y-2">
                                         <label for="email" class="text-gray-700 font-medium flex items-center">
@@ -118,7 +125,8 @@
                                         </label>
                                         <input type="email" wire:model="guests.{{ $index }}.email" placeholder="Email"
                                             class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        @error("guests.{$index}.email") <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                        @error("guests.{$index}.email") <span
+                                        class="text-red-600 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="space-y-2">
                                         <label for="address" class="text-gray-700 font-medium flex items-center">
@@ -126,7 +134,8 @@
                                         </label>
                                         <input type="tel" wire:model="guests.{{ $index }}.phone" placeholder="Nomor Telepon"
                                             class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        @error("guests.{$index}.phone") <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                        @error("guests.{$index}.phone") <span
+                                        class="text-red-600 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="space-y-2">
                                         <label for="address" class="text-gray-700 font-medium flex items-center">
@@ -134,7 +143,8 @@
                                         </label>
                                         <input type="text" wire:model="guests.{{ $index }}.address" placeholder="Alamat"
                                             class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        @error("guests.{$index}.address") <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                        @error("guests.{$index}.address") <span
+                                        class="text-red-600 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="space-y-2">
                                         <label for="name" class="text-gray-700 font-medium flex items-center">
@@ -142,15 +152,18 @@
                                         </label>
                                         <input type="number" wire:model="guests.{{ $index }}.identity_id" placeholder="NIK"
                                             class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        @error("guests.{$index}.identity_id") <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                        @error("guests.{$index}.identity_id") <span
+                                        class="text-red-600 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="space-y-2">
                                         <label for="name" class="text-gray-700 font-medium flex items-center">
                                             <span class="material-icons text-blue-600 mr-2">person</span> KTP
                                         </label>
-                                        <input type="file" wire:model="guests.{{ $index }}.identity_file" accept=".jpg,.jpeg,.png,.pdf"
+                                        <input type="file" wire:model="guests.{{ $index }}.identity_file"
+                                            accept=".jpg,.jpeg,.png,.pdf"
                                             class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        @error("guests.{$index}.identity_file") <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                        @error("guests.{$index}.identity_file") <span
+                                        class="text-red-600 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
                             </div>
@@ -177,9 +190,11 @@
                                 <label for="organization" class="text-gray-700 font-medium flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">business</span> Nama Organisasi Tamu
                                 </label>
-                                <input type="text" id="organization" wire:model="organization" placeholder="Nama Organisasi Tamu"
+                                <input type="text" id="organization" wire:model="organization"
+                                    placeholder="Nama Organisasi Tamu"
                                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                @error('organization') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                @error('organization') <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
                             </div>
 
 
@@ -214,7 +229,8 @@
                                     <span class="material-icons text-blue-600 mr-2">people</span>
                                     Bertemu Dengan
                                 </label>
-                                <select id="host_id" wire:model="host_id" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <select id="host_id" wire:model="host_id"
+                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                     <option value="">Pilih Pihak Yang Dituju</option>
                                     @if(!empty($users) && count($users) > 0)
                                         @foreach($users as $user)
@@ -244,8 +260,10 @@
 
                     <!-- Submit Button -->
                     <div class="text-center pt-6">
-                        <button type="submit" class="bg-blue-600 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105 hover:shadow-lg">
-                            Kirim
+                        <button type="submit" wire:loading.attr="disabled"
+                            class="bg-blue-600 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105 hover:shadow-lg">
+                            <span wire:loading.remove>Kirim</span>
+                            <span wire:loading>Memproses...</span>
                         </button>
                     </div>
                 </form>
@@ -253,100 +271,25 @@
         </div>
     </main>
     @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Livewire.on('show-success-alert', (event) => {
-                // Alert pertama dengan token
-                Swal.fire({
-                    title: 'Permintaan Anda telah terkirim!',
-                    html: `
-                        <p>Salin token di bawah ini untuk mengecek janji Anda:</p>
-                        <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
-                            <span class="font-mono text-blue-700 font-semibold">${event.token}</span>
-                            <button class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
-                                    id="copy-token-button">
-                                Salin Token
-                            </button>
-                        </div>
-                    `,
-                    icon: 'success',
-                    showConfirmButton: false, // Menghilangkan tombol OK
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        // Event listener untuk tombol salin
-                        document.getElementById('copy-token-button').addEventListener('click', () => {
-                            navigator.clipboard.writeText(event.token).then(() => {
-                                // Alert kedua setelah token disalin
-                                Swal.fire({
-                                    title: 'Token berhasil disalin!',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK',
-                                    allowOutsideClick: false
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        // Redirect ke home setelah klik OK
-                                        window.location.href = `/${event.slug}`;
-                                    }
-                                });
-                            }).catch(err => {
-                                Swal.fire({
-                                    title: 'Gagal menyalin token',
-                                    text: 'Silakan coba lagi',
-                                    icon: 'error',
-                                    confirmButtonText: 'OK'
-                                });
-                            });
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-    @endpush
-    {{-- @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Livewire.on('show-alert', (event) => {
-                Swal.fire({
-                    title: 'Permintaan Anda telah dikirim!',
-                    html: `
-                        <p>${event.message}</p>
-                        <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
-                            <span class="font-mono text-blue-700 font-semibold">${event.guest_token}</span>
-                            <button class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
-                                    id="copy-token-button">
-                                Salin Token
-                            </button>
-                        </div>
-                    `,
-                    icon: 'success',
-                    showCancelButton: false,
-                    confirmButtonText: 'OK',
-                });
-
-                // Tambahkan event listener untuk tombol salin
-                document.getElementById('copy-token-button').addEventListener('click', () => {
-                    navigator.clipboard.writeText(event.guest_token).then(() => {
-                        Swal.fire({
-                            title: 'Token berhasil disalin',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        });
-                    }).catch(err => {
-                        Swal.fire({
-                            title: 'Gagal menyalin token',
-                            text: 'Silakan coba lagi.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
+        <script>
+            function copyToClipboard(token) {
+                navigator.clipboard.writeText(token)
+                    .then(() => {
+                        // Using Livewire dispatch instead of emit
+                        Livewire.dispatch('copied');
+                    })
+                    .catch(() => {
+                        // Using Livewire dispatch for error alert
+                        Livewire.dispatch('alert', {
+                            data: {
+                                type: 'error',
+                                title: 'Gagal menyalin token',
+                                text: 'Silakan coba lagi'
+                            }
                         });
                     });
-                });
-            });
-        });
-
-
-
-    </script>
-    @endpush --}}
+            }
+        </script>
+    @endpush
 
 </div>

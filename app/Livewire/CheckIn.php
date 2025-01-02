@@ -2,18 +2,21 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\WithFileUploads;
-use App\Models\GuestBook;
-use App\Models\Guest;
-use App\Models\User;
-use App\Models\Organization;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Guest;
+use Livewire\Component;
+use App\Models\GuestBook;
 use Illuminate\Support\Str;
+use App\Models\Organization;
+use Livewire\WithFileUploads;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class CheckIn extends Component
 {
     use WithFileUploads;
+    use LivewireAlert;
+    protected $listeners = ['copyToken'];
 
     public $name;
     public $email;
@@ -99,7 +102,7 @@ class CheckIn extends Component
             'identity_file' => $this->identity_file
                 ? $this->identity_file->store('uploads/ktp', 'public')
                 : null,
-             'guest_token' => $guestToken,
+            'guest_token' => $guestToken,
         ]);
 
         $guestBook = GuestBook::create([
@@ -126,7 +129,7 @@ class CheckIn extends Component
                 'identity_file' => isset($guest['identity_file'])
                     ? $guest['identity_file']->store('uploads/ktp', 'public')
                     : null,
-                 'guest_token' => $guestToken,
+                'guest_token' => $guestToken,
             ]);
 
             $guestBook->guests()->attach($additionalGuest->id);
@@ -134,15 +137,55 @@ class CheckIn extends Component
 
 
         $guestBook->guests()->attach($mainGuest->id);
-        // Dispatch event ke browser
-        $this->dispatch('show-success-alert', [
-            'token' => $guestToken,
-            'slug' => $this->organizationData->slug
+
+        $this->alert('success', 'Permintaan Anda telah terkirim!', [
+            'position' => 'center',
+            'timer' => null,
+            'toast' => false,
+            'showConfirmButton' => false,
+            'showCancelButton' => false,
+            'allowOutsideClick' => false,
+            'html' => '
+                <p>Salin token di bawah ini untuk mengecek janji Anda:</p>
+                <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
+                    <span class="font-mono text-blue-700 font-semibold">' . $guestToken . '</span>
+                    <button 
+                        class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
+                        onclick="copyToClipboard(\'' . $guestToken . '\')"
+                    >
+                        Salin Token
+                    </button>
+                </div>
+            '
         ]);
 
+    }
 
+    public function copyToken($token)
+    {
+        $this->dispatchBrowserEvent('copyToClipboard', ['token' => $token]);
+    }
 
+    public function copied()
+    {
+        $this->alert('success', 'Token berhasil disalin!', [
+            'position' => 'center',
+            'timer' => null,
+            'toast' => false,
+            'showConfirmButton' => true,
+            'confirmButtonText' => 'OK',
+            'onConfirmed' => 'redirectAfterCopy',
+            'allowOutsideClick' => false,
+        ]);
 
+        return redirect()->route('check-appointment', ['slug' => $this->organizationData->slug]);
+    }
+
+    public function getListeners()
+    {
+        return array_merge(parent::getListeners(), [
+            'copied' => 'copied',
+        ]);
     }
 
     public function render()
@@ -151,7 +194,7 @@ class CheckIn extends Component
             'organizationData' => $this->organizationData,
             'users' => $this->users,
         ])->layout('layouts.app', [
-            'slug' => $this->organizationData->slug,
-        ]);
+                    'slug' => $this->organizationData->slug,
+                ]);
     }
 }
