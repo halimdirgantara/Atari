@@ -14,28 +14,42 @@ class Home extends Component
 
     public $statusCounts;
     public $visits;
-    public function mount()
+
+
+    public function mount($slug = null)
     {
+        // Ambil semua organisasi untuk keperluan navigasi atau dropdown
         $this->organizations = Organization::all();
 
-        $this->organization = Organization::where('id', 1)->first();
+        // Jika slug diberikan, cari organisasi berdasarkan slug, jika tidak gunakan default (id = 1)
+        $this->organization = Organization::where('slug', $slug)->first() ?? Organization::where('id', 1)->first();
 
+        // Tetapkan slug saat ini
         $this->slug = $this->organization->slug;
 
-        // Perhitungan status kunjungan berdasarkan organisasi tertentu
+        // Perbarui data status kunjungan dan kunjungan terbaru berdasarkan organisasi
+        $this->updateData();
+    }
+
+    private function updateData()
+    {
+        // Perhitungan status kunjungan untuk organisasi yang dipilih
         $this->statusCounts = [
-            'pending' => GuestBook::count(),
-            'approved' => GuestBook::count(),
-            'declined' => GuestBook::count(),
-            'process' => GuestBook::count(),
-            'done' => GuestBook::count(),
+            'pending' => GuestBook::where('organization_id', $this->organization->id)->where('status', 'pending')->count(),
+            'approved' => GuestBook::where('organization_id', $this->organization->id)->where('status', 'approved')->count(),
+            'declined' => GuestBook::where('organization_id', $this->organization->id)->where('status', 'declined')->count(),
+            'process' => GuestBook::where('organization_id', $this->organization->id)->where('status', 'process')->count(),
+            'done' => GuestBook::where('organization_id', $this->organization->id)->where('status', 'done')->count(),
         ];
 
-        // Ambil kunjungan terbaru berdasarkan organisasi tertentu
+        // Ambil kunjungan terbaru untuk organisasi yang dipilih
         $this->visits = GuestBook::with('guests')
-            ->where('status', '!=', 'done')
+            ->where('organization_id', $this->organization->id)
+            ->whereNot('status', 'done') // Filter status 'done'
             ->orderBy('created_at', 'desc')
             ->get();
+
+
     }
 
     public function render()

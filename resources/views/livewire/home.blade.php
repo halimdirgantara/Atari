@@ -1,5 +1,5 @@
 <div>
-<header class="bg-blue-900 text-white py-4 shadow-lg">
+    <header class="bg-blue-900 text-white py-4 shadow-lg">
         <div class="container mx-auto flex items-center justify-between px-4 sm:px-11">
             <div class="flex items-center">
                 <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
@@ -34,8 +34,8 @@
 
             <div class="p-6 sm:p-11 flex items-center relative z-20 animate-slide-down hero-content">
                 <div class="flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 sm:mb-4">Selamat Datang di {{ $organization->name }}</h2>
-                    <p class="text-sm sm:text-base opacity-90 leading-relaxed">
+                    <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold mb-2 sm:mb-4">Selamat Datang di {{ $organization->name }}</h2>
+                    <p class="text-xs sm:text-sm md:text-base opacity-90 leading-relaxed">
                         Tinggalkan pesan di buku tamu kami
                     </p>
                 </div>
@@ -49,8 +49,19 @@
                 <i class="fas fa-calendar-alt mr-2"></i>
                 <span>Buat Janji</span>
             </button>
+            <button onclick="window.location='{{ route('check-appointment', ['slug' => $organization->slug]) }}'"
+                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+                <i class="fas fa-search mr-2"></i>
+                <span>Cek Janji</span>
+            </button>
+            <button onclick="window.location='{{ route('check-out', ['slug' => $organization->slug]) }}'"
+                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto mt-4">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                <span>Check-Out</span>
+            </button>
 
-            @php
+
+            {{-- @php
             //<button onclick="window.location='{{ route('check', ['slug' => $organization->slug]) }}'"
             //    class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
             //    <i class="fas fa-check mr-2"></i>
@@ -62,7 +73,7 @@
                // <i class="fas fa-sign-out-alt mr-2"></i>
                 //<span>Check-Out</span>
             //</button>
-            @endphp
+            @endphp --}}
 
         </div>
     </section>
@@ -151,12 +162,12 @@
                                 <!-- Detail Tamu -->
                                 <div>
                                     <p class="font-semibold text-gray-800 text-lg">
-                                        {{ substr($guest->name, 0, 4) . str_repeat('*', strlen($guest->name) - 4) . substr($guest->name, -4) }}
+                                        {{ substr($guest->name, 0, 4) . str_repeat('*', max(strlen($guest->name) - 8, 0)) . substr($guest->name, -4) }}
                                     </p>
                                     <p class="text-sm text-gray-500 mt-1">
                                         <i class="fas fa-building mr-2"></i>{{ $guest->organization }}
                                     </p>
-                                    <p class="text-sm text-gray-500 mt-1">
+                                    <p class="text-sm text-gray-500 mt-1 break-words">
                                         <i class="fas fa-envelope mr-2"></i>
                                         {{ substr($guest->email ?? 'Email tidak tersedia', 0, 3) . str_repeat('*', strpos($guest->email ?? '', '@') - 4) . substr($guest->email ?? '', strpos($guest->email ?? '', '@') - 3) }}
                                     </p>
@@ -191,34 +202,55 @@
             </ul>
 
             <div class="mt-4 sm:mt-6">
-                <!--  $visits->links('pagination::tailwind')  -->
+                <!-- Pagination Placeholder -->
             </div>
         </div>
     </section>
+
+    @push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Livewire.on('show-alert', (event) => {
+            Swal.fire({
+                title: 'Permintaan Anda telah dikirim!',
+                html: `
+                    <p>${event.message}</p>
+                    <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
+                        <span class="font-mono text-blue-700 font-semibold">${event.guest_token}</span>
+                        <button class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
+                                id="copy-token-button">
+                            Salin Token
+                        </button>
+                    </div>
+                `,
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonText: 'OK',
+            });
+
+            // Tambahkan event listener untuk tombol salin
+            document.getElementById('copy-token-button').addEventListener('click', () => {
+                navigator.clipboard.writeText(event.guest_token).then(() => {
+                    Swal.fire({
+                        title: 'Token berhasil disalin',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                }).catch(err => {
+                    Swal.fire({
+                        title: 'Gagal menyalin token',
+                        text: 'Silakan coba lagi.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            });
+        });
+    });
+</script>
+@endpush
+
 </div>
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/banner_slideshow.css') }}">
-    <style>
-        @media (max-width: 768px) {
-            .swal-popup-custom {
-                width: 80% !important;
-                max-width: 300px !important;
-                padding: 10px !important;
-            }
 
-            .swal2-title {
-                font-size: 16px !important;
-            }
 
-            .swal2-html-container {
-                font-size: 14px !important;
-            }
-
-            .swal2-confirm {
-                font-size: 12px !important;
-                padding: 6px 12px !important;
-            }
-        }
-    </style>
-@endpush
