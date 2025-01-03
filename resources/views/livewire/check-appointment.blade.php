@@ -159,19 +159,4 @@
             </div>
         </section>
     @endif
-
-    @push('scripts')
-        {{-- alert cek janji --}}
-        <script>
-            document.addEventListener('livewire:load', function () {
-                Livewire.on('show-notification', data => {
-                    Swal.fire({
-                        icon: data.type,
-                        title: data.message,
-                        confirmButtonColor: '#3085d6',
-                    });
-                });
-            });
-        </script>
-    @endpush
 </div>

@@ -171,12 +171,8 @@
                         <div class="flex justify-center">
                             <button type="button" wire:click="addGuest" class="mt-1 bg-green-500 text-white px-4 py-2 rounded-lg transition duration-300 ease-in-out transform hover:bg-green-900 hover:scale-105 hover:shadow-lg
                                 sm:px-6 sm:py-3 md:px-4 md:py-2">
-                                <span wire:loading.remove>
+                                <span>
                                     <i class="fas fa-user-plus mr-2"></i> Tambah Tamu
-                                </span>
-
-                                <span wire:loading>
-                                    <i class="fas fa-spinner fa-spin mr-2"></i> Memproses...
                                 </span>
                             </button>
                         </div>
@@ -263,7 +259,9 @@
                         <button type="submit" wire:loading.attr="disabled"
                             class="bg-blue-600 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105 hover:shadow-lg">
                             <span wire:loading.remove>Kirim</span>
-                            <span wire:loading>Memproses...</span>
+                            <span wire:loading>
+                                <i class="fas fa-circle-notch fa-spin mr-2"></i> Memproses...
+                            </span>
                         </button>
                     </div>
                 </form>

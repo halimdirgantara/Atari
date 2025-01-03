@@ -149,7 +149,7 @@ class CheckIn extends Component
                 <p>Salin token di bawah ini untuk mengecek janji Anda:</p>
                 <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
                     <span class="font-mono text-blue-700 font-semibold">' . $guestToken . '</span>
-                    <button 
+                    <button
                         class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
                         onclick="copyToClipboard(\'' . $guestToken . '\')"
                     >
@@ -172,13 +172,12 @@ class CheckIn extends Component
             'position' => 'center',
             'timer' => null,
             'toast' => false,
-            'showConfirmButton' => true,
-            'confirmButtonText' => 'OK',
+            'showConfirmButton' => false,
             'onConfirmed' => 'redirectAfterCopy',
             'allowOutsideClick' => false,
         ]);
 
-        return redirect()->route('check-appointment', ['slug' => $this->organizationData->slug]);
+        return redirect()->route('home', ['slug' => $this->organizationData->slug]);
     }
 
     public function getListeners()
