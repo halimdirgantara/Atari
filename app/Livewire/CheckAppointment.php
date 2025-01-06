@@ -32,8 +32,8 @@ class CheckAppointment extends Component
 
             $this->alert('warning', $message, [
                 'position' => 'center',
-                'timer' => 3000,
-                'toast' => true,
+                'timer' => 4000,
+                'toast' => false,
                 'showConfirmButton' => false,
                 'timerProgressBar' => true,
                 'text' => $detail,
@@ -43,8 +43,8 @@ class CheckAppointment extends Component
             $extraChars = $length - 10;
             $this->alert('warning', 'Token terlalu panjang!', [
                 'position' => 'center',
-                'timer' => 3000,
-                'toast' => true,
+                'timer' => 4000,
+                'toast' => false,
                 'showConfirmButton' => false,
                 'timerProgressBar' => true,
                 'text' => "Hapus {$extraChars} karakter. Token harus terdiri dari 10 karakter.",
@@ -74,8 +74,8 @@ class CheckAppointment extends Component
             if ($this->appointments->isEmpty()) {
                 $this->alert('error', 'Janji tidak ditemukan!', [
                     'position' => 'center',
-                    'timer' => 5000, // Waktu ditambah untuk memberi waktu membaca
-                    'toast' => true,
+                    'timer' => 4000, // Waktu ditambah untuk memberi waktu membaca
+                    'toast' => false,
                     'showConfirmButton' => false,
                     'timerProgressBar' => true,
                     'text' => "Tidak dapat menemukan janji dengan token: {$this->guest_token}\n" .
@@ -89,8 +89,8 @@ class CheckAppointment extends Component
 
                 $this->alert('success', 'Janji berhasil ditemukan!', [
                     'position' => 'center',
-                    'timer' => 5000,
-                    'toast' => true,
+                    'timer' => 4000,
+                    'toast' => false,
                     'showConfirmButton' => false,
                     'timerProgressBar' => true,
                     'text' => "Nama: {$mainGuest->name}\n" .
@@ -104,7 +104,7 @@ class CheckAppointment extends Component
             $this->alert('error', 'Token tidak valid!', [
                 'position' => 'center',
                 'timer' => 4000,
-                'toast' => true,
+                'toast' => false,
                 'showConfirmButton' => false,
                 'timerProgressBar' => true,
                 'text' => "Panjang token saat ini: {$currentLength} karakter\n" .

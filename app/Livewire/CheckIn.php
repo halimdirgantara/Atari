@@ -16,6 +16,7 @@ class CheckIn extends Component
 {
     use WithFileUploads;
     use LivewireAlert;
+
     protected $listeners = ['copyToken'];
 
     public $name;
@@ -35,16 +36,13 @@ class CheckIn extends Component
 
     public function mount($slug)
     {
-        // Ambil organisasi berdasarkan slug atau organisasi default
         $this->organizationData = $slug
             ? Organization::where('slug', $slug)->firstOrFail()
-            : Organization::where('id', 1)->firstOrFail(); // Default organisasi ID 1
+            : Organization::where('id', 1)->firstOrFail();
 
-        // Ambil daftar user untuk organisasi tersebut
         $this->users = User::where('organization_id', $this->organizationData->id)->get();
 
-        // Set waktu check-in default
-        $this->check_in = Carbon::now()->format('Y-m-d\TH:i');
+        $this->check_in = now()->format('Y-m-d\TH:i');
     }
 
     public function addGuest()
@@ -67,31 +65,53 @@ class CheckIn extends Component
 
     public function submit()
     {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-            'organization' => 'required|string|max:255',
-            'host_id' => 'required|exists:users,id',
-            'check_in' => 'required|date',
-            'duration' => 'required|integer|min:15|max:120',
-            'needs' => 'required|string|max:500',
-            'identity_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'identity_id' => 'nullable|string|max:16',
-            'guests.*.name' => 'required|string|max:255',
-            'guests.*.email' => 'required|email|max:255',
-            'guests.*.phone' => 'required|string|max:15',
-            'guests.*.address' => 'required|string|max:255',
-            'guests.*.identity_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'guests.*.identity_id' => 'nullable|string|max:16',
-        ]);
+        try {
+            $this->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:15',
+                'address' => 'required|string|max:255',
+                'organization' => 'required|string|max:255',
+                'host_id' => 'required|exists:users,id',
+                'check_in' => 'required|date',
+                'duration' => 'required|integer|min:15|max:120',
+                'needs' => 'required|string|max:500',
+                'identity_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'identity_id' => 'nullable|string|max:16',
+                'guests.*.name' => 'required|string|max:255',
+                'guests.*.email' => 'required|email|max:255',
+                'guests.*.phone' => 'required|string|max:15',
+                'guests.*.address' => 'required|string|max:255',
+                'guests.*.identity_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'guests.*.identity_id' => 'nullable|string|max:16',
+            ]);
 
-        $checkInTime = Carbon::parse($this->check_in);
-        $checkOutTime = $checkInTime->addMinutes($this->duration);
+            // Proses  form jika validasi berhasil
+
+        } catch (\Illuminate\Validation\ValidationException $exception) {
+            $this->alert('error', 'Form tidak valid', [
+                'position' => 'center',
+                'timer' => 5000,
+                'toast' => false,
+                'showConfirmButton' => false,
+                'allowOutsideClick' => true,
+                'html' => '
+                    <div class="w-full max-w-md md:max-w-lg px-4 py-3 text-center">
+                        <p class="text-sm text-gray-700 mt-2">Pastikan semua field telah diisi!!!!.</p>
+                    </div>
+                '
+            ]);
+
+            return; // Stop further execution
+        }
+
+        $currentTime = now();
+        $checkInTime = $currentTime;
+
+        $checkOutTime = $currentTime->copy()->addMinutes($this->duration);
+
         $guestToken = Str::random(10);
 
-        // Simpan data tamu utama
         $mainGuest = Guest::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -108,16 +128,14 @@ class CheckIn extends Component
         $guestBook = GuestBook::create([
             'host_id' => $this->host_id,
             'organization_id' => $this->organizationData->id,
-            'check_in' => $this->check_in,
+            'check_in' => $checkInTime,
             'check_out' => $checkOutTime,
             'needs' => $this->needs,
             'status' => 'process',
         ]);
 
-        // Attach tamu utama ke guestBook
         $guestBook->guests()->attach($mainGuest->id);
 
-        // Simpan tamu tambahan
         foreach ($this->guests as $guest) {
             $additionalGuest = Guest::create([
                 'name' => $guest['name'],
@@ -135,9 +153,6 @@ class CheckIn extends Component
             $guestBook->guests()->attach($additionalGuest->id);
         }
 
-
-        $guestBook->guests()->attach($mainGuest->id);
-
         $this->alert('success', 'Permintaan Anda telah terkirim!', [
             'position' => 'center',
             'timer' => null,
@@ -146,19 +161,20 @@ class CheckIn extends Component
             'showCancelButton' => false,
             'allowOutsideClick' => false,
             'html' => '
-                <p>Salin token di bawah ini untuk mengecek janji Anda:</p>
-                <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
-                    <span class="font-mono text-blue-700 font-semibold">' . $guestToken . '</span>
-                    <button
-                        class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
-                        onclick="copyToClipboard(\'' . $guestToken . '\')"
-                    >
-                        Salin Token
-                    </button>
+                <div class="px-2 sm:px-4 max-w-full sm:max-w-lg mx-auto">
+                    <p class="text-sm sm:text-base">Salin token di bawah ini untuk mengecek janji Anda:</p>
+                    <div class="bg-gray-100 p-2 sm:p-3 rounded-lg mt-2 sm:mt-3 flex justify-between items-center">
+                        <span class="font-mono text-blue-700 font-semibold text-xs sm:text-base break-all mr-2">' . $guestToken . '</span>
+                        <button
+                            class="bg-blue-500 text-white px-2 sm:px-3 py-1 ml-2 sm:ml-3 rounded hover:bg-blue-600 text-xs sm:text-base whitespace-nowrap"
+                            onclick="copyToClipboard(\'' . $guestToken . '\')"
+                        >
+                            Salin Token
+                        </button>
+                    </div>
                 </div>
             '
         ]);
-
     }
 
     public function copyToken($token)

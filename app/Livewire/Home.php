@@ -60,3 +60,18 @@ class Home extends Component
         return view('livewire.home')->extends('layouts.app');
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

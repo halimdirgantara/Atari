@@ -13,6 +13,8 @@ class CheckOut extends Component
 {
     use WithPagination, LivewireAlert;
 
+    protected $listeners = ['confirmed'];
+
     const STATUS_APPROVED = 'approved';
     const STATUS_PROCESS = 'process';
     const STATUS_DONE = 'done';
@@ -20,16 +22,11 @@ class CheckOut extends Component
     public $organization;
     public $slug;
     public $selectedGuestId;
-    public $guests;
 
     public function mount($slug)
     {
         $this->slug = $slug;
         $this->organization = Organization::where('slug', $slug)->firstOrFail();
-        $this->guests = GuestBook::where('status', self::STATUS_APPROVED)
-            ->whereDate('check_in', Carbon::today())
-            ->with('guest')
-            ->get();
     }
 
     public function confirmCheckOut($id)
@@ -44,40 +41,23 @@ class CheckOut extends Component
             'showCancelButton' => true,
             'confirmButtonText' => 'Ya, Checkout',
             'cancelButtonText' => 'Batal',
-            'onConfirmed' => 'processCheckOut',
+            'onConfirmed' => 'confirmed',
             'allowOutsideClick' => false
         ]);
     }
 
-    public function maskOrganization($organization)
+    public function confirmed()
     {
-        if (!$organization || strlen($organization) <= 6) {
-            return 'N/A';
-        }
 
-        $firstThree = substr($organization, 0, 3);
-        $lastThree = substr($organization, -3);
-        $middleLength = strlen($organization) - 6;
-        $stars = str_repeat('*', $middleLength);
+        $guestBook = GuestBook::find($this->selectedGuestId);
 
-        return $firstThree . $stars . $lastThree;
-    }
 
-    public function processCheckOut()
-    {
-        $guestBook = GuestBook::where('id', $this->selectedGuestId)
-            ->where('organization_id', $this->organization->id)
-            ->whereIn('status', [self::STATUS_APPROVED, self::STATUS_PROCESS])
-            ->first();
-
-        if ($guestBook) {
+        if ($guestBook && $guestBook->organization_id === $this->organization->id && $guestBook->status === self::STATUS_APPROVED) {
             try {
                 $guestBook->update([
                     'status' => self::STATUS_DONE,
                     'check_out' => Carbon::now(),
                 ]);
-
-                $this->dispatch('guestCheckedOut', $this->selectedGuestId);
 
                 $checkoutTime = Carbon::now()->format('H:i:s');
                 $this->alert('success', 'Janji Anda Telah Selesai', [
@@ -93,12 +73,13 @@ class CheckOut extends Component
                             <span class="font-mono text-blue-700 font-semibold">' . $checkoutTime . '</span>
                             <button
                                 class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
-                                onclick="window.location.reload()"
+                                onclick="window.location.href=\'/' . $this->slug . '\'"
                             >
                                 OK
                             </button>
                         </div>
                     '
+
                 ]);
             } catch (\Exception $e) {
                 $this->alert('error', 'Terjadi kesalahan saat proses checkout!', [
@@ -144,11 +125,26 @@ class CheckOut extends Component
         }
     }
 
+    public function maskOrganization($organization)
+    {
+        if (!$organization || strlen($organization) <= 6) {
+            return 'N/A';
+        }
+
+        $firstThree = substr($organization, 0, 3);
+        $lastThree = substr($organization, -3);
+        $middleLength = strlen($organization) - 6;
+        $stars = str_repeat('*', $middleLength);
+
+        return $firstThree . $stars . $lastThree;
+    }
+
     public function render()
     {
         $approvedGuests = GuestBook::with(['guests', 'host', 'organization'])
             ->where('organization_id', $this->organization->id)
-            ->whereIn('status', [self::STATUS_APPROVED, self::STATUS_PROCESS])
+            ->where('status', self::STATUS_APPROVED)
+            ->whereDate('check_in', Carbon::today())
             ->paginate(5);
 
         return view('livewire.check-out', [

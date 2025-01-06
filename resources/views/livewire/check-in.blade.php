@@ -14,7 +14,7 @@
             <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 md:p-8 relative">
                 <!-- Form Header -->
                 <div class="mb-8 border-b pb-4">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">Formulir Buku Tamu</h2>
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Formulir Buku Tamu</h2>
                     <p class="text-sm sm:text-base text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji
                     </p>
                     <div class="mt-4 sm:mt-0 sm:absolute sm:top-9 sm:right-10 flex items-center gap-2 text-blue-800">
@@ -27,7 +27,7 @@
                                     d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
                                 <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
                             </svg>
-                            <span class="text-sm sm:text-base font-medium">Beranda</span>
+                            <span class="text-sm sm:text-base font-medium">Home</span>
                         </a>
                     </div>
                 </div>

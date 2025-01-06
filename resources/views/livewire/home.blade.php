@@ -44,22 +44,28 @@
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center mt-6 sm:mt-9 space-y-3 sm:space-y-0 sm:space-x-2 action-buttons">
+            <!-- Button 1: Buat Janji -->
             <button onclick="window.location='{{ route('check-in', ['slug' => $slug]) }}'"
-                class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+                class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto">
                 <i class="fas fa-calendar-alt mr-2"></i>
                 <span>Buat Janji</span>
             </button>
+
+            <!-- Button 2: Cek Janji -->
             <button onclick="window.location='{{ route('check-appointment', ['slug' => $organization->slug]) }}'"
-                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto">
                 <i class="fas fa-search mr-2"></i>
                 <span>Cek Janji</span>
             </button>
+
+            <!-- Button 3: Check-Out -->
             <button onclick="window.location='{{ route('check-out', ['slug' => $organization->slug]) }}'"
-                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto mt-4">
+                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto mt-4">
                 <i class="fas fa-sign-out-alt mr-2"></i>
                 <span>Check-Out</span>
             </button>
         </div>
+
     </section>
 
 
@@ -122,7 +128,7 @@
 
 
     <!-- Daftar Tamu Section -->
-    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14">
+    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 pb-8">
         <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
                 <div class="mb-3 sm:mb-0">
@@ -130,7 +136,7 @@
                     <p class="text-sm text-gray-500 mt-1">Kunjungan terbaru</p>
                 </div>
                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm inline-block">
-                    Total buku tamu: {{ $visits->count() }}
+                    Total Tamu: {{ $visits->count() }}
                 </span>
             </div>
             <ul class="space-y-4 sm:space-y-5">
