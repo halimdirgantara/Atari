@@ -12,16 +12,16 @@
         <div class="bg-white rounded-lg shadow-lg p-8 border-t-4 border-blue-900 relative flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h2 class="text-2xl font-semibold text-blue-900">Cek Janji</h2>
+                    <h2 h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Cek Janji</h2>
                     <p class="text-gray-600">Pantau status janji temu Anda</p>
                 </div>
-                <div class="mt-4 sm:mt-0 text-blue-800">
+                <div class="mt-4 sm:mt-0 sm:top-11 sm:right-16 flex justify-center sm:justify-end w-full">
                     <a href="{{ route('home', ['slug' => $organization->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg hover:bg-blue-200 hover:shadow-md transition-all duration-300 text-blue-800 hover:text-blue-900">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
                             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
                             <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
                         </svg>
-                        <span class="font-medium">Beranda</span>
+                        <span class="font-medium">Home</span>
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                            placeholder="Masukkan token tamu" required>
                 </div>
                 <button wire:click="checkAppointments"
-                        class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 flex items-center min-w-[120px] shadow-md hover:shadow-lg">
+                        class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-900 transform hover:scale-105 transition-all duration-300 flex items-center min-w-[120px] shadow-md hover:shadow-lg">
                     <span class="material-icons mr-2">search</span>
                     Cari
                 </button>
@@ -159,19 +159,4 @@
             </div>
         </section>
     @endif
-
-    @push('scripts')
-        {{-- alert cek janji --}}
-        <script>
-            document.addEventListener('livewire:load', function () {
-                Livewire.on('show-notification', data => {
-                    Swal.fire({
-                        icon: data.type,
-                        title: data.message,
-                        confirmButtonColor: '#3085d6',
-                    });
-                });
-            });
-        </script>
-    @endpush
 </div>

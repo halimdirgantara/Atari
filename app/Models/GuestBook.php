@@ -27,8 +27,8 @@ class GuestBook extends Model
     public const STATUS = [
         'process' => 'Process',
         'pending' => 'Pending',
-        'approve' => 'Approve',
-        'reject' => 'Reject',
+        'approved' => 'Approved',
+        'declined' => 'Declined',
     ];
 
     public function guest()

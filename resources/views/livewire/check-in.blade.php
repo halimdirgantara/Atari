@@ -14,22 +14,23 @@
             <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 md:p-8 relative">
                 <!-- Form Header -->
                 <div class="mb-8 border-b pb-4">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">Formulir Buku Tamu</h2>
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Formulir Buku Tamu</h2>
                     <p class="text-sm sm:text-base text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji
                     </p>
-                    <div class="mt-4 sm:mt-0 sm:absolute sm:top-9 sm:right-10 flex items-center gap-2 text-blue-800">
+                    <div
+                        class="mt-4 sm:mt-0 sm:absolute sm:top-9 sm:right-10 flex items-center gap-2 text-blue-800 justify-center sm:justify-end">
                         <a href="{{ $organizationData->slug === null || $organizationData->slug === 'default' ? route('home') : route('home', ['slug' => $organizationData->slug]) }}"
-                            class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg
-                            transition duration-300 ease-in-out transform hover:bg-blue-200 hover:shadow-md hover:text-blue-900 hover:scale-105">
+                            class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-200 hover:shadow-md hover:text-blue-900 hover:scale-105">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 class="bi bi-house-fill" viewBox="0 0 16 16">
                                 <path
                                     d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
                                 <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
                             </svg>
-                            <span class="text-sm sm:text-base font-medium">Beranda</span>
+                            <span class="text-sm sm:text-base font-medium">Home</span>
                         </a>
                     </div>
+
                 </div>
 
                 <!-- Form -->
@@ -171,12 +172,8 @@
                         <div class="flex justify-center">
                             <button type="button" wire:click="addGuest" class="mt-1 bg-green-500 text-white px-4 py-2 rounded-lg transition duration-300 ease-in-out transform hover:bg-green-900 hover:scale-105 hover:shadow-lg
                                 sm:px-6 sm:py-3 md:px-4 md:py-2">
-                                <span wire:loading.remove>
+                                <span>
                                     <i class="fas fa-user-plus mr-2"></i> Tambah Tamu
-                                </span>
-
-                                <span wire:loading>
-                                    <i class="fas fa-spinner fa-spin mr-2"></i> Memproses...
                                 </span>
                             </button>
                         </div>
@@ -260,11 +257,17 @@
 
                     <!-- Submit Button -->
                     <div class="text-center pt-6">
-                        <button type="submit" wire:loading.attr="disabled"
-                            class="bg-blue-600 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105 hover:shadow-lg">
+                        <button
+                            type="submit"
+                            wire:loading.attr="disabled"
+                            class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                        >
                             <span wire:loading.remove>Kirim</span>
-                            <span wire:loading>Memproses...</span>
+                            <span wire:loading>
+                                <i class="fas fa-circle-notch fa-spin mr-2"></i> Memproses...
+                            </span>
                         </button>
+
                     </div>
                 </form>
             </div>

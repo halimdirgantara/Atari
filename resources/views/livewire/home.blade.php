@@ -34,8 +34,8 @@
 
             <div class="p-6 sm:p-11 flex items-center relative z-20 animate-slide-down hero-content">
                 <div class="flex-1">
-                    <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold mb-2 sm:mb-4">Selamat Datang di {{ $organization->name }}</h2>
-                    <p class="text-xs sm:text-sm md:text-base opacity-90 leading-relaxed">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 sm:mb-4">Selamat Datang di {{ $organization->name }}</h2>
+                    <p class="text-sm sm:text-base opacity-90 leading-relaxed">
                         Tinggalkan pesan di buku tamu kami
                     </p>
                 </div>
@@ -44,38 +44,28 @@
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center mt-6 sm:mt-9 space-y-3 sm:space-y-0 sm:space-x-2 action-buttons">
+            <!-- Button 1: Buat Janji -->
             <button onclick="window.location='{{ route('check-in', ['slug' => $slug]) }}'"
-                class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+                class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto">
                 <i class="fas fa-calendar-alt mr-2"></i>
                 <span>Buat Janji</span>
             </button>
+
+            <!-- Button 2: Cek Janji -->
             <button onclick="window.location='{{ route('check-appointment', ['slug' => $organization->slug]) }}'"
-                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
+                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto">
                 <i class="fas fa-search mr-2"></i>
                 <span>Cek Janji</span>
             </button>
+
+            <!-- Button 3: Check-Out -->
             <button onclick="window.location='{{ route('check-out', ['slug' => $organization->slug]) }}'"
-                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto mt-4">
+                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto mt-4">
                 <i class="fas fa-sign-out-alt mr-2"></i>
                 <span>Check-Out</span>
             </button>
-
-
-            {{-- @php
-            //<button onclick="window.location='{{ route('check', ['slug' => $organization->slug]) }}'"
-            //    class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-900 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto">
-            //    <i class="fas fa-check mr-2"></i>
-              //  <span>Cek Janji</span>
-            // </button>
-            //<!-- Tombol Check-Out -->
-            //<button onclick="window.location='{{ route('check_out', ['slug' => $organization->slug]) }}'"
-             //   class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full sm:w-auto mt-4">
-               // <i class="fas fa-sign-out-alt mr-2"></i>
-                //<span>Check-Out</span>
-            //</button>
-            @endphp --}}
-
         </div>
+
     </section>
 
 
@@ -138,7 +128,7 @@
 
 
     <!-- Daftar Tamu Section -->
-    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14">
+    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 pb-8">
         <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
                 <div class="mb-3 sm:mb-0">
@@ -146,63 +136,72 @@
                     <p class="text-sm text-gray-500 mt-1">Kunjungan terbaru</p>
                 </div>
                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm inline-block">
-                    Total buku tamu: {{ $visits->count() }}
+                    Total Tamu: {{ $visits->total() }}
                 </span>
             </div>
             <ul class="space-y-4 sm:space-y-5">
-                @foreach($visits as $visit)
-                    @foreach($visit->guests as $guest)
-                        <li class="guest-item flex flex-col sm:flex-row justify-between items-start sm:items-center border border-gray-200 rounded-lg p-4 sm:p-5 transition-transform transform hover:shadow-lg hover:scale-105">
-                            <!-- Informasi Utama Tamu -->
-                            <div class="flex items-start space-x-4">
-                                <!-- Ikon -->
-                                <div class="bg-blue-100 rounded-full p-3 flex-shrink-0">
-                                    <i class="fas fa-user text-blue-600"></i>
-                                </div>
-                                <!-- Detail Tamu -->
-                                <div>
-                                    <p class="font-semibold text-gray-800 text-lg">
-                                        {{ substr($guest->name, 0, 4) . str_repeat('*', max(strlen($guest->name) - 8, 0)) . substr($guest->name, -4) }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 mt-1">
-                                        <i class="fas fa-building mr-2"></i>{{ $guest->organization }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 mt-1 break-words">
-                                        <i class="fas fa-envelope mr-2"></i>
-                                        {{ substr($guest->email ?? 'Email tidak tersedia', 0, 3) . str_repeat('*', strpos($guest->email ?? '', '@') - 4) . substr($guest->email ?? '', strpos($guest->email ?? '', '@') - 3) }}
-                                    </p>
-                                </div>
+                @forelse($visits as $visit)
+                    @php
+                        $guest = $visit->guests->first();  // Ambil hanya tamu pertama
+                    @endphp
+                    @if($guest)
+                    <li class="guest-item flex flex-col sm:flex-row justify-between items-start sm:items-center border border-gray-200 rounded-lg p-4 sm:p-5 transition-transform transform hover:shadow-lg hover:scale-105">
+                        <!-- Informasi Utama Tamu -->
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-blue-100 rounded-full p-3 flex-shrink-0">
+                                <i class="fas fa-user text-blue-600"></i>
                             </div>
-
-                            <!-- Informasi Status dan Waktu -->
-                            <div class="text-left sm:text-right mt-3 sm:mt-0">
-                                <p class="font-medium text-blue-600">
-                                    Check-in: {{ \Carbon\Carbon::parse($visit->check_in)->format('H:i') }}
+                            <div>
+                                <p class="font-semibold text-gray-800 text-lg">
+                                    {{ substr($guest->name, 0, 4) . str_repeat('*', max(strlen($guest->name) - 8, 0)) . substr($guest->name, -4) }}
                                 </p>
-                                <p class="font-medium text-blue-600 mt-1">
-                                    Check-out: {{ \Carbon\Carbon::parse($visit->check_out)->format('H:i') }}
+                                <p class="text-sm text-gray-500 mt-1">
+                                    <i class="fas fa-building mr-2"></i>{{ $guest->organization }}
                                 </p>
-                                <p class="text-sm mt-2">
-                                    Status:
-                                    <span class="font-medium px-3 py-1 rounded-full text-white
-                                        @if($visit->status === 'approved') bg-blue-500
-                                        @elseif($visit->status === 'pending') bg-yellow-500
-                                        @elseif($visit->status === 'process') bg-gray-400
-                                        @elseif($visit->status === 'reject') bg-red-500
-                                        @elseif($visit->status === 'done') bg-green-500
-                                        @endif">
-                                        {{ ucfirst($visit->status) }}
-                                    </span>
+                                <p class="text-sm text-gray-500 mt-1 break-words">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    @if($guest->email)
+                                        {{ substr($guest->email, 0, 3) . str_repeat('*', strpos($guest->email, '@') - 4) . substr($guest->email, strpos($guest->email, '@') - 3) }}
+                                    @else
+                                        Email tidak tersedia
+                                    @endif
                                 </p>
                             </div>
-                        </li>
-                    @endforeach
-                @endforeach
+                        </div>
 
+                        <!-- Informasi Status dan Waktu -->
+                        <div class="text-left sm:text-right mt-3 sm:mt-0">
+                            <p class="font-medium text-blue-600">
+                                Check-in: {{ \Carbon\Carbon::parse($visit->check_in)->format('H:i') }}
+                            </p>
+                            <p class="font-medium text-blue-600 mt-1">
+                                Check-out: {{ \Carbon\Carbon::parse($visit->check_out)->format('H:i') }}
+                            </p>
+                            <p class="text-sm mt-2">
+                                Status:
+                                <span class="font-medium px-3 py-1 rounded-full text-white
+                                    @if($visit->status === 'approved') bg-blue-500
+                                    @elseif($visit->status === 'pending') bg-yellow-500
+                                    @elseif($visit->status === 'process') bg-gray-400
+                                    @elseif($visit->status === 'reject') bg-red-500
+                                    @elseif($visit->status === 'done') bg-green-500
+                                    @endif">
+                                    {{ ucfirst($visit->status) }}
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                    @endif
+                @empty
+                    <li class="text-center py-4 text-gray-500">
+                        Belum ada kunjungan tamu
+                    </li>
+                @endforelse
             </ul>
 
-            <div class="mt-4 sm:mt-6">
-                <!-- Pagination Placeholder -->
+            <!-- Pagination -->
+            <div class="mt-6">
+                {{ $visits->links('pagination::tailwind') }}
             </div>
         </div>
     </section>
