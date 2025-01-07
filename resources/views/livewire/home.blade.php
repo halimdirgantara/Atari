@@ -136,7 +136,7 @@
                     <p class="text-sm text-gray-500 mt-1">Kunjungan terbaru</p>
                 </div>
                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm inline-block">
-                    Total Tamu: {{ $visits->count() }}
+                    Total Tamu: {{ $visits->total() }}
                 </span>
             </div>
             <ul class="space-y-4 sm:space-y-5">
@@ -199,8 +199,9 @@
                 @endforelse
             </ul>
 
-            <div class="mt-4 sm:mt-6">
-                <!-- Pagination Placeholder -->
+            <!-- Pagination -->
+            <div class="mt-6">
+                {{ $visits->links('pagination::tailwind') }}
             </div>
         </div>
     </section>

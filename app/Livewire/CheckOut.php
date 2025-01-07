@@ -145,6 +145,7 @@ class CheckOut extends Component
             ->where('organization_id', $this->organization->id)
             ->where('status', self::STATUS_APPROVED)
             ->whereDate('check_in', Carbon::today())
+            ->orderBy('created_at', 'desc')
             ->paginate(5);
 
         return view('livewire.check-out', [

@@ -17,10 +17,10 @@
                     <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Formulir Buku Tamu</h2>
                     <p class="text-sm sm:text-base text-gray-600 mt-2">Silakan isi formulir di bawah untuk membuat janji
                     </p>
-                    <div class="mt-4 sm:mt-0 sm:absolute sm:top-9 sm:right-10 flex items-center gap-2 text-blue-800">
+                    <div
+                        class="mt-4 sm:mt-0 sm:absolute sm:top-9 sm:right-10 flex items-center gap-2 text-blue-800 justify-center sm:justify-end">
                         <a href="{{ $organizationData->slug === null || $organizationData->slug === 'default' ? route('home') : route('home', ['slug' => $organizationData->slug]) }}"
-                            class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg
-                            transition duration-300 ease-in-out transform hover:bg-blue-200 hover:shadow-md hover:text-blue-900 hover:scale-105">
+                            class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-200 hover:shadow-md hover:text-blue-900 hover:scale-105">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 class="bi bi-house-fill" viewBox="0 0 16 16">
                                 <path
@@ -30,6 +30,7 @@
                             <span class="text-sm sm:text-base font-medium">Home</span>
                         </a>
                     </div>
+
                 </div>
 
                 <!-- Form -->
@@ -256,13 +257,17 @@
 
                     <!-- Submit Button -->
                     <div class="text-center pt-6">
-                        <button type="submit" wire:loading.attr="disabled"
-                            class="bg-blue-600 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105 hover:shadow-lg">
+                        <button
+                            type="submit"
+                            wire:loading.attr="disabled"
+                            class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                        >
                             <span wire:loading.remove>Kirim</span>
                             <span wire:loading>
                                 <i class="fas fa-circle-notch fa-spin mr-2"></i> Memproses...
                             </span>
                         </button>
+
                     </div>
                 </form>
             </div>

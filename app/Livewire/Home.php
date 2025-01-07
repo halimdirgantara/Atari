@@ -3,16 +3,18 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination; // Import pagination
 use App\Models\GuestBook;
 use App\Models\Organization;
 
 class Home extends Component
 {
+    use WithPagination;
+
     public $slug;
     public $organization;
     public $organizations;
     public $statusCounts;
-    public $visits;
 
     public function mount($slug = null)
     {
@@ -25,11 +27,11 @@ class Home extends Component
 
         $this->slug = $this->organization->slug;
 
-        // Perbarui data
-        $this->updateData();
+        // Perbarui data status
+        $this->updateStatusCounts();
     }
 
-    private function updateData()
+    private function updateStatusCounts()
     {
         // Hitung status kunjungan
         $this->statusCounts = [
@@ -44,34 +46,21 @@ class Home extends Component
             'done' => GuestBook::where('organization_id', $this->organization->id)
                 ->where('status', 'done')->count(),
         ];
+    }
 
-        // Ambil kunjungan dengan eager loading yang optimal
-        $this->visits = GuestBook::with(['guests' => function($query) {
+    public function render()
+    {
+        // Ambil kunjungan tamu dengan pagination
+        $visits = GuestBook::with(['guests' => function ($query) {
                 $query->select('id', 'guest_book_id', 'name', 'email', 'organization');
             }])
             ->where('organization_id', $this->organization->id)
             ->whereNot('status', 'done')
             ->orderBy('created_at', 'desc')
-            ->get();
-    }
+            ->paginate(5); // Batasi 5 tamu per halaman
 
-    public function render()
-    {
-        return view('livewire.home')->extends('layouts.app');
+        return view('livewire.home', [
+            'visits' => $visits,
+        ])->extends('layouts.app');
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
