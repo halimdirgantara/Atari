@@ -29,6 +29,7 @@ class GuestBook extends Model
         'pending' => 'Pending',
         'approved' => 'Approved',
         'declined' => 'Declined',
+        'not_attend' => 'Not Attend',
     ];
 
     public function guest()

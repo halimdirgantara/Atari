@@ -45,6 +45,8 @@ class Home extends Component
                 ->where('status', 'process')->count(),
             'done' => GuestBook::where('organization_id', $this->organization->id)
                 ->where('status', 'done')->count(),
+            'not_attend' => GuestBook::where('organization_id', $this->organization->id)
+                ->where('status', 'not_attend')->count(),
         ];
     }
 
@@ -57,7 +59,7 @@ class Home extends Component
             ->where('organization_id', $this->organization->id)
             ->whereNot('status', 'done')
             ->orderBy('created_at', 'desc')
-            ->paginate(5); // Batasi 5 tamu per halaman
+            ->paginate(10); // Batasi 5 tamu per halaman
 
         return view('livewire.home', [
             'visits' => $visits,
