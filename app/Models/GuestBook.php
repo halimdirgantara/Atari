@@ -20,6 +20,8 @@ class GuestBook extends Model
         'check_in',
         'check_out',
         'status',
+        'rating',
+        'feedback',
     ];
 
 

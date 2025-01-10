@@ -34,3 +34,4 @@ class MarkNotAttend extends Command
 
 // php artisan guestbook:mark-not-attend
 // * * * * * php C:/laragon/www/Atari/artisan schedule:run >> /dev/null 2>&1
+//

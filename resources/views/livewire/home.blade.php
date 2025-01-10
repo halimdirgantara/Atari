@@ -118,15 +118,6 @@
                     <p class="text-blue-800 font-medium">Process</p>
                     <p class="text-sm text-blue-600 mt-1">Sedang diproses</p>
                 </div>
-                {{-- <div class="status-card bg-purple-50 rounded-lg p-4 border border-purple-200 hover:bg-purple-100 hover:shadow-lg transition-transform transform hover:scale-105">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-purple-600"><i class="fas fa-times-circle text-xl"></i></span>
-                        <span class="text-2xl font-bold text-purple-600">{{ $statusCounts['not_attend'] }}</span>
-                    </div>
-                    <p class="text-purple-800 font-medium">Not Attend</p>
-                    <p class="text-sm text-purple-600 mt-1">Tidak hadir</p>
-                </div> --}}
-
             </div>
         </div>
     </section>
