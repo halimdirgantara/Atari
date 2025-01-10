@@ -75,6 +75,82 @@
             @endif
         </div>
     </main>
+    <!-- Confirmation Modal -->
+    <div x-show="$wire.showModal" 
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="relative bg-white rounded-lg max-w-md w-full p-6">
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Konfirmasi Check-out</h3>
+                    <p class="text-sm text-gray-500">Apakah Anda yakin ingin melakukan check-out?</p>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button wire:click="$set('showModal', false)" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                        Batal
+                    </button>
+                    <button wire:click="confirmed" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+                        Ya, Check-out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div x-show="$wire.showRatingModal" 
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="relative bg-white rounded-lg max-w-md w-full p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Beri Rating dan Feedback</h3>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                    <div class="flex items-center space-x-1">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <button type="button" wire:click="$set('rating', {{ $i }})" class="focus:outline-none">
+                                <svg class="w-8 h-8 {{ $rating >= $i ? 'text-yellow-400' : 'text-gray-300' }}" 
+                                     fill="currentColor" 
+                                     viewBox="0 0 20 20" 
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            </button>
+                        @endfor
+                    </div>
+                    @error('rating') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2 ">Feedback</label>
+                    <textarea wire:model.defer="feedback" rows="4" class="w-full rounded-md border-gray-300 p-4" placeholder="Berikan feedback Anda..."></textarea>
+                    @error('feedback') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button wire:click="submitRatingAndFeedback" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                        Kirim
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script>
             Livewire.on('guestCheckedOut', guestId => {
