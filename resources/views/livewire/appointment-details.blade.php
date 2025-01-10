@@ -42,14 +42,11 @@
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold {{ $statusClass }}">
                             {{ ucfirst($appointment->status) }}
                         </span>
-                        <p class="mt-2 text-sm text-gray-600">{{ $appointment->needs }}</p>
                     </div>
                 </div>
                 <div class="text-right mt-4 sm:mt-0">
                     <span class="block text-sm text-gray-600">Dibuat pada:</span>
                     <span class="block font-medium">{{ \Carbon\Carbon::parse($appointment->created_at)->format('d M Y H:i') }}</span>
-                    <span class="block text-sm text-gray-600">Terakhir diperbarui:</span>
-                    <span class="block font-medium">{{ \Carbon\Carbon::parse($appointment->updated_at)->format('d M Y H:i') }}</span>
                 </div>
             </div>
 

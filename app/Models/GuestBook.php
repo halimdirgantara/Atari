@@ -20,6 +20,8 @@ class GuestBook extends Model
         'check_in',
         'check_out',
         'status',
+        'rating',
+        'feedback',
     ];
 
 
@@ -29,6 +31,7 @@ class GuestBook extends Model
         'pending' => 'Pending',
         'approved' => 'Approved',
         'declined' => 'Declined',
+        'not_attend' => 'Not Attend',
     ];
 
     public function guest()

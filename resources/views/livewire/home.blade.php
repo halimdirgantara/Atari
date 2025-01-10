@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.1s>
     <header class="bg-blue-900 text-white py-4 shadow-lg">
         <div class="container mx-auto flex items-center justify-between px-4 sm:px-11">
             <div class="flex items-center">
@@ -70,7 +70,7 @@
 
 
     <!-- Status Kunjungan Section -->
-    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 mb-6 sm:mb-8">
+    <section wire:poll.5s class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 mb-6 sm:mb-8">
         <div class="bg-gray-100 from-blue-100 via-white to-blue-100 rounded-lg shadow-2xl p-4 sm:p-6">
             <div class="mb-4 sm:mb-6">
                 <h3 class="text-lg sm:text-xl font-semibold text-blue-900">Status Kunjungan</h3>
@@ -104,7 +104,7 @@
                 </div>
                 <div class="status-card bg-red-50 rounded-lg p-4 border border-red-200 hover:bg-red-100 hover:shadow-lg transition-transform transform hover:scale-105">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-red-600"><i class="fas fa-times-circle text-xl"></i></span>
+                        <span class="text-red-600"><i class="fas fa-times text-xl"></i></span>
                         <span class="text-2xl font-bold text-red-600">{{ $statusCounts['declined'] }}</span>
                     </div>
                     <p class="text-red-800 font-medium">Declined</p>
@@ -128,7 +128,7 @@
 
 
     <!-- Daftar Tamu Section -->
-    <section class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 pb-8">
+    <section wire:poll.1s class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 pb-8">
         <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
                 <div class="mb-3 sm:mb-0">
@@ -185,6 +185,7 @@
                                     @elseif($visit->status === 'process') bg-gray-400
                                     @elseif($visit->status === 'reject') bg-red-500
                                     @elseif($visit->status === 'done') bg-green-500
+                                    @elseif($visit->status === 'not_attend') bg-red-700
                                     @endif">
                                     {{ ucfirst($visit->status) }}
                                 </span>
@@ -207,47 +208,47 @@
     </section>
 
     @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Livewire.on('show-alert', (event) => {
-            Swal.fire({
-                title: 'Permintaan Anda telah dikirim!',
-                html: `
-                    <p>${event.message}</p>
-                    <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
-                        <span class="font-mono text-blue-700 font-semibold">${event.guest_token}</span>
-                        <button class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
-                                id="copy-token-button">
-                            Salin Token
-                        </button>
-                    </div>
-                `,
-                icon: 'success',
-                showCancelButton: false,
-                confirmButtonText: 'OK',
-            });
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Livewire.on('show-alert', (event) => {
+                Swal.fire({
+                    title: 'Permintaan Anda telah dikirim!',
+                    html: `
+                        <p>${event.message}</p>
+                        <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
+                            <span class="font-mono text-blue-700 font-semibold">${event.guest_token}</span>
+                            <button class="bg-blue-500 text-white px-3 py-1 ml-3 rounded hover:bg-blue-600"
+                                    id="copy-token-button">
+                                Salin Token
+                            </button>
+                        </div>
+                    `,
+                    icon: 'success',
+                    showCancelButton: false,
+                    confirmButtonText: 'OK',
+                });
 
-            // Tambahkan event listener untuk tombol salin
-            document.getElementById('copy-token-button').addEventListener('click', () => {
-                navigator.clipboard.writeText(event.guest_token).then(() => {
-                    Swal.fire({
-                        title: 'Token berhasil disalin',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                }).catch(err => {
-                    Swal.fire({
-                        title: 'Gagal menyalin token',
-                        text: 'Silakan coba lagi.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
+                // Tambahkan event listener untuk tombol salin
+                document.getElementById('copy-token-button').addEventListener('click', () => {
+                    navigator.clipboard.writeText(event.guest_token).then(() => {
+                        Swal.fire({
+                            title: 'Token berhasil disalin',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    }).catch(err => {
+                        Swal.fire({
+                            title: 'Gagal menyalin token',
+                            text: 'Silakan coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     });
                 });
             });
         });
-    });
-</script>
-@endpush
+    </script>
+    @endpush
 
 </div>
 
