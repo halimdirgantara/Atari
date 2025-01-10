@@ -8,13 +8,13 @@ use App\Models\GuestBook;
 use App\Models\Organization;
 use Carbon\Carbon;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Illuminate\Support\Facades\Validator;
 
 class CheckOut extends Component
 {
     use WithPagination, LivewireAlert;
 
-    protected $listeners = ['confirmed', 'showCompleteAlert', 'submitFeedback'];
-
+    protected $listeners = ['confirmed', 'submitRatingAndFeedback'];
 
     const STATUS_APPROVED = 'approved';
     const STATUS_PROCESS = 'process';
@@ -23,7 +23,6 @@ class CheckOut extends Component
     public $organization;
     public $slug;
     public $selectedGuestId;
-
     public $rating;
     public $feedback;
 
@@ -56,13 +55,69 @@ class CheckOut extends Component
 
         if ($guestBook && $guestBook->organization_id === $this->organization->id && $guestBook->status === self::STATUS_APPROVED) {
             try {
+                // Update status dan checkout time
                 $guestBook->update([
                     'status' => self::STATUS_DONE,
                     'check_out' => Carbon::now(),
                 ]);
 
-                $this->emit('showCompleteAlert'); // Emit event untuk alert "Janji selesai"
+                // Tampilkan form rating
+                $this->alert('success', 'Janji Anda Sudah Selesai!', [
+                    'position' => 'center',
+                    'timer' => null,
+                    'toast' => false,
+                    'showConfirmButton' => true,
+                    'showCancelButton' => false,
+                    'html' => '
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200">
+                            <div class="flex items-center justify-center mb-4">
+                            </div>
+                            <p class="text-center text-gray-600 mb-6">Silakan beri rating dan feedback Anda di bawah ini:</p>
 
+                            <form id="ratingForm" class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                                <div class="mb-5">
+                                    <label for="rating" class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                                    <select id="rating" wire:model.defer="rating"
+                                        class="block w-full rounded-md border-gray-300 py-2.5 pl-3 pr-10 text-gray-700
+                                        focus:border-blue-500 focus:outline-none focus:ring-blue-500 transition-colors
+                                        hover:border-gray-400">
+                                        <option value="" class="text-gray-500">Pilih Rating</option>
+                                        <option value="1" class="bg-red-50 hover:bg-red-100">Sangat Buruk</option>
+                                        <option value="2" class="bg-orange-50 hover:bg-orange-100">Buruk</option>
+                                        <option value="3" class="bg-yellow-50 hover:bg-yellow-100">Cukup</option>
+                                        <option value="4" class="bg-green-50 hover:bg-green-100">Baik</option>
+                                        <option value="5" class="bg-emerald-50 hover:bg-emerald-100">Sangat Baik</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="feedback" class="block text-sm font-medium text-gray-700 mb-2">Feedback</label>
+                                    <textarea id="feedback"
+                                        class="block w-full rounded-md border-gray-300 shadow-sm
+                                        focus:border-blue-500 focus:ring-blue-500 transition-colors
+                                        hover:border-gray-400 resize-none"
+                                        rows="4"
+                                        placeholder="Tuliskan feedback Anda di sini..."
+                                        wire:model.defer="feedback">
+                                    </textarea>
+                                </div>
+                            </form>
+                        </div>
+                    ',
+                    'confirmButtonText' => 'Kirim',
+                    'confirmButtonColor' => '#10B981',
+                    'onConfirmed' => 'submitRatingAndFeedback',
+                    'inputAttributes' => [
+                        'rating' => 'rating',
+                        'feedback' => 'feedback',
+                    ],
+                    'allowOutsideClick' => false,
+                    'customClass' => [
+                        'container' => 'max-w-lg',
+                        'popup' => 'rounded-xl p-0',
+                        'confirmButton' => 'px-6 py-2.5 font-medium text-sm rounded-lg'
+                    ]
+                ]);
             } catch (\Exception $e) {
                 $this->alert('error', 'Terjadi kesalahan saat proses checkout!', [
                     'position' => 'center',
@@ -107,103 +162,61 @@ class CheckOut extends Component
         }
     }
 
-    public function showCompleteAlert()
+    public function submitRatingAndFeedback($rating, $feedback)
     {
-        $checkoutTime = Carbon::now()->format('H:i:s');
-        $this->alert('success', 'Janji Anda Telah Selesai', [
-            'position' => 'center',
-            'timer' => null,
-            'toast' => false,
-            'showConfirmButton' => true,
-            'confirmButtonText' => 'Lanjutkan',
-            'onConfirmed' => 'showRatingFeedbackAlert', // Lanjut ke alert rating dan feedback
-            'allowOutsideClick' => false,
-            'html' => '
-                <p>Anda berhasil di-checkout pada:</p>
-                <div class="bg-gray-100 p-3 rounded-lg mt-3 flex justify-between items-center">
-                    <span class="font-mono text-blue-700 font-semibold">' . $checkoutTime . '</span>
-                </div>
-            '
-        ]);
-    }
+        dd($rating, $feedback);
+        try {
+            $guestBook = GuestBook::find($this->selectedGuestId);
 
-    public function showRatingFeedbackAlert()
-    {
-        $this->alert('warning', 'Beri Penilaian dan Masukan', [
-            'position' => 'center',
-            'timer' => null,
-            'toast' => false,
-            'showConfirmButton' => true,
-            'confirmButtonText' => 'Kirim Rating',
-            'onConfirmed' => null,
-            'html' => '
-                <div>
-                    <label for="ratingStars" class="block font-semibold mb-2">Beri Rating:</label>
-                    <div id="ratingStars" class="flex justify-center gap-2 mb-4">
-                        <span class="star cursor-pointer text-gray-400 hover:text-yellow-400 text-3xl" data-value="1">★</span>
-                        <span class="star cursor-pointer text-gray-400 hover:text-yellow-400 text-3xl" data-value="2">★</span>
-                        <span class="star cursor-pointer text-gray-400 hover:text-yellow-400 text-3xl" data-value="3">★</span>
-                        <span class="star cursor-pointer text-gray-400 hover:text-yellow-400 text-3xl" data-value="4">★</span>
-                        <span class="star cursor-pointer text-gray-400 hover:text-yellow-400 text-3xl" data-value="5">★</span>
-                    </div>
-                    <label for="feedbackInput" class="block font-semibold">Masukkan Feedback:</label>
-                    <textarea id="feedbackInput" class="swal2-textarea border border-gray-300 rounded-md focus:ring focus:ring-blue-400" placeholder="Masukkan feedback Anda"></textarea>
-                </div>
-            ',
-            'didOpen' => '() => {
-                document.querySelectorAll(".star").forEach(star => {
-                    star.addEventListener("click", () => {
-                        const value = star.getAttribute("data-value");
-                        document.querySelectorAll(".star").forEach(s => {
-                            s.classList.remove("text-yellow-400");
-                            s.classList.add("text-gray-400");
-                            if (s.getAttribute("data-value") <= value) {
-                                s.classList.remove("text-gray-400");
-                                s.classList.add("text-yellow-400");
-                            }
-                        });
-                    });
-                });
-            }',
-            'preConfirm' => '() => {
-                const stars = document.querySelectorAll(".star");
-                let rating = 0;
-                stars.forEach(star => {
-                    if (star.classList.contains("text-yellow-400")) {
-                        rating = star.getAttribute("data-value");
-                    }
-                });
-                const feedback = document.getElementById("feedbackInput").value;
-                if (!rating || rating < 1 || rating > 5 || !feedback) {
-                    Swal.showValidationMessage("Rating harus 1-5 dan Feedback tidak boleh kosong.");
-                    return false;
-                }
-                Livewire.emit("submitFeedback", { rating: parseInt(rating), feedback: feedback }); // Kirim data
-            }',
+            if ($guestBook) {
+                $guestBook->update([
+                    'rating' => $this->rating,
+                    'feedback' => $this->feedback,
+                ]);
 
-            'allowOutsideClick' => false
-        ]);
-    }
+                $this->alert('success', 'Terima kasih atas feedback Anda!', [
+                    'position' => 'center',
+                    'timer' => null,
+                    'toast' => false,
+                    'showConfirmButton' => true,
+                    'showCancelButton' => false,
+                    'confirmButtonText' => 'OK',
+                    'confirmButtonColor' => '#10B981',
+                    'allowOutsideClick' => false,
+                    'didOpen' => "() => {
+                        const confirmButton = document.querySelector('.swal2-confirm');
+                        if (confirmButton) {
+                            confirmButton.onclick = () => window.location.href = '" . route('home', ['slug' => $this->slug]) . "'
+                        }
+                    }",
+                    'html' => '
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="bg-green-100 rounded-full p-3">
+                                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-center text-lg font-medium text-green-800">Terima kasih atas feedback Anda!</p>
+                            <p class="text-center text-gray-600 mt-2">Feedback Anda sangat berarti untuk peningkatan layanan kami.</p>
+                        </div>
+                    ',
+                    'customClass' => [
+                        'container' => 'max-w-lg',
+                        'popup' => 'rounded-xl p-0',
+                        'confirmButton' => 'px-6 py-2.5 font-medium text-sm rounded-lg'
+                    ]
+                ]);
 
-    public function submitFeedback($data)
-    {
-        $guestBook = GuestBook::find($this->selectedGuestId);
 
-        if ($guestBook) {
-            $guestBook->update([
-                'rating' => $data['rating'],
-                'feedback' => $data['feedback'],
-            ]);
-
-            $this->alert('success', 'Rating dan Feedback terkirim!', [
+            }
+        } catch (\Exception $e) {
+            $this->alert('error', 'Gagal menyimpan rating dan feedback!', [
                 'position' => 'center',
                 'timer' => 3000,
-                'toast' => false,
-                'showConfirmButton' => false,
-                'allowOutsideClick' => false,
+                'toast' => true,
             ]);
-
-            return redirect('/');
         }
     }
 
