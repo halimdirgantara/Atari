@@ -1,9 +1,10 @@
 <div>
-    <!-- Header -->
     <header class="bg-blue-900 text-white py-4 shadow-lg">
-        <div class="container mx-auto flex items-center px-11">
-            <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-10 mr-4">
-            <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
+        <div class="container mx-auto flex items-center justify-between px-5 sm:px-11">
+            <div class="flex items-center">
+                <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
+                <h1 class="text-base sm:text-lg font-semibold">BUKU TAMU DARING</h1>
+            </div>
         </div>
     </header>
 

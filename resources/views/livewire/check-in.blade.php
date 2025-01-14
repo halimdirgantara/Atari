@@ -1,9 +1,10 @@
 <div>
-    <!-- Header -->
     <header class="bg-blue-900 text-white py-4 shadow-lg">
-        <div class="container mx-auto flex items-center px-4 sm:px-6 lg:px-11">
-            <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-10 mr-4">
-            <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
+        <div class="container mx-auto flex items-center justify-between px-5 sm:px-11">
+            <div class="flex items-center">
+                <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
+                <h1 class="text-base sm:text-lg font-semibold">BUKU TAMU DARING</h1>
+            </div>
         </div>
     </header>
 
@@ -38,63 +39,60 @@
                     <!-- Data Tamu Utama -->
                     <div class="bg-gray-50 p-4 sm:p-6 rounded-lg">
                         <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Tamu Utama</h3>
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <label for="name" class="text-gray-700 font-medium flex items-center">
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 p-6 bg-gray-50 rounded-lg shadow-lg">
+                            <div class="space-y-4">
+                                <label for="name" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">person</span> Nama
                                 </label>
                                 <input type="text" id="name" wire:model="name" placeholder="Nama Lengkap"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                 @error('name') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label for="email" class="text-gray-700 font-medium flex items-center">
+                            <div class="space-y-4">
+                                <label for="email" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">email</span> Email
                                 </label>
                                 <input type="email" id="email" wire:model="email" placeholder="Email"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                 @error('email') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label for="phone" class="text-gray-700 font-medium flex items-center">
+                            <div class="space-y-4">
+                                <label for="phone" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">phone</span> Telepon
                                 </label>
                                 <input type="tel" id="phone" wire:model="phone" placeholder="Nomor Telepon"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                 @error('phone') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label for="address" class="text-gray-700 font-medium flex items-center">
+                            <div class="space-y-4">
+                                <label for="address" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">location_on</span> Alamat
                                 </label>
                                 <input type="text" id="address" wire:model="address" placeholder="Alamat"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                 @error('address') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label for="name" class="text-gray-700 font-medium flex items-center">
+                            <div class="space-y-4">
+                                <label for="identity_id" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">person</span> NIK
                                 </label>
                                 <input type="number" id="identity_id" wire:model="identity_id" placeholder="NIK Tamu"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                 @error('identity_id') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label for="name" class="text-gray-700 font-medium flex items-center">
+                            <div class="space-y-4">
+                                <label for="identity_file" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">person</span> KTP
                                 </label>
                                 <input type="file" id="identity_file" wire:model="identity_file" placeholder="KTP Tamu"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                @error('identity_file') <span class="text-red-600 text-sm">{{ $message }}</span>
-                                @enderror
+                                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
+                                @error('identity_file') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
-
-
                         </div>
                     </div>
 
@@ -179,39 +177,37 @@
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-4 sm:p-6 rounded-lg space-y-6">
+                    <div class="bg-gray-50 p-4 sm:p-6 rounded-lg shadow-md space-y-6">
                         <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Detail Kunjungan</h3>
 
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <label for="organization" class="text-gray-700 font-medium flex items-center">
+                            <div class="space-y-4">
+                                <label for="organization" class="text-gray-700 font-semibold flex items-center">
                                     <span class="material-icons text-blue-600 mr-2">business</span> Nama Organisasi Tamu
                                 </label>
                                 <input type="text" id="organization" wire:model="organization"
                                     placeholder="Nama Organisasi Tamu"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                @error('organization') <span class="text-red-600 text-sm">{{ $message }}</span>
-                                @enderror
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
+                                @error('organization') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-
-                            <div class="space-y-2">
-                                <label class="text-gray-700 font-medium flex items-center" for="check_in">
+                            <div class="space-y-4">
+                                <label class="text-gray-700 font-semibold flex items-center" for="check_in">
                                     <span class="material-icons text-blue-600 mr-2">calendar_today</span>
-                                    Tanggal Check-in
+                                    Tanggal dan Waktu Check-in
                                 </label>
                                 <input type="datetime-local" id="check_in" wire:model="check_in"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                 @error('check_in') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label class="text-gray-700 font-medium flex items-center" for="duration">
+                            <div class="space-y-4">
+                                <label class="text-gray-700 font-semibold flex items-center" for="duration">
                                     <span class="material-icons text-blue-600 mr-2">access_time</span>
                                     Durasi
                                 </label>
                                 <select id="duration" wire:model="duration"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                     <option value="">Pilih Durasi</option>
                                     <option value="15">15 menit</option>
                                     <option value="30">30 menit</option>
@@ -221,13 +217,13 @@
                                 @error('duration') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="space-y-2">
-                                <label class="text-gray-700 font-medium flex items-center" for="host_id">
+                            <div class="space-y-4">
+                                <label class="text-gray-700 font-semibold flex items-center" for="host_id">
                                     <span class="material-icons text-blue-600 mr-2">people</span>
                                     Bertemu Dengan
                                 </label>
                                 <select id="host_id" wire:model="host_id"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md">
                                     <option value="">Pilih Pihak Yang Dituju</option>
                                     @if(!empty($users) && count($users) > 0)
                                         @foreach($users as $user)
@@ -241,13 +237,13 @@
                             </div>
                         </div>
 
-                        <div class="space-y-2">
-                            <label class="text-gray-700 font-medium flex items-center" for="needs">
+                        <div class="space-y-4">
+                            <label class="text-gray-700 font-semibold flex items-center" for="needs">
                                 <span class="material-icons text-blue-600 mr-2">notifications</span>
                                 Keperluan
                             </label>
                             <textarea id="needs" wire:model="needs" rows="4"
-                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out hover:shadow-md"
                                 placeholder="Keperluan"></textarea>
                             @error('needs') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                         </div>

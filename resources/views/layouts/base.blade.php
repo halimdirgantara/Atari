@@ -12,6 +12,8 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="Referrer-Policy" content="no-referrer">
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+
     @hasSection('title')
         <title>@yield('title') - {{ config('app.name') }}</title>
     @else

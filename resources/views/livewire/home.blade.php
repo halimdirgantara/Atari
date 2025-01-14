@@ -1,6 +1,6 @@
 <div wire:poll.1s>
     <header class="bg-blue-900 text-white py-4 shadow-lg">
-        <div class="container mx-auto flex items-center justify-between px-4 sm:px-11">
+        <div class="container mx-auto flex items-center justify-between px-5 sm:px-11">
             <div class="flex items-center">
                 <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
                 <h1 class="text-base sm:text-lg font-semibold">BUKU TAMU DARING</h1>
@@ -13,7 +13,7 @@
         <div class="relative bg-gradient-custom text-white rounded-lg overflow-hidden shadow-xl transform transition duration-500 hover:scale-105 h-52">
             <div class="absolute inset-0">
                 <!-- Slideshow Structure -->
-                <div class="slideshow block md:hidden">
+                <div class="slideshow block md:hidden opacity-65 ">
                     <img src="{{ asset('images/gedung1.jpg') }}" alt="Gedung 1">
                     <img src="{{ asset('images/gedung2.jpg') }}" alt="Gedung 2">
                     <img src="{{ asset('images/gedung3.jpg') }}" alt="Gedung 3">
@@ -22,9 +22,9 @@
                 </div>
 
                 <div class="slideshow hidden md:block">
-                    <img src="{{ asset('images/gedung6.jpg') }}" alt="Gedung 6">
+                    <img src="{{ asset('images/gedung8.jpg') }}" alt="Gedung 6">
                     <img src="{{ asset('images/gedung7.jpg') }}" alt="Gedung 7">
-                    <img src="{{ asset('images/gedung8.jpg') }}" alt="Gedung 8">
+                    <img src="{{ asset('images/gedung6.jpg') }}" alt="Gedung 8">
                     <img src="{{ asset('images/gedung9.jpg') }}" alt="Gedung 9">
                     <img src="{{ asset('images/gedung10.jpg') }}" alt="Gedung 10">
                 </div>
@@ -43,24 +43,24 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center mt-6 sm:mt-9 space-y-3 sm:space-y-0 sm:space-x-2 action-buttons">
+        <div class="flex flex-row items-center mt-6 sm:mt-9 space-x-3 action-buttons overflow-x-auto">
             <!-- Button 1: Buat Janji -->
             <button onclick="window.location='{{ route('check-in', ['slug' => $slug]) }}'"
-                class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto">
+                class="bg-blue-600 text-white font-semibold px-4 py-3 sm:px-8 sm:py-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:bg-blue-800 duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto transform hover:scale-105 ml-2">
                 <i class="fas fa-calendar-alt mr-2"></i>
                 <span>Buat Janji</span>
             </button>
 
             <!-- Button 2: Cek Janji -->
             <button onclick="window.location='{{ route('check-appointment', ['slug' => $organization->slug]) }}'"
-                class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-yellow-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto">
+                class="bg-yellow-500 text-white font-semibold px-4 py-3 sm:px-8 sm:py-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:bg-yellow-600 duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto transform hover:scale-105 ml-2">
                 <i class="fas fa-search mr-2"></i>
                 <span>Cek Janji</span>
             </button>
 
             <!-- Button 3: Check-Out -->
             <button onclick="window.location='{{ route('check-out', ['slug' => $organization->slug]) }}'"
-                class="bg-gray-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto mt-4">
+                class="bg-gray-500 text-white font-semibold px-4 py-3 sm:px-8 sm:py-4 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-600 transition-all duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto transform hover:scale-105 ml-2">
                 <i class="fas fa-sign-out-alt mr-2"></i>
                 <span>Check-Out</span>
             </button>
@@ -71,51 +71,51 @@
 
     <!-- Status Kunjungan Section -->
     <section wire:poll.5s class="container mx-auto mt-6 sm:mt-8 px-4 sm:px-14 mb-6 sm:mb-8">
-        <div class="bg-gray-100 from-blue-100 via-white to-blue-100 rounded-lg shadow-2xl p-4 sm:p-6">
+        <div class="bg-white rounded-lg shadow-lg p-6 sm:p-8">
             <div class="mb-4 sm:mb-6">
-                <h3 class="text-lg sm:text-xl font-semibold text-blue-900">Status Kunjungan</h3>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Status Kunjungan</h3>
                 <p class="text-sm text-gray-500 mt-1">Ringkasan status semua kunjungan</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 sm:gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
                 <!-- Status Cards -->
-                <div class="status-card bg-gray-50 rounded-lg p-4 border border-gray-200 hover:bg-gray-100 hover:shadow-lg transition-transform transform hover:scale-105">
+                <div class="status-card bg-gray-50 rounded-lg p-4 border border-gray-200 hover:bg-gray-100 hover:shadow-md transition-transform transform hover:scale-105">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-gray-600"><i class="fas fa-check text-xl"></i></span>
-                        <span class="text-2xl font-bold text-gray-600">{{ $statusCounts['done'] }}</span>
+                        <span class="text-gray-600"><i class="fas fa-check text-2xl"></i></span>
+                        <span class="text-3xl font-bold text-gray-800">{{ $statusCounts['done'] }}</span>
                     </div>
                     <p class="text-gray-800 font-medium">Done</p>
                     <p class="text-sm text-gray-600 mt-1">Kunjungan selesai</p>
                 </div>
-                <div class="status-card bg-green-50 rounded-lg p-4 border border-green-200 hover:bg-green-100 hover:shadow-lg transition-transform transform hover:scale-105">
+                <div class="status-card bg-green-50 rounded-lg p-4 border border-green-200 hover:bg-green-100 hover:shadow-md transition-transform transform hover:scale-105">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-green-600"><i class="fas fa-check-circle text-xl"></i></span>
-                        <span class="text-2xl font-bold text-green-600">{{ $statusCounts['approved'] }}</span>
+                        <span class="text-green-600"><i class="fas fa-check-circle text-2xl"></i></span>
+                        <span class="text-3xl font-bold text-green-800">{{ $statusCounts['approved'] }}</span>
                     </div>
                     <p class="text-green-800 font-medium">Approved</p>
                     <p class="text-sm text-green-600 mt-1">Kunjungan disetujui</p>
                 </div>
-                <div class="status-card bg-yellow-50 rounded-lg p-4 border border-yellow-200 hover:bg-yellow-100 hover:shadow-lg transition-transform transform hover:scale-105">
+                <div class="status-card bg-yellow-50 rounded-lg p-4 border border-yellow-200 hover:bg-yellow-100 hover:shadow-md transition-transform transform hover:scale-105">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-yellow-600"><i class="fas fa-clock text-xl"></i></span>
-                        <span class="text-2xl font-bold text-yellow-600">{{ $statusCounts['pending'] }}</span>
+                        <span class="text-yellow-600"><i class="fas fa-clock text-2xl"></i></span>
+                        <span class="text-3xl font-bold text-yellow-800">{{ $statusCounts['pending'] }}</span>
                     </div>
                     <p class="text-yellow-800 font-medium">Pending</p>
                     <p class="text-sm text-yellow-600 mt-1">Menunggu konfirmasi</p>
                 </div>
-                <div class="status-card bg-red-50 rounded-lg p-4 border border-red-200 hover:bg-red-100 hover:shadow-lg transition-transform transform hover:scale-105">
+                <div class="status-card bg-red-50 rounded-lg p-4 border border-red-200 hover:bg-red-100 hover:shadow-md transition-transform transform hover:scale-105">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-red-600"><i class="fas fa-times text-xl"></i></span>
-                        <span class="text-2xl font-bold text-red-600">{{ $statusCounts['declined'] }}</span>
+                        <span class="text-red-600"><i class="fas fa-times text-2xl"></i></span>
+                        <span class="text-3xl font-bold text-red-800">{{ $statusCounts['declined'] }}</span>
                     </div>
                     <p class="text-red-800 font-medium">Declined</p>
                     <p class="text-sm text-red-600 mt-1">Tidak disetujui</p>
                 </div>
-                <div class="status-card bg-blue-50 rounded-lg p-4 border border-blue-200 hover:bg-blue-100 hover:shadow-lg transition-transform transform hover:scale-105">
+                <div class="status-card bg-blue-50 rounded-lg p-4 border border-blue-200 hover:bg-blue-100 hover:shadow-md transition-transform transform hover:scale-105">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-blue-600"><i class="fas fa-spinner text-xl"></i></span>
-                        <span class="text-2xl font-bold text-blue-600">{{ $statusCounts['process'] }}</span>
+                        <span class="text-blue-600"><i class="fas fa-spinner text-2xl"></i></span>
+                        <span class="text-3xl font-bold text-blue-800">{{ $statusCounts['process'] }}</span>
                     </div>
-                    <p class="text-blue-800 font-medium">Process</p>
+                    <p class="text-blue -800 font-medium">Process</p>
                     <p class="text-sm text-blue-600 mt-1">Sedang diproses</p>
                 </div>
             </div>
@@ -161,11 +161,26 @@
                                 <p class="text-sm text-gray-500 mt-1 break-words">
                                     <i class="fas fa-envelope mr-2"></i>
                                     @if($guest->email)
-                                        {{ substr($guest->email, 0, 3) . str_repeat('*', strpos($guest->email, '@') - 4) . substr($guest->email, strpos($guest->email, '@') - 3) }}
+                                        @php
+                                            $emailName = substr($guest->email, 0, strpos($guest->email, '@')); // Bagian sebelum "@"
+                                            $emailDomain = substr($guest->email, strpos($guest->email, '@') + 1); // Bagian setelah "@"
+                                        @endphp
+                                        <span class="inline-block sm:hidden"> {{-- Untuk perangkat mobile --}}
+                                            @if(strlen($emailName) > 12)
+                                                {{ substr($emailName, 0, 12) }}<br>{{ substr($emailName, 12) }}@{{ $emailDomain }}
+                                            @else
+                                                {{ $guest->email }}
+                                            @endif
+                                        </span>
+                                        <span class="hidden sm:inline"> {{-- Untuk perangkat lebih besar --}}
+                                            {{ $guest->email }}
+                                        </span>
                                     @else
                                         Email tidak tersedia
                                     @endif
                                 </p>
+
+
                             </div>
                         </div>
 
@@ -202,7 +217,7 @@
 
             <!-- Pagination -->
             <div class="mt-6">
-                {{ $visits->links('pagination::tailwind') }}
+                {{ $visits->links() }}
             </div>
         </div>
     </section>

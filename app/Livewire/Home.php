@@ -16,6 +16,9 @@ class Home extends Component
     public $organizations;
     public $statusCounts;
 
+    
+
+
     public function mount($slug = null)
     {
         // Ambil semua organisasi
@@ -59,7 +62,7 @@ class Home extends Component
             ->where('organization_id', $this->organization->id)
             ->whereNot('status', 'done')
             ->orderBy('created_at', 'desc')
-            ->paginate(10); // Batasi 5 tamu per halaman
+            ->paginate(7); // Batasi 5 tamu per halaman
 
         return view('livewire.home', [
             'visits' => $visits,

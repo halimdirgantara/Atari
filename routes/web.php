@@ -21,3 +21,7 @@ Route::get('/{slug}/check', CheckAppointment::class)->name('check-appointment');
 Route::get('/{slug}/appointment/{guest_token}', AppointmentDetails::class)->name('appointment-details');
 
 Route::get('/{slug}/checkout', CheckOut::class)->name('check-out');
+
+
+
+

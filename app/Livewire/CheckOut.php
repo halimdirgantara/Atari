@@ -65,11 +65,11 @@ class CheckOut extends Component
                     'status' => self::STATUS_DONE,
                     'check_out' => Carbon::now(),
                 ]);
-                
+
                 $this->showModal = false;
                 $this->showRatingModal = true;
                 $this->dispatch('guestCheckedOut', $this->selectedGuestId);
-                
+
             } catch (\Exception $e) {
                 $this->alert('error', 'Terjadi kesalahan saat proses checkout!');
             }
@@ -79,7 +79,7 @@ class CheckOut extends Component
     public function submitRatingAndFeedback()
     {
         $this->validate();
-        
+
         try {
             $guestBook = GuestBook::find($this->selectedGuestId);
 
@@ -91,7 +91,12 @@ class CheckOut extends Component
 
                 $this->showRatingModal = false;
                 $this->reset(['rating', 'feedback']);
-                
+
+                $this->alert('success', 'Terima kasih atas penilaian Anda!', [
+                    'timer' => 100000, // Timer dalam milidetik (5 detik)
+                    'position' => 'center', // Posisi di tengah (horizontal dan vertikal)
+
+                ]);
                 return redirect()->route('home', ['slug' => $this->slug]);
             }
         } catch (\Exception $e) {
@@ -120,7 +125,7 @@ class CheckOut extends Component
             ->where('status', self::STATUS_APPROVED)
             ->whereDate('check_in', Carbon::today())
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(7);
 
         return view('livewire.check-out', [
             'approvedGuests' => $approvedGuests,
