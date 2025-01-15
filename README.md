@@ -1,4 +1,4 @@
-Here’s a comprehensive GitHub README template for your project, **Aplikasi Buku Tamu Daring Pemerintah Kabupaten Sekadau**:
+**Aplikasi Buku Tamu Daring Pemerintah Kabupaten Sekadau**:
 
 ```markdown
 # Aplikasi Buku Tamu Daring Pemerintah Kabupaten Sekadau
