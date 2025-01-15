@@ -11,7 +11,6 @@ class Guest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'guest_id',
         'name',
         'email',
         'phone',
@@ -21,9 +20,10 @@ class Guest extends Model
         'identity_file',
         'guest_token',
     ];
-
-    public function guestBooks(): BelongsToMany
+    public function guestBooks()
     {
-        return $this->belongsToMany(GuestBook::class, 'guest_book_guest', 'guest_id', 'guest_book_id');
+        return $this->hasMany(GuestBook::class, 'guest_id','id');
     }
+
+
 }

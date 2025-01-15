@@ -14,14 +14,15 @@ class Organization extends Model
         'name',
         'head_id'
     ];
-    public function users()
+    public function users(): BelongsToMany
     {
-        return $this->hasManyThrough(User::class, Structure::class);
+        return $this->belongsToMany(User::class, 'structures', 'organization_id', 'user_id');
     }
 
     public function guestBooks()
     {
         return $this->hasMany(GuestBook::class);
     }
+    
 }
 

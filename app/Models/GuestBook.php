@@ -13,29 +13,30 @@ class GuestBook extends Model
 
     protected $fillable = [
         'guest_id',
+        'name',
         'host_id',
         'organization_id',
         'needs',
         'check_in',
         'check_out',
         'status',
+        'rating',
+        'feedback',
     ];
 
-    // protected $attributes = [
-    //     'status' => 'pending'
-    // ];
+
 
     public const STATUS = [
         'process' => 'Process',
         'pending' => 'Pending',
-        'approve' => 'Approve',
-        'reject' => 'Reject',
+        'approved' => 'Approved',
+        'declined' => 'Declined',
+        'not_attend' => 'Not Attend',
     ];
 
     public function guest()
     {
-        return $this->belongsTo(\App\Models\Guest::class);
-        return $this->belongsTo(User::class, 'guest_id');
+        return $this->belongsTo(Guest::class);
     }
     public function host(): BelongsTo
     {
@@ -51,6 +52,11 @@ class GuestBook extends Model
     {
         return $this->belongsToMany(Guest::class, 'guest_book_guest', 'guest_book_id', 'guest_id');
     }
+    public function scopeByOrganization($query, $organizationId)
+    {
+        return $query->where('organization_id', $organizationId);
+    }
+
 
 
 }

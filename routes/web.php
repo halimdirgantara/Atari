@@ -1,20 +1,23 @@
 <?php
 
+use App\Livewire\Home;
+use App\Livewire\CheckIn;
+use App\Livewire\CheckAppointment;
+use App\Livewire\AppointmentDetails;
+use App\Livewire\CheckOut;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GuestBookController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-Route::get('/', [GuestBookController::class, 'index'])->name('landing');
-Route::get('/form', [GuestBookController::class, 'create'])->name('form');
-Route::post('/form', [GuestBookController::class, 'store']);
-Route::get('/check', [GuestBookController::class, 'check'])->name('check');
+Route::get('/', Home::class)->name('home');
+Route::get('/{slug}', Home::class)->name('home');
+
+
+Route::get('/{slug}/check-in', CheckIn::class)->name('check-in');
+
+
+Route::get('/{slug}/check', CheckAppointment::class)->name('check-appointment');
+
+
+Route::get('/{slug}/appointment/{guest_token}', AppointmentDetails::class)->name('appointment-details');
+
+Route::get('/{slug}/checkout', CheckOut::class)->name('check-out');
