@@ -16,7 +16,14 @@ class Home extends Component
     public $organizations;
     public $statusCounts;
 
-    
+
+    // Tambahkan properti ini untuk validasi lokasi
+    public $latitude;
+    public $longitude;
+    public $isWithinRange = false; // Untuk menentukan apakah dalam jarak tertentu
+
+
+
 
 
     public function mount($slug = null)
@@ -29,6 +36,10 @@ class Home extends Component
             ->first() ?? Organization::where('id', 1)->first();
 
         $this->slug = $this->organization->slug;
+
+        // Ambil koordinat dari organisasi
+        $this->latitude = $this->organization->latitude;
+        $this->longitude = $this->organization->longitude;
 
         // Perbarui data status
         $this->updateStatusCounts();
@@ -51,6 +62,36 @@ class Home extends Component
             'not_attend' => GuestBook::where('organization_id', $this->organization->id)
                 ->where('status', 'not_attend')->count(),
         ];
+    }
+
+    public function checkLocation($userLat, $userLng)
+    {
+        $distance = $this->calculateDistance($this->latitude, $this->longitude, $userLat, $userLng);
+
+        // Jika jarak kurang dari 50 meter
+        if ($distance <= 200) {
+            $this->isWithinRange = true;
+        } else {
+            $this->isWithinRange = false;
+        }
+    }
+
+    // Fungsi menghitung jarak menggunakan Haversine Formula
+    private function calculateDistance($lat1, $lng1, $lat2, $lng2)
+    {
+        $earthRadius = 6371000; // Radius bumi dalam meter
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLng = deg2rad($lng2 - $lng1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+             sin($dLng / 2) * sin($dLng / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        $distance = $earthRadius * $c; // Jarak dalam meter
+        return $distance;
     }
 
     public function render()

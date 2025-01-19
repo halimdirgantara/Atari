@@ -122,10 +122,11 @@ class CheckOut extends Component
     {
         $approvedGuests = GuestBook::with(['guests', 'host', 'organization'])
             ->where('organization_id', $this->organization->id)
-            ->where('status', self::STATUS_APPROVED)
-            ->whereDate('check_in', Carbon::today())
-            ->orderBy('created_at', 'desc')
+            ->where('status', 'approved') // Hanya tamu dengan status approved
+            ->whereDate('check_in', Carbon::today()) // Hanya check-in hari ini
+            ->orderBy('check_in', 'desc') // Urutkan berdasarkan waktu check-in
             ->paginate(7);
+
 
         return view('livewire.check-out', [
             'approvedGuests' => $approvedGuests,
@@ -133,4 +134,5 @@ class CheckOut extends Component
             'slug' => $this->organization->slug,
         ]);
     }
+
 }
