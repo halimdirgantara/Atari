@@ -1,9 +1,22 @@
 <div>
-    <!-- Header -->
     <header class="bg-blue-900 text-white py-4 shadow-lg">
-        <div class="container mx-auto flex items-center px-11">
-            <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-10 mr-4">
-            <h1 class="text-lg font-semibold">BUKU TAMU DARING</h1>
+        <div class="container mx-auto flex items-center justify-between px-5 sm:px-11">
+            <div class="flex items-center">
+                <img src="{{ asset('images/logo_skd.png') }}" alt="Logo" class="h-8 sm:h-10 mr-4">
+                <h1 class="text-base sm:text-lg font-semibold">{{ $organization->name }}</h1>
+            </div>
+            <!-- Home Button for Mobile dengan Desain Modern -->
+            <div class="flex sm:hidden">
+                <a href="{{ route('home', ['slug' => $organization->slug]) }}"
+                    class="flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-900 rounded-lg transition-all duration-300 ease-in-out transform hover:bg-amber-500 hover:shadow-md hover:scale-105 border-2 border-amber-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                class="bi bi-house-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+                        <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </header>
 
@@ -11,26 +24,40 @@
     <section class="container mx-auto mt-8 px-14">
         <div class="bg-white rounded-lg shadow-lg p-8 border-t-4 border-blue-900 relative flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h2 h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Cek Janji</h2>
-                    <p class="text-gray-600">Pantau status janji temu Anda</p>
-                </div>
-                <div class="mt-4 sm:mt-0 sm:top-11 sm:right-16 flex justify-center sm:justify-end w-full">
-                    <a href="{{ route('home', ['slug' => $organization->slug]) }}" class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg hover:bg-blue-200 hover:shadow-md transition-all duration-300 text-blue-800 hover:text-blue-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
-                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
-                            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                <div class="flex flex-col items-center sm:items-start">
+                    <div class="flex items-center justify-center sm:justify-start space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
-                        <span class="font-medium">Home</span>
+                        <h2 class="text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-black to-red-600 bg-clip-text text-transparent">
+                            Cek Janji
+                        </h2>
+                    </div>
+
+
+                </div>
+                <div class="mt-4 sm:mt-0 flex-shrink-0 flex items-center justify-center sm:justify-start gap-2 text-blue-800 hidden sm:flex">
+                    <a href="{{ route('home', ['slug' => $organization->slug]) }}"
+                        class="flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-200 hover:shadow-md hover:text-blue-900 hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-house-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+                            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
+                        </svg>
+                        <span class="hidden sm:inline text-sm sm:text-base font-medium">Home</span>
                     </a>
                 </div>
             </div>
-            <div class="bg-blue-50 rounded-lg p-4 mb-6">
-                <div class="flex items-start">
-                    <span class="material-icons text-blue-600 mr-3">info</span>
-                    <p class="text-sm text-blue-800">Masukkan guest token Anda untuk melihat detail janji temu.</p>
-                </div>
+            <div class="flex items-center justify-center sm:justify-start space-x-2 mt-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-sm sm:text-base text-gray-600">
+                    Masukkan guest token Anda untuk melihat detail janji kunjungan
+                </p>
             </div>
+
             <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
                 <div class="flex items-center border-2 border-gray-300 rounded-lg px-4 py-3 w-full hover:border-blue-500 transition-colors duration-300">
                     <span class="material-icons text-gray-500 mr-3">badge</span>

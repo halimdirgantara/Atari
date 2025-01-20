@@ -9,15 +9,15 @@ use Carbon\Carbon;
 class MarkNotAttend extends Command
 {
     protected $signature = 'guestbook:mark-not-attend';
-    protected $description = 'Mark guests as Not Attend if they fail to check-out within 20 minutes after the scheduled time';
+    protected $description = 'Mark guests as Not Attend if they fail to check-out within 60 minutes after the scheduled time';
 
     public function handle()
     {
         $now = Carbon::now();
 
-        // tamu berstatus "Approved" yang melewati batas waktu check-out + toleransi
+        // tamu berstatus "Approved" yang melewati batas waktu check-out + toleransi 60 menit
         $guests = GuestBook::where('status', 'approved')
-            ->where('check_out', '<', $now->subMinutes(10))
+            ->where('check_out', '<', $now->subMinutes(60))
             ->get();
 
         foreach ($guests as $guest) {
