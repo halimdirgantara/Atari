@@ -19,8 +19,8 @@
             </div>
         </div>
     </header>
-    <main class="container mx-auto mt-8 px-4 sm:px-14">
-        <div class="bg-white rounded-2xl shadow-xl p-8">
+    <main class="container mx-auto mt-8 px-4 sm:px-14 ">
+        <div class="bg-white rounded-2xl shadow-xl p-8  border-t-4 border-blue-900">
             <div class="flex justify-between items-center mb-6 flex-col sm:flex-row">
                 <div class="flex flex-col items-center sm:items-start">
                     <div class="flex items-center justify-center sm:justify-start space-x-3">

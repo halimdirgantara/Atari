@@ -21,7 +21,7 @@
     </header>
 
     <div class="container mx-auto px-4 sm:px-14 py-6 relative">
-        <div class="bg-white rounded-lg shadow-2xl p-8">
+        <div class="bg-white  shadow-2xl p-8 border-t-4 border-blue-900 rounded-lg relative flex flex-col gap-4">
             <!-- Title Section with Appointment ID -->
             <div class="flex justify-between items-center mb-6 flex-col sm:flex-row">
                 <div class="flex flex-col items-center sm:items-start">

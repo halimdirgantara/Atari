@@ -22,7 +22,7 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="max-w-8xl mx-auto">
+        <div class="mx-auto sm:mx-7 border-t-4 border-blue-900 rounded-lg relative flex flex-col gap-4 ">
             <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 md:p-8 relative">
                 <!-- Form Header -->
                 <div class="mb-8 border-b pb-4 flex flex-col sm:flex-row sm:items-center justify-between">
