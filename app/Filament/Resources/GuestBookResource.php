@@ -83,6 +83,7 @@ class GuestBookResource extends Resource
                 if (Auth::user()->hasRole('super_admin') == false) {
                     $query->where('organization_id', Auth::user()->organization_id);
                 }
+                $query->orderBy('check_in', 'desc');
             })
             ->columns([
                 TextColumn::make('guests.name') // Menggunakan relasi 'guest'
@@ -104,6 +105,14 @@ class GuestBookResource extends Resource
                 TextColumn::make('check_in')
                     ->label('Check In')
                     ->sortable(),
+
+                TextColumn::make('rating')
+                    ->label('Rating')
+                    ->sortable(),
+
+                TextColumn::make('feedback')
+                    ->label('Feedback')
+                    ->limit(50),
 
                 TextColumn::make('check_out')
                     ->label('Check Out')
